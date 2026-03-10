@@ -1,0 +1,46 @@
+{
+  "name": "@sil/data",
+  "version": "0.0.1",
+  "description": "A collection of reusable data sets: countries, phone codes, cities, states, and more",
+  "type": "module",
+  "main": "./dist/sil-data.umd.cjs",
+  "module": "./dist/sil-data.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/sil-data.js",
+      "require": "./dist/sil-data.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "data",
+    "countries",
+    "cities",
+    "states",
+    "phone-codes"
+  ],
+  "author": "Sil van Diepen",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "^3.0.8",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.1",
+    "vite-plugin-dts": "^4.5.3",
+    "vitest": "^3.0.8"
+  }
+}
