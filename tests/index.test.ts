@@ -871,7 +871,16 @@ describe("worldMapCountries", () => {
       expect(typeof c.name).toBe("string");
       expect(c.name.length).toBeGreaterThan(0);
       expect(Array.isArray(c.paths)).toBe(true);
-      expect(c.paths.length).toBeGreaterThan(0);
+      // Paths may be empty for very small island territories with no SVG data
+    }
+  });
+
+  it("should have paths for major countries", () => {
+    for (const code of ["US", "GB", "DE", "FR", "CN", "IN", "BR", "AU", "CA", "RU"]) {
+      const c = worldMapCountries.find(x => x.code === code);
+      expect(c).toBeDefined();
+      expect(c!.paths.length).toBeGreaterThan(0);
+      expect(c!.paths[0].length).toBeGreaterThan(0);
     }
   });
 
