@@ -228,3 +228,48 @@ export interface FlagInfo {
  * 8-point cardinal / intercardinal compass directions.
  */
 export type CardinalDirection = "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW";
+
+/**
+ * SVG path data for a single country on the world map.
+ * A country may consist of multiple disjoint polygons (e.g. islands).
+ */
+export interface WorldMapCountry {
+  /** ISO 3166-1 alpha-2 code (e.g. "US") */
+  code: string;
+  /** Common country name */
+  name: string;
+  /** One or more SVG path `d` attribute strings */
+  paths: string[];
+}
+
+/**
+ * Styling options for rendering the world map SVG.
+ */
+export interface WorldMapOptions {
+  /** Fill color for all country shapes. Default: "#d0d0d0" */
+  fill?: string;
+  /** Stroke (border) color between countries. Default: "#ffffff" */
+  stroke?: string;
+  /** Stroke width in SVG units. Default: 0.5 */
+  strokeWidth?: number;
+  /** Fill color applied to a country on hover. Default: "#a0a0a0" */
+  hoverFill?: string;
+  /** SVG element width attribute (e.g. "100%", 800). Default: "100%" */
+  width?: string | number;
+  /** SVG element height attribute (e.g. "auto", 400). Default: "auto" */
+  height?: string | number;
+  /** Optional CSS class added to the `<svg>` element. */
+  className?: string;
+}
+
+/**
+ * Describes a highlighted country on the world map.
+ */
+export interface WorldMapHighlight {
+  /** ISO 3166-1 alpha-2 code of the country to highlight */
+  code: string;
+  /** Fill color to use for this country. Overrides the default fill. */
+  fill: string;
+  /** Optional accessible label (written as a `<title>` element). */
+  label?: string;
+}

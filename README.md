@@ -27,6 +27,7 @@
 | All world currencies with ISO 4217 codes | `currencies` array |
 | What currency does country X use? | `getCurrencyByCountry()` |
 | Continent metadata (area, population) | `continents` array |
+| Render a world map SVG (highlight countries, choropleth) | `getWorldMapSvg()`, `highlightCountries()`, `colorizeWorldMap()` |
 
 ---
 
@@ -102,6 +103,7 @@ const hints = getGeoHints("NL", "DE");
 | `currencies` | `Currency[]` | ~150 | ISO 4217 codes, symbols, countries using each currency |
 | `countryGeography` | `CountryGeography[]` | ~195 | Centroids, bounding boxes, area, landlocked flag, neighbours, climate zone, avg temperature |
 | `flagData` | `FlagInfo[]` | ~195 | SVG + PNG flag URLs (flagcdn.com), dominant colours, visually similar flag groups |
+| `worldMapCountries` | `WorldMapCountry[]` | 211 | SVG path data for every country on the world map, keyed by ISO alpha-2 code |
 
 ### Helper functions — Countries
 
@@ -209,6 +211,31 @@ getSimilarFlags(alpha2: string): FlagInfo[]
 // Flags visually similar enough to confuse — ideal for "wrong answer" options.
 ```
 
+### Helper functions — World map
+
+```ts
+getWorldMapSvg(options?: WorldMapOptions): string
+// Returns a complete <svg> string for the full world map.
+// Every country <path> has id="XX" (ISO alpha-2), data-code, and data-name.
+// Example: document.getElementById("map").innerHTML = getWorldMapSvg({ fill: "#e0e0e0" });
+
+highlightCountries(highlights: WorldMapHighlight[], options?: WorldMapOptions): string
+// Returns an SVG with specified countries highlighted in custom colours.
+// Example: highlightCountries([{ code: "DE", fill: "#4a90e2", label: "Germany" }])
+
+colorizeWorldMap(groups: Record<string, string[]>, options?: WorldMapOptions): string
+// Choropleth helper — colour groups of countries.
+// Example: colorizeWorldMap({ "#e76f51": ["US","CA"], "#2a9d8f": ["DE","FR"] })
+
+getCountryMapData(code: string): WorldMapCountry | undefined
+// Returns the SVG path data for a single country (case-insensitive).
+// Example: getCountryMapData("JP") → { code: "JP", name: "Japan", paths: ["M..."] }
+
+searchWorldMapCountries(name: string): WorldMapCountry[]
+// Find countries by partial name match.
+// Example: searchWorldMapCountries("land") → [Greenland, Iceland, Finland, …]
+```
+
 ### Geo utility functions
 
 ```ts
@@ -254,6 +281,10 @@ import type {
   // Flags
   FlagInfo,
   FlagColor,
+  // World map
+  WorldMapCountry,
+  WorldMapOptions,
+  WorldMapHighlight,
   // Utilities
   CardinalDirection,
   Hemisphere,
@@ -340,6 +371,7 @@ Each section has its own reference document:
 | Continents & currencies | [docs/continents-currencies.md](docs/continents-currencies.md) |
 | Geography data & geo utilities (games) | [docs/geography.md](docs/geography.md) |
 | Flags — SVG/PNG URLs, colours, similar flags | [docs/flags.md](docs/flags.md) |
+| World map SVG — render, highlight, colorize | [docs/world-map.md](docs/world-map.md) |
 
 ---
 

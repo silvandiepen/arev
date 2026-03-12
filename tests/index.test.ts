@@ -46,6 +46,15 @@ import {
   compareSize,
   getHemisphere,
   getGeoHints,
+  // World map
+  WORLD_MAP_VIEWBOX,
+  WORLD_MAP_DEFAULTS,
+  worldMapCountries,
+  getCountryMapData,
+  searchWorldMapCountries,
+  getWorldMapSvg,
+  highlightCountries,
+  colorizeWorldMap,
 } from "../src/index.js";
 
 describe("countries", () => {
@@ -845,5 +854,221 @@ describe("getGeoHints", () => {
   it("should return null for unknown codes", () => {
     expect(getGeoHints("XX", "DE")).toBeNull();
     expect(getGeoHints("DE", "XX")).toBeNull();
+  });
+});
+
+// ─── World Map ────────────────────────────────────────────────────────────────
+
+describe("worldMapCountries", () => {
+  it("should contain a large set of countries", () => {
+    expect(worldMapCountries.length).toBeGreaterThan(150);
+  });
+
+  it("should have valid structure for every entry", () => {
+    for (const c of worldMapCountries) {
+      expect(typeof c.code).toBe("string");
+      expect(c.code.length).toBe(2);
+      expect(typeof c.name).toBe("string");
+      expect(c.name.length).toBeGreaterThan(0);
+      expect(Array.isArray(c.paths)).toBe(true);
+      // Paths may be empty for very small island territories with no SVG data
+    }
+  });
+
+  it("should have paths for major countries", () => {
+    for (const code of ["US", "GB", "DE", "FR", "CN", "IN", "BR", "AU", "CA", "RU"]) {
+      const c = worldMapCountries.find(x => x.code === code);
+      expect(c).toBeDefined();
+      expect(c!.paths.length).toBeGreaterThan(0);
+      expect(c!.paths[0].length).toBeGreaterThan(0);
+    }
+  });
+
+  it("should have unique codes", () => {
+    const codes = worldMapCountries.map(c => c.code);
+    const unique = new Set(codes);
+    expect(unique.size).toBe(codes.length);
+  });
+
+  it("should include major countries", () => {
+    const codes = new Set(worldMapCountries.map(c => c.code));
+    for (const code of ["US", "GB", "DE", "FR", "CN", "IN", "BR", "AU", "CA", "RU"]) {
+      expect(codes.has(code)).toBe(true);
+    }
+  });
+});
+
+describe("WORLD_MAP_VIEWBOX", () => {
+  it("should be the expected viewBox string", () => {
+    expect(WORLD_MAP_VIEWBOX).toBe("0 0 2000 857");
+  });
+});
+
+describe("WORLD_MAP_DEFAULTS", () => {
+  it("should have all required styling keys", () => {
+    expect(typeof WORLD_MAP_DEFAULTS.fill).toBe("string");
+    expect(typeof WORLD_MAP_DEFAULTS.stroke).toBe("string");
+    expect(typeof WORLD_MAP_DEFAULTS.strokeWidth).toBe("number");
+    expect(typeof WORLD_MAP_DEFAULTS.hoverFill).toBe("string");
+  });
+});
+
+describe("getCountryMapData", () => {
+  it("should return data for a known code (upper-case)", () => {
+    const de = getCountryMapData("DE");
+    expect(de).toBeDefined();
+    expect(de!.code).toBe("DE");
+    expect(de!.name).toBe("Germany");
+    expect(de!.paths.length).toBeGreaterThan(0);
+    expect(de!.paths[0].length).toBeGreaterThan(0);
+  });
+
+  it("should be case-insensitive", () => {
+    const us = getCountryMapData("us");
+    expect(us).toBeDefined();
+    expect(us!.code).toBe("US");
+  });
+
+  it("should return undefined for an unknown code", () => {
+    expect(getCountryMapData("XX")).toBeUndefined();
+  });
+});
+
+describe("searchWorldMapCountries", () => {
+  it("should find countries by partial name", () => {
+    const results = searchWorldMapCountries("land");
+    expect(results.length).toBeGreaterThan(0);
+    for (const r of results) {
+      expect(r.name.toLowerCase()).toContain("land");
+    }
+  });
+
+  it("should be case-insensitive", () => {
+    const upper = searchWorldMapCountries("FRANCE");
+    const lower = searchWorldMapCountries("france");
+    expect(upper.length).toBe(lower.length);
+    expect(upper.length).toBeGreaterThan(0);
+  });
+
+  it("should return empty array for no matches", () => {
+    expect(searchWorldMapCountries("zzznomatch")).toHaveLength(0);
+  });
+});
+
+describe("getWorldMapSvg", () => {
+  it("should return a string starting with <svg", () => {
+    const svg = getWorldMapSvg();
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toContain("</svg>");
+  });
+
+  it("should include the viewBox attribute", () => {
+    const svg = getWorldMapSvg();
+    expect(svg).toContain('viewBox="0 0 2000 857"');
+  });
+
+  it("should include country ids in path elements", () => {
+    const svg = getWorldMapSvg();
+    expect(svg).toContain('id="DE"');
+    expect(svg).toContain('id="US"');
+    expect(svg).toContain('id="FR"');
+  });
+
+  it("should include data-code and data-name attributes", () => {
+    const svg = getWorldMapSvg();
+    expect(svg).toContain('data-code="DE"');
+    expect(svg).toContain('data-name="Germany"');
+  });
+
+  it("should apply custom fill color", () => {
+    const svg = getWorldMapSvg({ fill: "#ff0000" });
+    expect(svg).toContain('fill="#ff0000"');
+  });
+
+  it("should apply custom stroke color", () => {
+    const svg = getWorldMapSvg({ stroke: "#000000" });
+    expect(svg).toContain('stroke="#000000"');
+  });
+
+  it("should include hover styles", () => {
+    const svg = getWorldMapSvg({ hoverFill: "#00ff00" });
+    expect(svg).toContain("#00ff00");
+    expect(svg).toContain(":hover");
+  });
+
+  it("should include optional className on svg element", () => {
+    const svg = getWorldMapSvg({ className: "world-map" });
+    expect(svg).toContain('class="world-map"');
+  });
+
+  it("should use default width and height when not specified", () => {
+    const svg = getWorldMapSvg();
+    expect(svg).toContain('width="100%"');
+    expect(svg).toContain('height="auto"');
+  });
+});
+
+describe("highlightCountries", () => {
+  it("should return a valid SVG string", () => {
+    const svg = highlightCountries([{ code: "DE", fill: "#4a90e2" }]);
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toContain("</svg>");
+  });
+
+  it("should apply the highlight fill to the specified country", () => {
+    const svg = highlightCountries([{ code: "DE", fill: "#4a90e2" }], { fill: "#d0d0d0" });
+    // DE path should have the highlight fill
+    expect(svg).toContain('id="DE"');
+    expect(svg).toContain("#4a90e2");
+  });
+
+  it("should use the base fill for non-highlighted countries", () => {
+    const svg = highlightCountries([{ code: "DE", fill: "#4a90e2" }], { fill: "#eeeeee" });
+    expect(svg).toContain("#eeeeee");
+  });
+
+  it("should be case-insensitive for country codes", () => {
+    const svgUpper = highlightCountries([{ code: "DE", fill: "#ff0000" }]);
+    const svgLower = highlightCountries([{ code: "de", fill: "#ff0000" }]);
+    expect(svgUpper).toContain('#ff0000');
+    expect(svgLower).toContain('#ff0000');
+  });
+
+  it("should include a <title> element when label is provided", () => {
+    const svg = highlightCountries([{ code: "US", fill: "#blue", label: "United States" }]);
+    expect(svg).toContain("<title>United States</title>");
+  });
+
+  it("should support multiple highlights", () => {
+    const svg = highlightCountries([
+      { code: "US", fill: "#4a90e2" },
+      { code: "GB", fill: "#e24a4a" },
+      { code: "FR", fill: "#4ae24a" },
+    ]);
+    expect(svg).toContain("#4a90e2");
+    expect(svg).toContain("#e24a4a");
+    expect(svg).toContain("#4ae24a");
+  });
+});
+
+describe("colorizeWorldMap", () => {
+  it("should return a valid SVG string", () => {
+    const svg = colorizeWorldMap({ "#4a90e2": ["US", "CA"] });
+    expect(svg.startsWith("<svg")).toBe(true);
+    expect(svg).toContain("</svg>");
+  });
+
+  it("should colour countries in their respective groups", () => {
+    const svg = colorizeWorldMap({
+      "#ff0000": ["US", "CA"],
+      "#00ff00": ["DE", "FR"],
+    });
+    expect(svg).toContain("#ff0000");
+    expect(svg).toContain("#00ff00");
+  });
+
+  it("should use base fill for ungrouped countries", () => {
+    const svg = colorizeWorldMap({ "#ff0000": ["US"] }, { fill: "#cccccc" });
+    expect(svg).toContain("#cccccc");
   });
 });
