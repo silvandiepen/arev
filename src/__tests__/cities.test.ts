@@ -97,4 +97,28 @@ describe("cities", () => {
       }
     }
   });
+
+  it("should have population data for all cities", () => {
+    for (const city of cities) {
+      expect(
+        city.population,
+        `City "${city.name}" (${city.country}) is missing population data`
+      ).toBeDefined();
+    }
+  });
+
+  it("should have at least 2 cities for major countries", () => {
+    const majorCountries = ["US", "CN", "IN", "BR", "DE", "FR", "GB", "JP", "AU", "CA", "RU", "AR", "MX", "ZA", "NG", "EG", "KE", "ET"];
+    for (const code of majorCountries) {
+      const countryCities = cities.filter((c) => c.country === code);
+      expect(
+        countryCities.length,
+        `Country "${code}" should have at least 2 cities`
+      ).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("should contain over 400 cities", () => {
+    expect(cities.length).toBeGreaterThan(400);
+  });
 });
