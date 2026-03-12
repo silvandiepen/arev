@@ -35,6 +35,9 @@ export type {
   WorldMapCountry,
   WorldMapOptions,
   WorldMapHighlight,
+  ReligionBreakdown,
+  EthnicGroup,
+  CountryDemographics,
   CountryMapOptions,
 } from "./types/index.js";
 
@@ -44,6 +47,7 @@ export {
   getCountryByCode,
   getCountriesByContinent,
   getCountryFlag,
+  getRecognizedCountries,
 } from "./data/countries.js";
 
 // Phone country codes

@@ -26,6 +26,12 @@ export interface Country {
   languages: string[];
   /** Top-level domain (e.g., ".us") */
   tld?: string;
+  /**
+   * Whether the country is officially recognized as a sovereign state.
+   * `false` for disputed or unrecognized territories (e.g., Kosovo, Nagorno-Karabakh)
+   * that use user-assigned ISO codes not endorsed by the UN.
+   */
+  recognized: boolean;
 }
 
 /**
@@ -260,6 +266,49 @@ export interface WorldMapOptions {
   height?: string | number;
   /** Optional CSS class added to the `<svg>` element. */
   className?: string;
+}
+
+/**
+ * A single religion and its approximate share of a country's population.
+ */
+export interface ReligionBreakdown {
+  /** Religion name (e.g., "Christianity", "Islam", "Hinduism") */
+  name: string;
+  /** Percentage of the population (0–100) */
+  percentage: number;
+}
+
+/**
+ * A single ethnic group and its approximate share of a country's population.
+ */
+export interface EthnicGroup {
+  /** Ethnic group name (e.g., "Han Chinese", "White", "Mestizo") */
+  name: string;
+  /** Percentage of the population (0–100) */
+  percentage: number;
+}
+
+/**
+ * Demographic data for a country: population, religions, and ethnic makeup.
+ * Data is sourced from the CIA World Factbook, Pew Research Center, and UN estimates.
+ */
+export interface CountryDemographics {
+  /** ISO 3166-1 alpha-2 code */
+  alpha2: string;
+  /** Approximate total population */
+  population: number;
+  /** Year of the population estimate */
+  populationYear: number;
+  /**
+   * Religious breakdown, sorted by percentage descending.
+   * Percentages may not sum to exactly 100 due to rounding or "other/unspecified" omissions.
+   */
+  religions: ReligionBreakdown[];
+  /**
+   * Ethnic group breakdown, sorted by percentage descending.
+   * Percentages may not sum to exactly 100 due to rounding or "other/unspecified" omissions.
+   */
+  ethnicGroups: EthnicGroup[];
 }
 
 /**
