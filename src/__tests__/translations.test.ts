@@ -441,3 +441,41 @@ describe("getCurrencyByCountry with lang", () => {
     expect(currency?.name).toBe("US-Dollar");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Country currencyName and currencySymbol enrichment
+// ---------------------------------------------------------------------------
+describe("getCountryByCode includes currencyName and currencySymbol", () => {
+  it("should include English currencyName and currencySymbol", () => {
+    const us = getCountryByCode("US");
+    expect(us?.currency).toBe("USD");
+    expect(us?.currencyName).toBe("US Dollar");
+    expect(us?.currencySymbol).toBe("$");
+  });
+
+  it("should include translated currencyName when lang='de'", () => {
+    const us = getCountryByCode("US", "de");
+    expect(us?.currency).toBe("USD");
+    expect(us?.currencyName).toBe("US-Dollar");
+  });
+
+  it("should include translated currencyName when lang='ja' for Japan", () => {
+    const jp = getCountryByCode("JP", "ja");
+    expect(jp?.currency).toBe("JPY");
+    expect(jp?.currencyName).toBe("日本円");
+    expect(jp?.currencySymbol).toBe("¥");
+  });
+
+  it("should include currencyName in getCountriesByContinent", () => {
+    const eurozone = getCountriesByContinent("Europe").filter((c) => c.currency === "EUR");
+    expect(eurozone.length).toBeGreaterThan(0);
+    expect(eurozone[0].currencyName).toBe("Euro");
+    expect(eurozone[0].currencySymbol).toBe("€");
+  });
+
+  it("should include translated currencyName in getCountriesByContinent", () => {
+    const eurozone = getCountriesByContinent("Europe", "de").filter((c) => c.currency === "EUR");
+    expect(eurozone.length).toBeGreaterThan(0);
+    expect(eurozone[0].currencyName).toBe("Euro");
+  });
+});

@@ -1,5 +1,13 @@
 import type { Country } from "../types/index.js";
 import { translateCountry } from "./translations.js";
+import { getCurrencyByCode } from "./currencies.js";
+
+/** Enrich a (possibly already-translated) country with full currency name and symbol. */
+function withCurrencyInfo(country: Country, lang: string): Country {
+  const currencyData = getCurrencyByCode(country.currency, lang);
+  if (!currencyData) return country;
+  return { ...country, currencyName: currencyData.name, currencySymbol: currencyData.symbol };
+}
 
 /**
  * Complete list of world countries with ISO codes, flags, phone codes, and metadata.
@@ -2773,7 +2781,7 @@ export function getCountryByCode(code: string, lang = "en"): Country | undefined
     (c) => c.alpha2.toLowerCase() === code.toLowerCase()
   );
   if (!country) return undefined;
-  return translateCountry(country, lang);
+  return withCurrencyInfo(translateCountry(country, lang), lang);
 }
 
 /**
@@ -2785,7 +2793,7 @@ export function getCountriesByContinent(
 ): Country[] {
   return countries
     .filter((c) => c.continent === continent)
-    .map((c) => translateCountry(c, lang));
+    .map((c) => withCurrencyInfo(translateCountry(c, lang), lang));
 }
 
 /**
@@ -2805,5 +2813,5 @@ export function getCountryFlag(alpha2: string): string {
 export function getRecognizedCountries(lang = "en"): Country[] {
   return countries
     .filter((c) => c.recognized)
-    .map((c) => translateCountry(c, lang));
+    .map((c) => withCurrencyInfo(translateCountry(c, lang), lang));
 }
