@@ -32,6 +32,9 @@ export type {
   FlagInfo,
   FlagColor,
   CardinalDirection,
+  WorldMapCountry,
+  WorldMapOptions,
+  WorldMapHighlight,
 } from "./types/index.js";
 
 // Countries
@@ -110,3 +113,15 @@ export {
 } from "./utils/geo.js";
 
 export type { GeoHint, Hemisphere } from "./utils/geo.js";
+
+// World map SVG – path data and rendering helpers
+export {
+  WORLD_MAP_VIEWBOX,
+  WORLD_MAP_DEFAULTS,
+  worldMapCountries,
+  getCountryMapData,
+  searchWorldMapCountries,
+  getWorldMapSvg,
+  highlightCountries,
+  colorizeWorldMap,
+} from "./data/worldMap.js";
