@@ -24,13 +24,13 @@ import {
   getLanguagesBySpeakerCount,
   getOfficialLanguagesByCountry,
   getOfficialLanguageCountries,
-} from "@sil/data";
+} from "arev";
 import type {
   Language,
   LanguageNameLocale,
   LanguageOfficialCountry,
   LanguageOfficialStatus,
-} from "@sil/data";
+} from "arev";
 ```
 
 ## Data shape
@@ -79,7 +79,7 @@ interface Language {
 ### Build a language selector
 
 ```ts
-import { languages } from "@sil/data";
+import { languages } from "arev";
 
 const options = languages
   .filter((language) => language.estimatedSpeakers >= 1_000_000)
@@ -92,7 +92,7 @@ const options = languages
 ### Render labels in the user’s UI language
 
 ```ts
-import { getLanguageName } from "@sil/data";
+import { getLanguageName } from "arev";
 
 getLanguageName("en", "de");    // "Englisch"
 getLanguageName("en-GB", "fr"); // "anglais britannique"
@@ -102,7 +102,7 @@ getLanguageName("sr-Latn", "ja"); // "セルビア語 (ラテン文字)"
 ### Resolve aliases and normalize stored values
 
 ```ts
-import { canonicalizeLanguageCode } from "@sil/data";
+import { canonicalizeLanguageCode } from "arev";
 
 canonicalizeLanguageCode("iw");     // "he"
 canonicalizeLanguageCode("EN_gb");  // "en-GB"
@@ -112,7 +112,7 @@ canonicalizeLanguageCode("sh");     // "sr-Latn"
 ### Show all locale variants of a base language
 
 ```ts
-import { getLanguageVariants } from "@sil/data";
+import { getLanguageVariants } from "arev";
 
 const englishVariants = getLanguageVariants("en");
 englishVariants.slice(0, 5).map((language) => language.code);
@@ -122,7 +122,7 @@ englishVariants.slice(0, 5).map((language) => language.code);
 ### Filter out obscure languages
 
 ```ts
-import { getLanguagesBySpeakerCount } from "@sil/data";
+import { getLanguagesBySpeakerCount } from "arev";
 
 const majorLanguages = getLanguagesBySpeakerCount(10_000_000);
 ```
@@ -130,7 +130,7 @@ const majorLanguages = getLanguagesBySpeakerCount(10_000_000);
 ### Search by translated label or code
 
 ```ts
-import { searchLanguages } from "@sil/data";
+import { searchLanguages } from "arev";
 
 searchLanguages("anglais", { locale: "fr" });
 searchLanguages("british english", { includeVariants: true });
@@ -140,7 +140,7 @@ searchLanguages("spanish", { minSpeakers: 50_000_000 });
 ### Map countries to official languages
 
 ```ts
-import { getOfficialLanguagesByCountry } from "@sil/data";
+import { getOfficialLanguagesByCountry } from "arev";
 
 getOfficialLanguagesByCountry("BE").map((language) => language.name);
 // ["Dutch", "French", "German"]
@@ -149,7 +149,7 @@ getOfficialLanguagesByCountry("BE").map((language) => language.name);
 ### Map a language back to countries where it is official
 
 ```ts
-import { getOfficialLanguageCountries } from "@sil/data";
+import { getOfficialLanguageCountries } from "arev";
 
 getOfficialLanguageCountries("ca");
 // [
@@ -178,7 +178,7 @@ The static data in this repo was generated from:
 
 ## Module layout
 
-The language feature lives in [`src/data/languages`](../src/data/languages):
+The language feature lives in [`srcarev/languages`](../srcarev/languages):
 
 - `languageData.ts` for the committed English dataset
 - `languageFunctions.ts` for runtime helpers

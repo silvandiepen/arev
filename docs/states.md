@@ -12,8 +12,8 @@ import {
   getStatesByCountry,
   getStateByCode,
   getStatesByType,
-} from "@sil/data";
-import type { State, StateType } from "@sil/data";
+} from "arev";
+import type { State, StateType } from "arev";
 ```
 
 ## Data shape
@@ -44,7 +44,7 @@ type StateType =
 ### All divisions for a country
 
 ```ts
-import { getStatesByCountry } from "@sil/data";
+import { getStatesByCountry } from "arev";
 
 // United States
 const usAll = getStatesByCountry("US");
@@ -62,7 +62,7 @@ console.log(jpAll.length); // 47 prefectures
 ### Look up a specific division by code
 
 ```ts
-import { getStateByCode } from "@sil/data";
+import { getStateByCode } from "arev";
 
 getStateByCode("CA", "US");
 // { name: "California", code: "CA", country: "US", type: "state" }
@@ -76,7 +76,7 @@ getStateByCode("ZZ", "US"); // undefined
 ### Filter by division type
 
 ```ts
-import { getStatesByType } from "@sil/data";
+import { getStatesByType } from "arev";
 
 // All provinces (CA, AU, ...)
 const provinces = getStatesByType("province");
@@ -95,7 +95,7 @@ territories.map(t => `${t.name} (${t.country})`);
 ### Build a state selector that changes with the selected country
 
 ```ts
-import { getStatesByCountry } from "@sil/data";
+import { getStatesByCountry } from "arev";
 
 function getStateOptions(countryCode: string) {
   const divisions = getStatesByCountry(countryCode);

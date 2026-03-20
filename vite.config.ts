@@ -13,8 +13,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: "SilData",
-      fileName: "sil-data",
+      name: "Arev",
+      fileName: "arev",
       formats: ["es", "cjs"],
     },
     rollupOptions: {

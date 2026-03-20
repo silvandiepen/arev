@@ -2,7 +2,7 @@
 
 [← Back to README](../README.md)
 
-`@sil/data` includes a complete geographic dataset for every country and a set of utility functions designed for **geography games** (Wordle-style country guessing, atlas quizzes, educational tools) and **location-aware UIs**.
+`arev` includes a complete geographic dataset for every country and a set of utility functions designed for **geography games** (Wordle-style country guessing, atlas quizzes, educational tools) and **location-aware UIs**.
 
 ## Import
 
@@ -25,7 +25,7 @@ import {
   compareSize,
   getHemisphere,
   getGeoHints,
-} from "@sil/data";
+} from "arev";
 
 import type {
   CountryGeography,
@@ -33,7 +33,7 @@ import type {
   ClimateZone,
   CardinalDirection,
   GeoHint,
-} from "@sil/data";
+} from "arev";
 ```
 
 ---
@@ -74,7 +74,7 @@ type ClimateZone =
 ### Accessing geography data
 
 ```ts
-import { getCountryGeography, countryGeography } from "@sil/data";
+import { getCountryGeography, countryGeography } from "arev";
 
 // Look up by alpha-2
 const de = getCountryGeography("DE");
@@ -96,7 +96,7 @@ console.log(countryGeography.length); // ~195
 ### Landlocked countries
 
 ```ts
-import { getLandlockedCountries } from "@sil/data";
+import { getLandlockedCountries } from "arev";
 
 const landlocked = getLandlockedCountries();
 const codes = landlocked.map(g => g.alpha2);
@@ -110,7 +110,7 @@ const codes = landlocked.map(g => g.alpha2);
 ### Countries by climate zone
 
 ```ts
-import { getCountriesByClimate } from "@sil/data";
+import { getCountriesByClimate } from "arev";
 
 // Tropical countries
 getCountriesByClimate("tropical").map(g => g.alpha2);
@@ -124,7 +124,7 @@ getCountriesByClimate("arctic");
 ### Neighbouring countries
 
 ```ts
-import { getNeighbors } from "@sil/data";
+import { getNeighbors } from "arev";
 
 const franceNeighbors = getNeighbors("FR");
 // Returns CountryGeography[] for: ES, AD, MC, IT, CH, DE, LU, BE
@@ -141,7 +141,7 @@ getNeighbors("AU"); // []
 ### Distance between countries
 
 ```ts
-import { getDistanceBetweenCountries, haversineDistance } from "@sil/data";
+import { getDistanceBetweenCountries, haversineDistance } from "arev";
 
 // By alpha-2 code (uses country centroids)
 getDistanceBetweenCountries("NL", "DE"); // ~393 km
@@ -160,7 +160,7 @@ import {
   getDirectionBetweenCountries,
   bearing,
   bearingToCardinal,
-} from "@sil/data";
+} from "arev";
 
 // By alpha-2 code
 getDirectionBetweenCountries("FR", "DE"); // "NE"
@@ -179,7 +179,7 @@ type CardinalDirection = "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW";
 ### Temperature comparison
 
 ```ts
-import { compareTemperature } from "@sil/data";
+import { compareTemperature } from "arev";
 
 compareTemperature("CA", "BR"); // "hotter"  — Brazil (24°C) vs Canada (-5°C)
 compareTemperature("BR", "CA"); // "colder"
@@ -192,7 +192,7 @@ Threshold: differences ≤ 3 °C return `"similar"`.
 ### Size comparison
 
 ```ts
-import { compareSize } from "@sil/data";
+import { compareSize } from "arev";
 
 compareSize("NL", "RU"); // "larger"   — Russia (17M km²) vs Netherlands (42k km²)
 compareSize("RU", "NL"); // "smaller"
@@ -205,7 +205,7 @@ Threshold: area ratio within 0.8–1.2 returns `"similar"`.
 ### Hemisphere
 
 ```ts
-import { getHemisphere } from "@sil/data";
+import { getHemisphere } from "arev";
 
 getHemisphere("DE");
 // { ns: "Northern", ew: "Eastern" }
@@ -223,8 +223,8 @@ getHemisphere("XX"); // null
 `getGeoHints()` is the primary function for building Wordle-style geography games. Given a player's guess and the secret target country, it returns all relevant hints in one object.
 
 ```ts
-import { getGeoHints } from "@sil/data";
-import type { GeoHint } from "@sil/data";
+import { getGeoHints } from "arev";
+import type { GeoHint } from "arev";
 
 interface GeoHint {
   distanceKm: number;                              // km between centroids
@@ -255,7 +255,7 @@ const hints = getGeoHints("NL", "DE");
 ### Example: geography guessing game loop
 
 ```ts
-import { countries, getGeoHints } from "@sil/data";
+import { countries, getGeoHints } from "arev";
 
 // Pick a random target country
 const target = countries[Math.floor(Math.random() * countries.length)];
@@ -303,7 +303,7 @@ processGuess("FR");
 ### Example: build hints sentence in natural language
 
 ```ts
-import { getGeoHints, getCountryByCode } from "@sil/data";
+import { getGeoHints, getCountryByCode } from "arev";
 
 function buildHintSentence(guess: string, target: string): string {
   const hints = getGeoHints(guess, target);

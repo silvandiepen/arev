@@ -10,7 +10,7 @@
     <!-- getCountryGeography -->
     <div class="card col">
       <div class="section-title">getCountryGeography(alpha2)</div>
-      <div class="code">import { getCountryGeography } from "@sil/data";
+      <div class="code">import { getCountryGeography } from "arev";
 getCountryGeography("{{ geoCode }}")</div>
       <input v-model="geoCode" placeholder="Alpha-2, e.g. BR" style="max-width:140px" />
       <div v-if="geo" class="grid-2">
@@ -128,7 +128,7 @@ getDirectionBetweenCountries("{{ distA }}", "{{ distB }}")
     <!-- raw haversine / bearing -->
     <div class="card col">
       <div class="section-title">haversineDistance · bearing · bearingToCardinal</div>
-      <div class="code">import { haversineDistance, bearing, bearingToCardinal } from "@sil/data";
+      <div class="code">import { haversineDistance, bearing, bearingToCardinal } from "arev";
 
 haversineDistance({{ rawLat1 }}, {{ rawLon1 }}, {{ rawLat2 }}, {{ rawLon2 }})
 // → {{ rawDistance.toFixed(2) }} km
@@ -173,7 +173,7 @@ bearingToCardinal({{ rawBearing.toFixed(2) }})
     <!-- compareTemperature / compareSize / getHemisphere -->
     <div class="card col">
       <div class="section-title">compareTemperature · compareSize · getHemisphere</div>
-      <div class="code">import { compareTemperature, compareSize, getHemisphere } from "@sil/data";
+      <div class="code">import { compareTemperature, compareSize, getHemisphere } from "arev";
 
 compareTemperature("{{ compareA }}", "{{ compareB }}")
 // → "{{ compareTemperature(compareA.toUpperCase(), compareB.toUpperCase()) ?? 'null' }}"
@@ -223,8 +223,8 @@ import {
   compareTemperature,
   compareSize,
   getHemisphere,
-} from "@sil/data";
-import type { ClimateZone } from "@sil/data";
+} from "arev";
+import type { ClimateZone } from "arev";
 
 const geoCode = ref("DE");
 const geo = computed(() => getCountryGeography(geoCode.value.toUpperCase()));

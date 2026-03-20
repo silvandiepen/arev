@@ -4,7 +4,7 @@
       <div class="header-inner">
         <div class="logo">
           <span class="logo-icon">🌍</span>
-          <span class="logo-text">@sil/data</span>
+          <span class="logo-text">arev</span>
           <span class="logo-sub">Vue Demo</span>
         </div>
         <nav class="nav">
@@ -34,7 +34,9 @@
     <footer class="footer">
       <span>
         Built with
-        <a href="https://github.com/silvandiepen/sil-data" target="_blank">@sil/data</a>
+        <a href="https://github.com/silvandiepen/arev" target="_blank">arev</a>
+        · docs at
+        <a href="https://arevdata.com" target="_blank">arevdata.com</a>
         &amp; Vue 3
       </span>
     </footer>

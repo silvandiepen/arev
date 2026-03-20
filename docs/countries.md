@@ -2,7 +2,7 @@
 
 [← Back to README](../README.md)
 
-The `countries` array is the central dataset of `@sil/data`. It contains ~195 sovereign states following the ISO 3166-1 standard, covering every continent.
+The `countries` array is the central dataset of `arev`. It contains ~195 sovereign states following the ISO 3166-1 standard, covering every continent.
 
 ## Import
 
@@ -12,8 +12,8 @@ import {
   getCountryByCode,
   getCountriesByContinent,
   getCountryFlag,
-} from "@sil/data";
-import type { Country, ContinentName } from "@sil/data";
+} from "arev";
+import type { Country, ContinentName } from "arev";
 ```
 
 ## Data shape
@@ -40,7 +40,7 @@ interface Country {
 ### All countries
 
 ```ts
-import { countries } from "@sil/data";
+import { countries } from "arev";
 
 console.log(countries.length); // ~195
 console.log(countries[0]);
@@ -57,7 +57,7 @@ console.log(countries[0]);
 ### Look up a country by alpha-2 code
 
 ```ts
-import { getCountryByCode } from "@sil/data";
+import { getCountryByCode } from "arev";
 
 const de = getCountryByCode("DE");
 // { name: "Germany", alpha2: "DE", flag: "🇩🇪", capital: "Berlin", ... }
@@ -72,7 +72,7 @@ getCountryByCode("ZZ"); // undefined
 ### Get all countries in a continent
 
 ```ts
-import { getCountriesByContinent } from "@sil/data";
+import { getCountriesByContinent } from "arev";
 
 const europeanCountries = getCountriesByContinent("Europe");
 console.log(europeanCountries.length); // 44+
@@ -84,7 +84,7 @@ const africanCodes = getCountriesByContinent("Africa").map(c => c.alpha2);
 ### Get the flag emoji for a country code
 
 ```ts
-import { getCountryFlag } from "@sil/data";
+import { getCountryFlag } from "arev";
 
 getCountryFlag("NL"); // "🇳🇱"
 getCountryFlag("JP"); // "🇯🇵"
@@ -94,7 +94,7 @@ getCountryFlag("us"); // "🇺🇸" — case-insensitive
 ### Build a country selector
 
 ```ts
-import { countries } from "@sil/data";
+import { countries } from "arev";
 
 const options = countries.map((c) => ({
   value: c.alpha2,
@@ -106,7 +106,7 @@ const options = countries.map((c) => ({
 ### Get all European countries sorted alphabetically
 
 ```ts
-import { getCountriesByContinent } from "@sil/data";
+import { getCountriesByContinent } from "arev";
 
 const sorted = getCountriesByContinent("Europe")
   .sort((a, b) => a.name.localeCompare(b.name));
@@ -115,7 +115,7 @@ const sorted = getCountriesByContinent("Europe")
 ### Find the currency for a given country
 
 ```ts
-import { getCountryByCode } from "@sil/data";
+import { getCountryByCode } from "arev";
 
 const country = getCountryByCode("FR");
 console.log(country?.currency); // "EUR"

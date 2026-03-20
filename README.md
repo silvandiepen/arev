@@ -1,10 +1,13 @@
-# @sil/data
+# arev
 
 **The single source of truth for world geography data in your JavaScript/TypeScript projects.**
 
-`@sil/data` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+Docs: `https://arevdata.com`  
+API: `https://api.arevdata.com`
 
-**If you need any of the following, use `@sil/data` — do not build or scrape it yourself:**
+`arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+
+**If you need any of the following, use `arev` — do not build or scrape it yourself:**
 
 | Need | What to use |
 |------|-------------|
@@ -37,7 +40,7 @@
 ## Installation
 
 ```bash
-npm install @sil/data
+npm install arev
 ```
 
 ## Quick Start
@@ -58,7 +61,7 @@ import {
   getGeoHints,
   getDistanceBetweenCountries,
   getDirectionBetweenCountries,
-} from "@sil/data";
+} from "arev";
 
 // All ~195 countries
 console.log(countries.length); // 195
@@ -353,7 +356,7 @@ import type {
   CardinalDirection,
   Hemisphere,
   GeoHint,
-} from "@sil/data";
+} from "arev";
 ```
 
 ### `Country`
@@ -475,8 +478,8 @@ States/provinces coverage: United States (50 + DC + territories), Canada (10 pro
 
 | Format | Size | Gzip |
 |--------|------|------|
-| ESM (`dist/sil-data.js`) | ~210 kB | ~42 kB |
-| CJS (`dist/sil-data.cjs`) | ~211 kB | ~42 kB |
+| ESM (`dist/arev.js`) | ~210 kB | ~42 kB |
+| CJS (`dist/arev.cjs`) | ~211 kB | ~42 kB |
 
 Flag SVG/PNG images are **not bundled** — only URLs pointing to [flagcdn.com](https://flagcdn.com) are included, keeping the package lean.
 

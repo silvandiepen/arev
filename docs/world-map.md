@@ -1,6 +1,6 @@
 # World Map
 
-`@sil/data` ships a full vector world map as inline SVG path data, together with helper functions to render, style, and highlight countries.  
+`arev` ships a full vector world map as inline SVG path data, together with helper functions to render, style, and highlight countries.  
 Countries are identified by their **ISO 3166-1 alpha-2** codes (e.g. `"US"`, `"DE"`, `"JP"`), which match the `alpha2` field used throughout the rest of the library.
 
 ---
@@ -101,7 +101,7 @@ function getWorldMapSvg(options?: WorldMapOptions): string;
 **Example:**
 
 ```ts
-import { getWorldMapSvg } from "@sil/data";
+import { getWorldMapSvg } from "arev";
 
 // Inject into the DOM
 document.getElementById("map")!.innerHTML = getWorldMapSvg({
@@ -131,7 +131,7 @@ function highlightCountries(
 **Example – highlight election winners:**
 
 ```ts
-import { highlightCountries } from "@sil/data";
+import { highlightCountries } from "arev";
 
 const svg = highlightCountries(
   [
@@ -163,7 +163,7 @@ function colorizeWorldMap(
 **Example – colour by continent:**
 
 ```ts
-import { colorizeWorldMap } from "@sil/data";
+import { colorizeWorldMap } from "arev";
 
 const svg = colorizeWorldMap(
   {
@@ -191,7 +191,7 @@ function getCountryMapData(code: string): WorldMapCountry | undefined;
 ```
 
 ```ts
-import { getCountryMapData } from "@sil/data";
+import { getCountryMapData } from "arev";
 
 const japan = getCountryMapData("JP");
 // { code: "JP", name: "Japan", paths: ["M...", "M..."] }
@@ -208,7 +208,7 @@ function searchWorldMapCountries(name: string): WorldMapCountry[];
 ```
 
 ```ts
-import { searchWorldMapCountries } from "@sil/data";
+import { searchWorldMapCountries } from "arev";
 
 searchWorldMapCountries("land");
 // → [Greenland, Iceland, Finland, New Zealand, …]
@@ -234,7 +234,7 @@ Because each country path has a predictable `id` attribute, you can style countr
 
 <div id="map"></div>
 <script type="module">
-  import { getWorldMapSvg } from "@sil/data";
+  import { getWorldMapSvg } from "arev";
   document.getElementById("map").innerHTML = getWorldMapSvg();
 </script>
 ```
@@ -242,7 +242,7 @@ Because each country path has a predictable `id` attribute, you can style countr
 You can also listen for click events on individual countries:
 
 ```js
-import { getWorldMapSvg } from "@sil/data";
+import { getWorldMapSvg } from "arev";
 
 document.getElementById("map").innerHTML = getWorldMapSvg();
 

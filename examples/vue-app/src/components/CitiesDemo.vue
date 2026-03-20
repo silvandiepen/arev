@@ -10,7 +10,7 @@
     <!-- searchCities -->
     <div class="card col">
       <div class="section-title">searchCities(query)</div>
-      <div class="code">import { searchCities } from "@sil/data";
+      <div class="code">import { searchCities } from "arev";
 searchCities("{{ searchQuery }}")</div>
       <input v-model="searchQuery" placeholder="Type a city name…" style="max-width:320px" />
       <p style="color:var(--muted);font-size:0.82rem">{{ searchResults.length }} results</p>
@@ -112,7 +112,7 @@ searchCities("{{ searchQuery }}")</div>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { cities, searchCities, getCitiesByCountry, getCapitalCity, getCitiesByPopulation } from "@sil/data";
+import { cities, searchCities, getCitiesByCountry, getCapitalCity, getCitiesByPopulation } from "arev";
 
 const searchQuery = ref("Paris");
 const searchResults = computed(() =>

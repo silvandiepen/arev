@@ -1,6 +1,6 @@
 # Country Maps
 
-`@sil/data` provides functions to render a standalone SVG for any individual country, using the bundled world-map vector data and the bundled cities dataset.
+`arev` provides functions to render a standalone SVG for any individual country, using the bundled world-map vector data and the bundled cities dataset.
 
 Each country SVG shows the country's **outline** and, optionally, **city marker dots** (with the capital city highlighted in a different colour).
 
@@ -39,7 +39,7 @@ function getCountrySvg(
 **Example:**
 
 ```ts
-import { getCountrySvg } from "@sil/data";
+import { getCountrySvg } from "arev";
 
 // Render Germany with default styling
 document.getElementById("map")!.innerHTML = getCountrySvg("DE") ?? "";
@@ -79,7 +79,7 @@ function getCountrySubdivisionMapUrl(alpha3: string): string;
 **Example:**
 
 ```ts
-import { getCountrySubdivisionMapUrl } from "@sil/data";
+import { getCountrySubdivisionMapUrl } from "arev";
 
 const url = getCountrySubdivisionMapUrl("DEU");
 // → "https://upload.wikimedia.org/wikipedia/commons/thumb/maps/DEU.svg/800px-DEU.svg.png"
@@ -110,7 +110,7 @@ function latLonToMapPoint(
 **Example:**
 
 ```ts
-import { latLonToMapPoint, getCountrySvg } from "@sil/data";
+import { latLonToMapPoint, getCountrySvg } from "arev";
 
 const berlin = latLonToMapPoint(52.52, 13.41);
 // → { x: 1074.5, y: 207.9 }
@@ -191,7 +191,7 @@ Because each country path has a predictable `id` attribute, you can style or int
 ```
 
 ```js
-import { getCountrySvg } from "@sil/data";
+import { getCountrySvg } from "arev";
 
 document.getElementById("map")!.innerHTML = getCountrySvg("BR") ?? "";
 

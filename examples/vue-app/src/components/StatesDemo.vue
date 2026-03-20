@@ -10,7 +10,7 @@
     <!-- getStatesByCountry -->
     <div class="card col">
       <div class="section-title">getStatesByCountry(countryCode)</div>
-      <div class="code">import { getStatesByCountry } from "@sil/data";
+      <div class="code">import { getStatesByCountry } from "arev";
 getStatesByCountry("{{ countryCode }}")</div>
       <div class="row">
         <select v-model="countryCode" style="max-width:260px">
@@ -91,8 +91,8 @@ getStatesByCountry("{{ countryCode }}")</div>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { states, getStatesByCountry, getStateByCode, getStatesByType, getCountryByCode, getCountryFlag } from "@sil/data";
-import type { StateType } from "@sil/data";
+import { states, getStatesByCountry, getStateByCode, getStatesByType, getCountryByCode, getCountryFlag } from "arev";
+import type { StateType } from "arev";
 
 // derive unique countries that have state data
 const availableCountries = computed(() => {

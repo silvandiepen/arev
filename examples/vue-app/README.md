@@ -1,7 +1,9 @@
-# @sil/data Vue Demo App
+# arev Vue Demo App
 
 A small, deployable Vue 3 application that documents and demonstrates every
-function exported by the **[@sil/data](https://github.com/silvandiepen/sil-data)** package.
+function exported by the **[arev](https://github.com/silvandiepen/arev)** package.
+
+Public docs will live at **[arevdata.com](https://arevdata.com)** and the API at **[api.arevdata.com](https://api.arevdata.com)**.
 
 ## Features
 
@@ -19,7 +21,7 @@ function exported by the **[@sil/data](https://github.com/silvandiepen/sil-data)
 ## Getting started
 
 ```bash
-# install dependencies (the local @sil/data library is referenced via a file: path)
+# install dependencies (the local arev library is referenced via a file: path)
 npm install
 
 # start development server

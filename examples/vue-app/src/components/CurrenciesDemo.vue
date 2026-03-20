@@ -10,7 +10,7 @@
     <!-- getCurrencyByCode -->
     <div class="card col">
       <div class="section-title">getCurrencyByCode(isoCode)</div>
-      <div class="code">import { getCurrencyByCode } from "@sil/data";
+      <div class="code">import { getCurrencyByCode } from "arev";
 getCurrencyByCode("{{ isoCode.toUpperCase() }}")</div>
       <div class="row">
         <input v-model="isoCode" placeholder="ISO code, e.g. EUR" style="max-width:140px" />
@@ -50,7 +50,7 @@ getCurrencyByCode("{{ isoCode.toUpperCase() }}")</div>
     <!-- full list -->
     <div class="card col">
       <div class="section-title">All Currencies ({{ currencies.length }})</div>
-      <div class="code">import { currencies } from "@sil/data";
+      <div class="code">import { currencies } from "arev";
 currencies.length // → {{ currencies.length }}</div>
       <input v-model="search" placeholder="Search by name, code or symbol…" style="max-width:300px" />
       <div class="scroll-table">
@@ -74,7 +74,7 @@ currencies.length // → {{ currencies.length }}</div>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { currencies, getCurrencyByCode, getCurrencyByCountry } from "@sil/data";
+import { currencies, getCurrencyByCode, getCurrencyByCountry } from "arev";
 
 const isoCode = ref("EUR");
 const byCode = computed(() => getCurrencyByCode(isoCode.value.toUpperCase()));

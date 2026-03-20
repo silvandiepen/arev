@@ -10,7 +10,7 @@
     <!-- world map with highlights -->
     <div class="card col">
       <div class="section-title">highlightCountries(highlights, options)</div>
-      <div class="code">import { highlightCountries } from "@sil/data";
+      <div class="code">import { highlightCountries } from "arev";
 
 highlightCountries([
   { alpha2: "{{ highlightA }}", color: "{{ colorA }}" },
@@ -37,7 +37,7 @@ highlightCountries([
     <!-- colorizeWorldMap -->
     <div class="card col">
       <div class="section-title">colorizeWorldMap(groups, options)</div>
-      <div class="code">import { colorizeWorldMap } from "@sil/data";
+      <div class="code">import { colorizeWorldMap } from "arev";
 
 colorizeWorldMap({
   "#ef9a9a": ["US","CA","MX"],   // red group
@@ -53,7 +53,7 @@ colorizeWorldMap({
     <!-- individual country map -->
     <div class="card col">
       <div class="section-title">getCountrySvg(alpha2, options)</div>
-      <div class="code">import { getCountrySvg } from "@sil/data";
+      <div class="code">import { getCountrySvg } from "arev";
 getCountrySvg("{{ countryCode }}", { fill: "{{ countryFill }}", stroke: "#64b5f6" })</div>
       <div class="row">
         <input v-model="countryCode" placeholder="Alpha-2, e.g. AU" style="max-width:120px" />
@@ -71,7 +71,7 @@ getCountrySvg("{{ countryCode }}", { fill: "{{ countryFill }}", stroke: "#64b5f6
     <!-- getWorldMapSvg -->
     <div class="card col">
       <div class="section-title">getWorldMapSvg(options)</div>
-      <div class="code">import { getWorldMapSvg, WORLD_MAP_VIEWBOX, WORLD_MAP_DEFAULTS } from "@sil/data";
+      <div class="code">import { getWorldMapSvg, WORLD_MAP_VIEWBOX, WORLD_MAP_DEFAULTS } from "arev";
 
 // WORLD_MAP_VIEWBOX → "{{ WORLD_MAP_VIEWBOX }}"
 // WORLD_MAP_DEFAULTS → { defaultFill, stroke, strokeWidth, background, width, height }
@@ -85,7 +85,7 @@ getWorldMapSvg({ background: "#1a1d2e", defaultFill: "#2e3350", stroke: "#0f1117
     <!-- getCountryMapData + searchWorldMapCountries -->
     <div class="card col">
       <div class="section-title">getCountryMapData · searchWorldMapCountries · worldMapCountries</div>
-      <div class="code">import { getCountryMapData, searchWorldMapCountries, worldMapCountries } from "@sil/data";
+      <div class="code">import { getCountryMapData, searchWorldMapCountries, worldMapCountries } from "arev";
 
 worldMapCountries.length // → {{ worldMapCountries.length }} entries
 getCountryMapData("{{ mapDataCode }}")?.name // → "{{ getCountryMapData(mapDataCode.toUpperCase())?.name ?? 'not found' }}"
@@ -116,7 +116,7 @@ searchWorldMapCountries("{{ mapSearch }}").length // → {{ searchWorldMapCountr
     <!-- getCountrySubdivisionMapUrl + latLonToMapPoint -->
     <div class="card col">
       <div class="section-title">getCountryMapSvgUrl · getCountrySubdivisionMapUrl · latLonToMapPoint</div>
-      <div class="code">import { getCountryMapSvgUrl, getCountrySubdivisionMapUrl, latLonToMapPoint, COUNTRY_MAP_DEFAULTS } from "@sil/data";
+      <div class="code">import { getCountryMapSvgUrl, getCountrySubdivisionMapUrl, latLonToMapPoint, COUNTRY_MAP_DEFAULTS } from "arev";
 
 getCountryMapSvgUrl("{{ alpha3Code }}")
 // → "{{ getCountryMapSvgUrl(alpha3Code) }}"
@@ -163,7 +163,7 @@ import {
   getCountrySubdivisionMapUrl,
   latLonToMapPoint,
   COUNTRY_MAP_DEFAULTS,
-} from "@sil/data";
+} from "arev";
 
 const mapOptions = {
   background: "#1a1d2e",

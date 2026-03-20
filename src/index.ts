@@ -1,12 +1,12 @@
 /**
- * @sil/data
+ * arev
  *
  * A comprehensive collection of reusable world data:
  * countries, phone codes, flags, cities, states, provinces, currencies, and more.
  *
  * @example
  * ```ts
- * import { phoneCountryCodes, countries, cities } from "@sil/data";
+ * import { phoneCountryCodes, countries, cities } from "arev";
  *
  * // Use phone country codes in a select input
  * const options = phoneCountryCodes.map(p => ({

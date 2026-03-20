@@ -11,8 +11,8 @@ import {
   phoneCountryCodes,
   getPhoneCodeByCountry,
   getCountriesByPhoneCode,
-} from "@sil/data";
-import type { PhoneCountryCode } from "@sil/data";
+} from "arev";
+import type { PhoneCountryCode } from "arev";
 ```
 
 ## Data shape
@@ -32,7 +32,7 @@ interface PhoneCountryCode {
 ### Phone number country selector (full list)
 
 ```ts
-import { phoneCountryCodes } from "@sil/data";
+import { phoneCountryCodes } from "arev";
 
 const selectOptions = phoneCountryCodes.map((p) => ({
   label: `${p.flag} ${p.country} (${p.phoneCode})`,
@@ -44,7 +44,7 @@ const selectOptions = phoneCountryCodes.map((p) => ({
 ### Look up a specific country's phone code
 
 ```ts
-import { getPhoneCodeByCountry } from "@sil/data";
+import { getPhoneCodeByCountry } from "arev";
 
 const nl = getPhoneCodeByCountry("NL");
 // { country: "Netherlands", code: "NL", phoneCode: "+31", flag: "🇳🇱" }
@@ -58,7 +58,7 @@ getPhoneCodeByCountry("ZZ"); // undefined
 Some dialling codes are shared between a country and its territories. For example `+1` covers the US, Canada, and ~25 Caribbean/Pacific territories.
 
 ```ts
-import { getCountriesByPhoneCode } from "@sil/data";
+import { getCountriesByPhoneCode } from "arev";
 
 const plusOne = getCountriesByPhoneCode("+1");
 console.log(plusOne.map(p => p.code));
@@ -72,7 +72,7 @@ console.log(plusFortyFour.map(p => p.code));
 ### Validate a phone code prefix
 
 ```ts
-import { phoneCountryCodes } from "@sil/data";
+import { phoneCountryCodes } from "arev";
 
 const knownCodes = new Set(phoneCountryCodes.map(p => p.phoneCode));
 knownCodes.has("+31"); // true

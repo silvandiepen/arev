@@ -8,7 +8,7 @@
  *
  * @example
  * ```ts
- * import { getWorldMapSvg, highlightCountries } from "@sil/data";
+ * import { getWorldMapSvg, highlightCountries } from "arev";
  *
  * // Render a plain world map
  * document.getElementById("map").innerHTML = getWorldMapSvg({ fill: "#e0e0e0" });

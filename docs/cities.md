@@ -13,8 +13,8 @@ import {
   getCapitalCity,
   getCitiesByPopulation,
   searchCities,
-} from "@sil/data";
-import type { City } from "@sil/data";
+} from "arev";
+import type { City } from "arev";
 ```
 
 ## Data shape
@@ -36,7 +36,7 @@ interface City {
 ### All cities
 
 ```ts
-import { cities } from "@sil/data";
+import { cities } from "arev";
 
 console.log(cities.length); // ~270
 
@@ -48,7 +48,7 @@ console.log(capitals.length); // ~185
 ### Capital city of a country
 
 ```ts
-import { getCapitalCity } from "@sil/data";
+import { getCapitalCity } from "arev";
 
 getCapitalCity("GB");
 // { name: "London", country: "GB", lat: 51.5074, lon: -0.1278, capital: true, population: 9648110 }
@@ -62,7 +62,7 @@ getCapitalCity("ZZ"); // undefined
 ### Cities in a country
 
 ```ts
-import { getCitiesByCountry } from "@sil/data";
+import { getCitiesByCountry } from "arev";
 
 const usCities = getCitiesByCountry("US");
 usCities.map(c => c.name);
@@ -73,7 +73,7 @@ usCities.map(c => c.name);
 ### Top cities by population
 
 ```ts
-import { getCitiesByPopulation } from "@sil/data";
+import { getCitiesByPopulation } from "arev";
 
 // Top 10 most populous cities
 const top10 = getCitiesByPopulation(10);
@@ -87,7 +87,7 @@ const all = getCitiesByPopulation();
 ### Search cities by name
 
 ```ts
-import { searchCities } from "@sil/data";
+import { searchCities } from "arev";
 
 searchCities("new");
 // [{ name: "New York City", ... }, { name: "New Delhi", ... }, ...]
@@ -102,7 +102,7 @@ searchCities("BERLIN"); // same as searchCities("berlin")
 ### Build a city autocomplete
 
 ```ts
-import { searchCities, getCountryByCode } from "@sil/data";
+import { searchCities, getCountryByCode } from "arev";
 
 function cityAutocomplete(input: string) {
   return searchCities(input).map((city) => {
@@ -121,8 +121,8 @@ cityAutocomplete("par");
 ### Calculate distance from capital to capital
 
 ```ts
-import { getCapitalCity } from "@sil/data";
-import { haversineDistance } from "@sil/data";
+import { getCapitalCity } from "arev";
+import { haversineDistance } from "arev";
 
 const amsterdam = getCapitalCity("NL")!;
 const berlin = getCapitalCity("DE")!;

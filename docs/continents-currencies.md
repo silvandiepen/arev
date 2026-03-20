@@ -9,8 +9,8 @@
 ### Import
 
 ```ts
-import { continents, getContinentByCode } from "@sil/data";
-import type { Continent, ContinentName } from "@sil/data";
+import { continents, getContinentByCode } from "arev";
+import type { Continent, ContinentName } from "arev";
 ```
 
 ### Data shape
@@ -49,7 +49,7 @@ type ContinentName =
 ### Examples
 
 ```ts
-import { continents, getContinentByCode } from "@sil/data";
+import { continents, getContinentByCode } from "arev";
 
 // All 7 continents
 console.log(continents.length); // 7
@@ -70,7 +70,7 @@ byArea.map(c => c.name);
 ### Use with countries
 
 ```ts
-import { continents, getCountriesByContinent } from "@sil/data";
+import { continents, getCountriesByContinent } from "arev";
 
 // Add country list to each continent
 const enriched = continents.map(continent => ({
@@ -90,8 +90,8 @@ import {
   currencies,
   getCurrencyByCode,
   getCurrencyByCountry,
-} from "@sil/data";
-import type { Currency } from "@sil/data";
+} from "arev";
+import type { Currency } from "arev";
 ```
 
 ### Data shape
@@ -108,7 +108,7 @@ interface Currency {
 ### Examples
 
 ```ts
-import { currencies, getCurrencyByCode, getCurrencyByCountry } from "@sil/data";
+import { currencies, getCurrencyByCode, getCurrencyByCountry } from "arev";
 
 // All ~150 currencies
 console.log(currencies.length); // ~150
@@ -134,7 +134,7 @@ getCurrencyByCountry("DE");
 ### List all countries using the Euro
 
 ```ts
-import { getCurrencyByCode, getCountryByCode } from "@sil/data";
+import { getCurrencyByCode, getCountryByCode } from "arev";
 
 const euro = getCurrencyByCode("EUR");
 const eurozone = euro?.countries.map(code => getCountryByCode(code)?.name);
@@ -144,7 +144,7 @@ const eurozone = euro?.countries.map(code => getCountryByCode(code)?.name);
 ### Build a currency selector
 
 ```ts
-import { currencies } from "@sil/data";
+import { currencies } from "arev";
 
 const currencyOptions = currencies.map(c => ({
   value: c.code,
@@ -156,7 +156,7 @@ const currencyOptions = currencies.map(c => ({
 ### Format a price with the right symbol
 
 ```ts
-import { getCurrencyByCountry } from "@sil/data";
+import { getCurrencyByCountry } from "arev";
 
 function formatPrice(amount: number, countryCode: string): string {
   const currency = getCurrencyByCountry(countryCode);

@@ -1,15 +1,15 @@
 {
-  "name": "@sil/data",
+  "name": "arev",
   "version": "0.1.12",
   "description": "A comprehensive collection of reusable world data: countries, phone codes, flags, cities, states, provinces and more",
   "type": "module",
-  "main": "./dist/sil-data.cjs",
-  "module": "./dist/sil-data.js",
+  "main": "./dist/arev.cjs",
+  "module": "./dist/arev.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/sil-data.js",
-      "require": "./dist/sil-data.cjs",
+      "import": "./dist/arev.js",
+      "require": "./dist/arev.cjs",
       "types": "./dist/types/index.d.ts"
     }
   },
@@ -41,7 +41,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/silvandiepen/sil-data.git"
+    "url": "git+https://github.com/silvandiepen/arev.git"
   },
   "publishConfig": {
     "access": "public"
