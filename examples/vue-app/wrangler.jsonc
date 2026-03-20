@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "arevdata-docs",
+  "account_id": "8cef251b5fdcf6c6f63db98b7aa49f9a",
+  "compatibility_date": "2026-03-20",
+  "pages_build_output_dir": "dist"
+}

@@ -5,7 +5,12 @@
         <div class="logo">
           <span class="logo-icon">🌍</span>
           <span class="logo-text">arev</span>
-          <span class="logo-sub">Vue Demo</span>
+          <span class="logo-sub">Docs</span>
+        </div>
+        <div class="site-links">
+          <a href="https://arevdata.com" target="_blank">Docs</a>
+          <a href="https://api.arevdata.com/meta" target="_blank">API</a>
+          <a href="https://github.com/silvandiepen/arev" target="_blank">GitHub</a>
         </div>
         <nav class="nav">
           <button
@@ -117,6 +122,23 @@ const activeTab = ref("countries");
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
+}
+
+.site-links {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.site-links a {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.site-links a:hover {
+  color: var(--accent);
 }
 
 .nav-btn {

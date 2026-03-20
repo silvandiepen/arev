@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "arev-api",
+  "account_id": "8cef251b5fdcf6c6f63db98b7aa49f9a",
+  "main": "src/api/index.ts",
+  "compatibility_date": "2026-03-20",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "api.arevdata.com",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

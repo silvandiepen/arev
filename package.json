@@ -19,6 +19,11 @@
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist/types",
     "dev": "vite build --watch",
+    "api:dev": "wrangler dev --config wrangler.jsonc",
+    "api:deploy": "wrangler deploy --config wrangler.jsonc",
+    "docs:dev": "npm --prefix examples/vue-app run dev",
+    "docs:build": "npm --prefix examples/vue-app run build",
+    "docs:deploy": "npm run docs:build && wrangler pages deploy examples/vue-app/dist --project-name arevdata-docs",
     "prepack": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -51,6 +56,7 @@
     "typescript": "^5.0.0",
     "vite": "^5.0.0",
     "vite-plugin-dts": "^3.0.0",
-    "vitest": "^1.0.0"
+    "vitest": "^1.0.0",
+    "wrangler": "^4.76.0"
   }
 }
