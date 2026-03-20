@@ -33,6 +33,10 @@ export function handleMetaRoute(): Response {
       routes: [
         "/health",
         "/meta",
+        "/countries",
+        "/countries/:alpha2",
+        "/cities",
+        "/cities/capital/:alpha2",
       ],
     },
     undefined,
