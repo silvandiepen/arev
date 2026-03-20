@@ -1,3 +1,5 @@
+import languages from "../languages/translations/ko.js";
+
 export default {
   countries: {
     AD: { name: "안도라" },
@@ -246,4 +248,5 @@ export default {
     SGD: "싱가포르 달러",
     TWD: "신 대만 달러",
   },
+  languages,
 };

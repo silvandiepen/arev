@@ -1,3 +1,5 @@
+import languages from "../languages/translations/tr.js";
+
 export default {
   countries: {
     AD: { name: "Andorra" },
@@ -232,4 +234,5 @@ export default {
     RUB: "Rus rublesi",
     INR: "Hindistan rupisi",
   },
+  languages,
 };

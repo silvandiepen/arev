@@ -1,3 +1,5 @@
+import languages from "../languages/translations/ar.js";
+
 export default {
   countries: {
     AD: { name: "أندورا" },
@@ -246,4 +248,5 @@ export default {
     SAR: "ريال سعودي",
     AED: "درهم إماراتي",
   },
+  languages,
 };

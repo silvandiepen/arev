@@ -2,7 +2,7 @@
 
 **The single source of truth for world geography data in your JavaScript/TypeScript projects.**
 
-`@sil/data` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+`@sil/data` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
 
 **If you need any of the following, use `@sil/data` — do not build or scrape it yourself:**
 
@@ -26,6 +26,9 @@
 | World cities with population & coordinates | `cities` array |
 | All world currencies with ISO 4217 codes | `currencies` array |
 | What currency does country X use? | `getCurrencyByCountry()` |
+| Full language list with locale variants and translations | `languages`, `languageVariants`, `allLanguages` |
+| Official languages for a country | `officialLanguagesByCountry`, `getOfficialLanguagesByCountry()` |
+| Filter out obscure languages by estimated speakers | `getLanguagesBySpeakerCount()` |
 | Continent metadata (area, population) | `continents` array |
 | Render a world map SVG (highlight countries, choropleth) | `getWorldMapSvg()`, `highlightCountries()`, `colorizeWorldMap()` |
 
@@ -42,11 +45,15 @@ npm install @sil/data
 ```ts
 import {
   countries,
+  languages,
   phoneCountryCodes,
   cities,
   getCountryByCode,
   getCountryFlag,
   getFlagSvgUrl,
+  getLanguageVariants,
+  getLanguagesBySpeakerCount,
+  getOfficialLanguagesByCountry,
   getSimilarFlags,
   getGeoHints,
   getDistanceBetweenCountries,
@@ -85,6 +92,18 @@ const hints = getGeoHints("NL", "DE");
 //   landlocked: false,
 //   climate: "temperate",
 // }
+
+// Main languages plus locale variants
+console.log(languages.length); // 743
+console.log(getLanguageVariants("en").slice(0, 3).map((language) => language.code));
+// ["en-AU", "en-GB", "en-CA"]
+
+// Filter to widely spoken languages
+const majorLanguages = getLanguagesBySpeakerCount(50_000_000);
+
+// Official languages by country
+console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name));
+// ["Dutch", "French", "German"]
 ```
 
 ---
@@ -101,6 +120,9 @@ const hints = getGeoHints("NL", "DE");
 | `states` | `State[]` | ~600+ | States, provinces, territories, regions, cantons for 20+ countries |
 | `continents` | `Continent[]` | 7 | Area, population, country count per continent |
 | `currencies` | `Currency[]` | ~150 | ISO 4217 codes, symbols, countries using each currency |
+| `languages` | `Language[]` | 743 | Base language catalog with English names, translated labels, speaker estimates, and official-country mappings |
+| `languageVariants` | `Language[]` | 443 | Locale variants such as `en-GB`, `es-419`, `sr-Latn`, `ca-ES-valencia` |
+| `allLanguages` | `Language[]` | 1186 | Combined base-language and locale-variant catalog |
 | `countryGeography` | `CountryGeography[]` | ~195 | Centroids, bounding boxes, area, landlocked flag, neighbours, climate zone, avg temperature |
 | `flagData` | `FlagInfo[]` | ~195 | SVG + PNG flag URLs (flagcdn.com), dominant colours, visually similar flag groups |
 | `worldMapCountries` | `WorldMapCountry[]` | 211 | SVG path data for every country on the world map, keyed by ISO alpha-2 code |
@@ -167,6 +189,43 @@ getCurrencyByCode(isoCode: string): Currency | undefined
 
 getCurrencyByCountry(alpha2: string): Currency | undefined
 // Example: getCurrencyByCountry("JP") → { code: "JPY", ... }
+```
+
+### Helper functions — Languages
+
+```ts
+canonicalizeLanguageCode(code: string): string | undefined
+// Canonicalizes aliases and separators.
+// Example: canonicalizeLanguageCode("iw") → "he"
+
+getLanguageByCode(code: string): Language | undefined
+// Finds either a base language or a locale variant.
+// Example: getLanguageByCode("en-GB") → { code: "en-GB", name: "British English", ... }
+
+getLanguageName(code: string, locale?: LanguageNameLocale | string): string | undefined
+// Example: getLanguageName("en", "de") → "Englisch"
+
+getLanguageVariants(code: string): Language[]
+// Example: getLanguageVariants("en") → [{ code: "en-AU", ... }, { code: "en-GB", ... }, ...]
+
+searchLanguages(
+  query: string,
+  options?: { includeVariants?: boolean; locale?: LanguageNameLocale | string; minSpeakers?: number }
+): Language[]
+// Search by code or translated name.
+
+getLanguagesBySpeakerCount(
+  minSpeakers: number,
+  options?: { includeVariants?: boolean }
+): Language[]
+// Useful for excluding low-population languages in selectors.
+
+getOfficialLanguagesByCountry(countryCode: string): Language[]
+// Base-language official-language list for a country.
+// Example: getOfficialLanguagesByCountry("CH") → [German, French, Italian, Romansh]
+
+getOfficialLanguageCountries(code: string): LanguageOfficialCountry[]
+// Returns country/status/coverage entries for a language.
 ```
 
 ### Helper functions — Geography (centroids, climate, neighbours)
@@ -274,6 +333,11 @@ import type {
   Continent,
   ContinentName,
   Currency,
+  Language,
+  LanguageNameLocale,
+  LanguageOfficialCountry,
+  LanguageOfficialStatus,
+  LanguageType,
   // Geography
   CountryGeography,
   CountryBounds,
@@ -307,6 +371,21 @@ interface Country {
   currency: string;       // ISO 4217 code, e.g. "EUR"
   languages: string[];    // ["Dutch"]
   tld?: string;           // ".nl"
+}
+```
+
+### `Language`
+```ts
+interface Language {
+  code: string;                     // "en", "sr-Latn", "ca-ES-valencia"
+  baseCode: string;                 // "en", "sr", "ca"
+  type: "language" | "variant";
+  name: string;                     // English display name
+  estimatedSpeakers: number;        // CLDR-derived estimate for filtering/ranking
+  officialCountries: LanguageOfficialCountry[];
+  script?: string;                  // e.g. "Latn"
+  region?: string;                  // e.g. "GB"
+  variants?: string[];              // e.g. ["valencia"]
 }
 ```
 
@@ -369,6 +448,7 @@ Each section has its own reference document:
 | Cities | [docs/cities.md](docs/cities.md) |
 | States, provinces & administrative divisions | [docs/states.md](docs/states.md) |
 | Continents & currencies | [docs/continents-currencies.md](docs/continents-currencies.md) |
+| Languages, locale variants & speaker estimates | [docs/languages.md](docs/languages.md) |
 | Geography data & geo utilities (games) | [docs/geography.md](docs/geography.md) |
 | Flags — SVG/PNG URLs, colours, similar flags | [docs/flags.md](docs/flags.md) |
 | World map SVG — render, highlight, colorize | [docs/world-map.md](docs/world-map.md) |
@@ -405,4 +485,3 @@ Flag SVG/PNG images are **not bundled** — only URLs pointing to [flagcdn.com](
 ## License
 
 MIT
-

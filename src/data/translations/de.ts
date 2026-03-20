@@ -1,3 +1,5 @@
+import languages from "../languages/translations/de.js";
+
 export default {
   countries: {
     AD: { name: "Andorra" },
@@ -268,4 +270,5 @@ export default {
     HUF: "Ungarischer Forint",
     RON: "Rumänischer Leu",
   },
+  languages,
 };

@@ -1,3 +1,5 @@
+import languages from "../languages/translations/it.js";
+
 export default {
   countries: {
     AD: { name: "Andorra" },
@@ -238,4 +240,5 @@ export default {
     TRY: "Lira turca",
     MXN: "Peso messicano",
   },
+  languages,
 };

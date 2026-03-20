@@ -1,3 +1,5 @@
+import languages from "../languages/translations/ja.js";
+
 export default {
   countries: {
     AD: { name: "アンドラ" },
@@ -247,4 +249,5 @@ export default {
     SGD: "シンガポールドル",
     TWD: "台湾ドル",
   },
+  languages,
 };

@@ -63,6 +63,7 @@ describe("getTranslations", () => {
     expect(map?.continents).toBeDefined();
     expect(map?.cities).toBeDefined();
     expect(map?.currencies).toBeDefined();
+    expect(map?.languages).toBeDefined();
   });
 
   it("should be case-insensitive", () => {
@@ -103,6 +104,12 @@ describe("translations data", () => {
 
       it("should have city translations", () => {
         expect(Object.keys(map.cities).length).toBeGreaterThan(0);
+      });
+
+      it("should have language translations", () => {
+        expect(Object.keys(map.languages).length).toBeGreaterThan(1000);
+        expect(map.languages["en"]).toBeTruthy();
+        expect(map.languages["en-GB"]).toBeTruthy();
       });
     });
   }

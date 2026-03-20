@@ -1,3 +1,5 @@
+import languages from "../languages/translations/pl.js";
+
 export default {
   countries: {
     AD: { name: "Andora" },
@@ -232,4 +234,5 @@ export default {
     RUB: "Rubel rosyjski",
     INR: "Rupia indyjska",
   },
+  languages,
 };

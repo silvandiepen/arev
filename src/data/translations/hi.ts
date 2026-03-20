@@ -1,3 +1,5 @@
+import languages from "../languages/translations/hi.js";
+
 export default {
   countries: {
     AD: { name: "अंडोरा" },
@@ -230,4 +232,5 @@ export default {
     RUB: "रूसी रूबल",
     BRL: "ब्राजीलियाई रियल",
   },
+  languages,
 };

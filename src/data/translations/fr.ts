@@ -1,3 +1,5 @@
+import languages from "../languages/translations/fr.js";
+
 export default {
   countries: {
     AD: { name: "Andorre" },
@@ -255,4 +257,5 @@ export default {
     CZK: "Couronne tchèque",
     HUF: "Forint hongrois",
   },
+  languages,
 };

@@ -36,6 +36,8 @@ export interface TranslationMap {
   cities: Record<string, string>;
   /** Currency name translations keyed by ISO 4217 code */
   currencies: Record<string, string>;
+  /** Language and locale-variant display names keyed by canonical BCP 47 code */
+  languages: Record<string, string>;
 }
 
 /**
@@ -153,4 +155,15 @@ export function translateCurrency(currency: Currency, lang: string): Currency {
   const translatedName = map.currencies[currency.code.toUpperCase()];
   if (!translatedName) return currency;
   return { ...currency, name: translatedName };
+}
+
+/**
+ * Return the translated display name for a language or locale code.
+ * Falls back to the provided English name when no translation exists.
+ */
+export function translateLanguageName(code: string, englishName: string, lang: string): string {
+  if (lang.toLowerCase() === "en") return englishName;
+  const map = translations[lang.toLowerCase()];
+  if (!map) return englishName;
+  return map.languages[code] || englishName;
 }

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   countries,
+  languages,
   phoneCountryCodes,
   cities,
   states,
@@ -8,6 +9,7 @@ import {
 } from "../index.js";
 import type {
   Country,
+  Language,
   PhoneCountryCode,
   City,
   State,
@@ -23,6 +25,11 @@ describe("index exports", () => {
   it("should export phoneCountryCodes array", () => {
     expect(Array.isArray(phoneCountryCodes)).toBe(true);
     expect(phoneCountryCodes.length).toBeGreaterThan(0);
+  });
+
+  it("should export languages array", () => {
+    expect(Array.isArray(languages)).toBe(true);
+    expect(languages.length).toBeGreaterThan(100);
   });
 
   it("should export cities array", () => {
@@ -59,6 +66,15 @@ describe("index exports", () => {
     expect(typeof pcc.code).toBe("string");
     expect(typeof pcc.phoneCode).toBe("string");
     expect(typeof pcc.flag).toBe("string");
+  });
+
+  it("should have correct TypeScript types for Language", () => {
+    const language: Language = languages[0];
+    expect(typeof language.code).toBe("string");
+    expect(typeof language.baseCode).toBe("string");
+    expect(typeof language.name).toBe("string");
+    expect(typeof language.estimatedSpeakers).toBe("number");
+    expect(Array.isArray(language.officialCountries)).toBe(true);
   });
 
   it("should have correct TypeScript types for City", () => {

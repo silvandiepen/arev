@@ -1,3 +1,5 @@
+import languages from "../languages/translations/zh.js";
+
 export default {
   countries: {
     AD: { name: "安道尔" },
@@ -248,4 +250,5 @@ export default {
     TWD: "新台币",
     MXN: "墨西哥比索",
   },
+  languages,
 };

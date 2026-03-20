@@ -1,3 +1,5 @@
+import languages from "../languages/translations/ru.js";
+
 export default {
   countries: {
     AD: { name: "Андорра" },
@@ -252,4 +254,5 @@ export default {
     KRW: "Южнокорейская вона",
     PLN: "Польский злотый",
   },
+  languages,
 };

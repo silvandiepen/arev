@@ -39,6 +39,78 @@ export interface Country {
 }
 
 /**
+ * Supported locales used for translated display names in this package.
+ */
+export type LanguageNameLocale =
+  | "en"
+  | "ar"
+  | "de"
+  | "es"
+  | "fr"
+  | "hi"
+  | "it"
+  | "ja"
+  | "ko"
+  | "nl"
+  | "pl"
+  | "pt"
+  | "ru"
+  | "tr"
+  | "zh";
+
+/**
+ * Whether a language entry is a base language code or a more specific locale variant.
+ */
+export type LanguageType = "language" | "variant";
+
+/**
+ * Official-language statuses used by CLDR territory population data.
+ */
+export type LanguageOfficialStatus =
+  | "official"
+  | "de_facto_official"
+  | "official_regional";
+
+/**
+ * Country-level official-language metadata for a single language.
+ */
+export interface LanguageOfficialCountry {
+  /** ISO 3166-1 alpha-2 country code */
+  countryCode: string;
+  /** Official status in the territory */
+  officialStatus: LanguageOfficialStatus;
+  /** Approximate share of the territory population that speaks the language */
+  populationPercent: number;
+}
+
+/**
+ * A language or locale variant with translated names and speaker estimates.
+ */
+export interface Language {
+  /** Canonical BCP 47 language or locale code */
+  code: string;
+  /** The canonical base language code, e.g. "en" for "en-GB" */
+  baseCode: string;
+  /** Whether this is a base language or a locale variant */
+  type: LanguageType;
+  /** English display name */
+  name: string;
+  /**
+   * Estimated speaker count derived from CLDR territory population percentages.
+   * For variants this is a locale-scoped estimate where possible.
+   */
+  estimatedSpeakers: number;
+  /** Countries or territories where this language has an official status in CLDR */
+  officialCountries: LanguageOfficialCountry[];
+  /** Script subtag for variants such as "sr-Latn" */
+  script?: string;
+  /** Region subtag for variants such as "en-GB" */
+  region?: string;
+  /** Additional locale variant subtags, e.g. ["valencia"] */
+  variants?: string[];
+}
+
+/**
  * Continent names
  */
 export type ContinentName =

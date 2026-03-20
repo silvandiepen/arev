@@ -1,3 +1,5 @@
+import languages from "../languages/translations/es.js";
+
 export default {
   countries: {
     AD: { name: "Andorra" },
@@ -255,4 +257,5 @@ export default {
     CZK: "Corona checa",
     HUF: "Forinto húngaro",
   },
+  languages,
 };

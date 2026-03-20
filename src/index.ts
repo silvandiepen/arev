@@ -19,6 +19,11 @@
 // Types
 export type {
   Country,
+  Language,
+  LanguageNameLocale,
+  LanguageOfficialCountry,
+  LanguageOfficialStatus,
+  LanguageType,
   PhoneCountryCode,
   City,
   State,
@@ -55,7 +60,26 @@ export {
   translateCity,
   translateContinent,
   translateCurrency,
+  translateLanguageName,
 } from "./data/translations.js";
+
+// Languages
+export {
+  allLanguages,
+  canonicalizeLanguageCode,
+  getLanguageByCode,
+  getLanguageName,
+  getLanguagesBySpeakerCount,
+  getLanguageVariants,
+  getOfficialLanguageCountries,
+  getOfficialLanguagesByCountry,
+  languageCodeAliases,
+  languageNameLocales,
+  languageVariants,
+  languages,
+  officialLanguagesByCountry,
+  searchLanguages,
+} from "./data/languages/index.js";
 
 // Countries
 export {

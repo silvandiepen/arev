@@ -155,3 +155,4 @@ All 195 UN-recognised sovereign states are included, plus Kosovo. Antarctica has
 - [Flags](flags.md) — `flagData` adds SVG/PNG URLs, colours, and similar-flag groups per country
 - [Cities](cities.md) — `cities` has capital and major city coordinates
 - [Currencies](continents-currencies.md) — `getCurrencyByCountry()` looks up currency from country code
+- [Languages](languages.md) — official-language mappings and language selectors keyed by country code
