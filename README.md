@@ -76,9 +76,9 @@ const options = phoneCountryCodes.map((p) => ({
 const nl = getCountryByCode("NL");
 // { name: "Netherlands", alpha2: "NL", flag: "🇳🇱", phoneCode: "+31", capital: "Amsterdam", ... }
 
-// Flag images (no bundled SVG — just URL helpers)
-getFlagSvgUrl("NL");       // "https://flagcdn.com/nl.svg"
-getFlagPngUrl("NL", 160);  // "https://flagcdn.com/w160/nl.png"
+// Flag images are self-hosted and generated from repo-owned SVG sources
+getFlagSvgUrl("NL");       // "https://arevdata.com/flags/svg/nl.svg"
+getFlagPngUrl("NL", 160);  // "https://arevdata.com/flags/png/w160/nl.png"
 
 // Flags that look similar to the Netherlands (useful for "guess the flag" games)
 getSimilarFlags("NL").map((f) => f.alpha2);
@@ -127,7 +127,7 @@ console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name)
 | `languageVariants` | `Language[]` | 443 | Locale variants such as `en-GB`, `es-419`, `sr-Latn`, `ca-ES-valencia` |
 | `allLanguages` | `Language[]` | 1186 | Combined base-language and locale-variant catalog |
 | `countryGeography` | `CountryGeography[]` | ~195 | Centroids, bounding boxes, area, landlocked flag, neighbours, climate zone, avg temperature |
-| `flagData` | `FlagInfo[]` | ~195 | SVG + PNG flag URLs (flagcdn.com), dominant colours, visually similar flag groups |
+| `flagData` | `FlagInfo[]` | ~195 | Self-hosted SVG + PNG flag URLs, dominant colours, visually similar flag groups |
 | `worldMapCountries` | `WorldMapCountry[]` | 211 | SVG path data for every country on the world map, keyed by ISO alpha-2 code |
 
 ### Helper functions — Countries
@@ -252,12 +252,12 @@ getNeighbors(alpha2: string): CountryGeography[]
 
 ```ts
 getFlagSvgUrl(alpha2: string): string
-// Returns the flagcdn.com SVG URL.
-// Example: getFlagSvgUrl("FR") → "https://flagcdn.com/fr.svg"
+// Returns the self-hosted SVG URL.
+// Example: getFlagSvgUrl("FR") → "https://arevdata.com/flags/svg/fr.svg"
 
 getFlagPngUrl(alpha2: string, width?: 40|80|160|320|640|1280|2560): string
-// Returns flagcdn.com PNG URL at given width (default 320px).
-// Example: getFlagPngUrl("FR", 160) → "https://flagcdn.com/w160/fr.png"
+// Returns a self-hosted PNG URL at a generated width (default 320px).
+// Example: getFlagPngUrl("FR", 160) → "https://arevdata.com/flags/png/w160/fr.png"
 
 getCountryMapSvgUrl(alpha3: string): string
 // Returns a Wikimedia Commons URL for the country outline SVG.
@@ -266,8 +266,8 @@ getCountryMapSvgUrl(alpha3: string): string
 getFlagData(alpha2: string): FlagInfo | undefined
 // Full flag metadata: svgUrl, pngUrl, colors[], similar[]
 
-getFlagsByColor(color: FlagColor): FlagInfo[]
-// All flags that contain a given colour.
+getFlagsByColor(color: FlagColor | FlagColor[]): FlagInfo[]
+// All flags that contain a given colour, or any of the given colours.
 
 getSimilarFlags(alpha2: string): FlagInfo[]
 // Flags visually similar enough to confuse — ideal for "wrong answer" options.
@@ -413,8 +413,8 @@ interface CountryGeography {
 ```ts
 interface FlagInfo {
   alpha2: string;
-  svgUrl: string;         // "https://flagcdn.com/nl.svg"
-  pngUrl: string;         // "https://flagcdn.com/w320/nl.png"
+  svgUrl: string;         // "https://arevdata.com/flags/svg/nl.svg"
+  pngUrl: string;         // "https://arevdata.com/flags/png/w320/nl.png"
   colors: FlagColor[];    // dominant colours, most prominent first
   similar: string[];      // alpha-2 codes of visually similar flags
 }
@@ -481,7 +481,7 @@ States/provinces coverage: United States (50 + DC + territories), Canada (10 pro
 | ESM (`dist/arev.js`) | ~210 kB | ~42 kB |
 | CJS (`dist/arev.cjs`) | ~211 kB | ~42 kB |
 
-Flag SVG/PNG images are **not bundled** — only URLs pointing to [flagcdn.com](https://flagcdn.com) are included, keeping the package lean.
+Flag SVG/PNG images are **not bundled in the npm package**. They are generated from repo-owned SVG sources and hosted on `arevdata.com`, keeping the package lean while avoiding third-party flag CDNs.
 
 ---
 

@@ -21,8 +21,10 @@
     "dev": "vite build --watch",
     "api:dev": "wrangler dev --config wrangler.jsonc",
     "api:deploy": "wrangler deploy --config wrangler.jsonc",
+    "flags:sync": "node scripts/sync-flag-svgs.mjs",
+    "flags:build": "npm run flags:sync && node scripts/build-flag-assets.mjs",
     "docs:dev": "npm --prefix examples/vue-app run dev",
-    "docs:build": "npm --prefix examples/vue-app run build",
+    "docs:build": "npm run flags:build && npm --prefix examples/vue-app run build",
     "docs:deploy": "npm run docs:build && wrangler pages deploy examples/vue-app/dist --project-name arevdata-docs",
     "prepack": "npm run build",
     "test": "vitest run",
@@ -52,7 +54,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20.0.0",
+    "flag-icons": "^7.5.0",
     "typescript": "^5.0.0",
     "vite": "^5.0.0",
     "vite-plugin-dts": "^3.0.0",

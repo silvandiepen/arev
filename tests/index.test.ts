@@ -618,8 +618,8 @@ describe("flagData", () => {
   it("should include Nagorno-Karabakh (XN)", () => {
     const xn = flagData.find((f) => f.alpha2 === "XN");
     expect(xn).toBeDefined();
-    expect(xn?.svgUrl).toBe("https://flagcdn.com/xn.svg");
-    expect(xn?.pngUrl).toBe("https://flagcdn.com/w320/xn.png");
+    expect(xn?.svgUrl).toBe("https://arevdata.com/flags/svg/xn.svg");
+    expect(xn?.pngUrl).toBe("https://arevdata.com/flags/png/w320/xn.png");
     expect(xn?.colors).toContain("red");
     expect(xn?.colors).toContain("blue");
     expect(xn?.colors).toContain("orange");
@@ -632,8 +632,8 @@ describe("flagData", () => {
 
   it("should have valid SVG and PNG URLs", () => {
     for (const f of flagData) {
-      expect(f.svgUrl).toMatch(/^https:\/\/flagcdn\.com\/[a-z]{2,3}\.svg$/);
-      expect(f.pngUrl).toMatch(/^https:\/\/flagcdn\.com\/w320\/[a-z]{2,3}\.png$/);
+      expect(f.svgUrl).toMatch(/^https:\/\/arevdata\.com\/flags\/svg\/[a-z]{2,3}\.svg$/);
+      expect(f.pngUrl).toMatch(/^https:\/\/arevdata\.com\/flags\/png\/w320\/[a-z]{2,3}\.png$/);
     }
   });
 
@@ -667,6 +667,19 @@ describe("getFlagsByColor", () => {
     const redFlags = getFlagsByColor("red");
     expect(redFlags.length).toBeGreaterThan(50);
     expect(redFlags.every((f) => f.colors.includes("red"))).toBe(true);
+  });
+
+  it("should return flags that include any of the provided colors", () => {
+    const redOrOrangeFlags = getFlagsByColor(["red", "orange"]);
+
+    expect(redOrOrangeFlags.length).toBeGreaterThan(50);
+    expect(redOrOrangeFlags.some((f) => f.alpha2 === "AM")).toBe(true);
+    expect(redOrOrangeFlags.some((f) => f.alpha2 === "BT")).toBe(true);
+    expect(redOrOrangeFlags.every((f) => f.colors.includes("red") || f.colors.includes("orange"))).toBe(true);
+  });
+
+  it("should return an empty array when no colors are provided", () => {
+    expect(getFlagsByColor([])).toEqual([]);
   });
 });
 
@@ -702,20 +715,20 @@ describe("getSimilarFlags", () => {
 
 describe("getFlagSvgUrl / getFlagPngUrl", () => {
   it("should generate correct SVG URL", () => {
-    expect(getFlagSvgUrl("US")).toBe("https://flagcdn.com/us.svg");
-    expect(getFlagSvgUrl("GB")).toBe("https://flagcdn.com/gb.svg");
+    expect(getFlagSvgUrl("US")).toBe("https://arevdata.com/flags/svg/us.svg");
+    expect(getFlagSvgUrl("GB")).toBe("https://arevdata.com/flags/svg/gb.svg");
   });
 
   it("should be case-insensitive", () => {
-    expect(getFlagSvgUrl("us")).toBe("https://flagcdn.com/us.svg");
+    expect(getFlagSvgUrl("us")).toBe("https://arevdata.com/flags/svg/us.svg");
   });
 
   it("should generate correct PNG URL with default width", () => {
-    expect(getFlagPngUrl("US")).toBe("https://flagcdn.com/w320/us.png");
+    expect(getFlagPngUrl("US")).toBe("https://arevdata.com/flags/png/w320/us.png");
   });
 
   it("should generate PNG URL with custom width", () => {
-    expect(getFlagPngUrl("US", 640)).toBe("https://flagcdn.com/w640/us.png");
+    expect(getFlagPngUrl("US", 640)).toBe("https://arevdata.com/flags/png/w640/us.png");
   });
 });
 

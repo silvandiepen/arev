@@ -293,9 +293,9 @@ export type FlagColor =
 export interface FlagInfo {
   /** ISO 3166-1 alpha-2 code */
   alpha2: string;
-  /** URL to SVG flag image (via flagcdn.com) */
+  /** URL to the hosted SVG flag image */
   svgUrl: string;
-  /** URL to a 4×3 PNG flag image (via flagcdn.com) */
+  /** URL to a hosted 4×3 PNG flag image */
   pngUrl: string;
   /** Primary colors present on the flag (up to 4, most prominent first) */
   colors: FlagColor[];

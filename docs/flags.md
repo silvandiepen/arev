@@ -4,7 +4,7 @@
 
 `arev` provides complete flag metadata for ~195 countries:
 
-- **SVG and PNG image URLs** via [flagcdn.com](https://flagcdn.com) — no SVGs are bundled, keeping the package small
+- **Self-hosted SVG and PNG image URLs** served from `arevdata.com`
 - **Dominant colours** on each flag (up to 4, most prominent first)
 - **Visually similar flags** — groups of flags that look alike and would be confused by players in a "guess the flag" game
 
@@ -29,8 +29,8 @@ import type { FlagInfo, FlagColor } from "arev";
 ```ts
 interface FlagInfo {
   alpha2: string;       // "NL"
-  svgUrl: string;       // "https://flagcdn.com/nl.svg"
-  pngUrl: string;       // "https://flagcdn.com/w320/nl.png"
+  svgUrl: string;       // "https://arevdata.com/flags/svg/nl.svg"
+  pngUrl: string;       // "https://arevdata.com/flags/png/w320/nl.png"
   colors: FlagColor[];  // ["red", "white", "blue"] — most dominant first
   similar: string[];    // ["LU", "FR", "RU"] — alpha-2 codes of similar-looking flags
 }
@@ -43,20 +43,20 @@ type FlagColor =
 
 ## Flag image URLs
 
-Flag images are served by [flagcdn.com](https://flagcdn.com) — a free, reliable CDN that hosts SVG and PNG flags for all countries.
+Flag images are served from `arevdata.com`. SVG files are the source of truth in the repo, and the PNG sizes are generated from those SVGs during the asset build pipeline.
 
 ### SVG flags
 
 ```ts
 import { getFlagSvgUrl } from "arev";
 
-getFlagSvgUrl("NL"); // "https://flagcdn.com/nl.svg"
-getFlagSvgUrl("US"); // "https://flagcdn.com/us.svg"
+getFlagSvgUrl("NL"); // "https://arevdata.com/flags/svg/nl.svg"
+getFlagSvgUrl("US"); // "https://arevdata.com/flags/svg/us.svg"
 ```
 
 Use in HTML:
 ```html
-<img src="https://flagcdn.com/nl.svg" width="40" alt="Netherlands flag" />
+<img src="https://arevdata.com/flags/svg/nl.svg" width="40" alt="Netherlands flag" />
 ```
 
 Use in React:
@@ -73,10 +73,10 @@ function Flag({ countryCode }: { countryCode: string }) {
 ```ts
 import { getFlagPngUrl } from "arev";
 
-getFlagPngUrl("NL");        // "https://flagcdn.com/w320/nl.png"  (default 320px wide)
-getFlagPngUrl("NL", 40);    // "https://flagcdn.com/w40/nl.png"
-getFlagPngUrl("NL", 160);   // "https://flagcdn.com/w160/nl.png"
-getFlagPngUrl("NL", 640);   // "https://flagcdn.com/w640/nl.png"
+getFlagPngUrl("NL");        // "https://arevdata.com/flags/png/w320/nl.png"  (default 320px wide)
+getFlagPngUrl("NL", 40);    // "https://arevdata.com/flags/png/w40/nl.png"
+getFlagPngUrl("NL", 160);   // "https://arevdata.com/flags/png/w160/nl.png"
+getFlagPngUrl("NL", 640);   // "https://arevdata.com/flags/png/w640/nl.png"
 ```
 
 Available widths: `40 | 80 | 160 | 320 | 640 | 1280 | 2560`
@@ -129,6 +129,9 @@ import { getFlagsByColor, flagData } from "arev";
 
 // All flags with green
 const greenFlags = getFlagsByColor("green");
+
+// All flags with red or orange
+const redOrOrangeFlags = getFlagsByColor(["red", "orange"]);
 
 // Flags that are only red and white
 const redWhiteOnly = flagData.filter(
