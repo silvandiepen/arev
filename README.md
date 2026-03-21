@@ -43,6 +43,15 @@ API: `https://api.arevdata.com`
 npm install arev
 ```
 
+## Deployment
+
+Pushes to `main` can deploy both Cloudflare targets through GitHub Actions:
+
+- API Worker: `api.arevdata.com`
+- Docs site: `arevdata.com`
+
+The repo workflow is [`.github/workflows/deploy.yml`](/Users/silvandiepen/Repositories/_libs/sil-data/.github/workflows/deploy.yml). To enable it in GitHub, add the repository secret `CLOUDFLARE_API_TOKEN` with write access for Workers and Pages on the `Me@sil.mt's Account` Cloudflare account.
+
 ## Quick Start
 
 ```ts
