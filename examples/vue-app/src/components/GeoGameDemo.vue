@@ -9,7 +9,7 @@
 
     <div class="card col">
       <div class="section-title">getGeoHints(guess, target)</div>
-      <div class="code">import { getGeoHints } from "arev";
+      <div class="code">import { getGeoHints } from "arevdata";
 
 getGeoHints("{{ lastGuessCode }}", "{{ targetCode }}")
 // Returns: distanceKm, direction, temperature, size, hemisphere, landlocked, climate</div>
@@ -134,8 +134,8 @@ getGeoHints("{{ lastGuessCode }}", "{{ targetCode }}")
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { countries, getCountryByCode, getGeoHints } from "arev";
-import type { Country, GeoHint } from "arev";
+import { countries, getCountryByCode, getGeoHints } from "arevdata";
+import type { Country, GeoHint } from "arevdata";
 
 interface GuessEntry {
   alpha2: string;

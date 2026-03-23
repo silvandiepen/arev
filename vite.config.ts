@@ -14,7 +14,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "Arev",
-      fileName: "arev",
+      fileName: "arevdata",
       formats: ["es", "cjs"],
     },
     rollupOptions: {

@@ -14,7 +14,7 @@ Typed world geography data for JavaScript and TypeScript.
 ## Install
 
 ```bash
-npm install arev
+npm install arevdata
 ```
 
 ## Quick start
@@ -25,7 +25,7 @@ import {
   getCountryByCode,
   getCountryFlag,
   phoneCountryCodes,
-} from "arev";
+} from "arevdata";
 
 console.log(countries.length);
 

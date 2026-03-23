@@ -26,8 +26,8 @@ import {
   getCapitalCity,
   getCitiesByPopulation,
   searchCities,
-} from "arev";
-import type { City } from "arev";
+} from "arevdata";
+import type { City } from "arevdata";
 ```
 
 ## Data shape
@@ -49,7 +49,7 @@ interface City {
 ### All cities
 
 ```ts
-import { cities } from "arev";
+import { cities } from "arevdata";
 
 console.log(cities.length); // ~270
 
@@ -61,7 +61,7 @@ console.log(capitals.length); // ~185
 ### Capital city of a country
 
 ```ts
-import { getCapitalCity } from "arev";
+import { getCapitalCity } from "arevdata";
 
 getCapitalCity("GB");
 // { name: "London", country: "GB", lat: 51.5074, lon: -0.1278, capital: true, population: 9648110 }
@@ -75,7 +75,7 @@ getCapitalCity("ZZ"); // undefined
 ### Cities in a country
 
 ```ts
-import { getCitiesByCountry } from "arev";
+import { getCitiesByCountry } from "arevdata";
 
 const usCities = getCitiesByCountry("US");
 usCities.map(c => c.name);
@@ -86,7 +86,7 @@ usCities.map(c => c.name);
 ### Top cities by population
 
 ```ts
-import { getCitiesByPopulation } from "arev";
+import { getCitiesByPopulation } from "arevdata";
 
 // Top 10 most populous cities
 const top10 = getCitiesByPopulation(10);
@@ -100,7 +100,7 @@ const all = getCitiesByPopulation();
 ### Search cities by name
 
 ```ts
-import { searchCities } from "arev";
+import { searchCities } from "arevdata";
 
 searchCities("new");
 // [{ name: "New York City", ... }, { name: "New Delhi", ... }, ...]
@@ -115,7 +115,7 @@ searchCities("BERLIN"); // same as searchCities("berlin")
 ### Build a city autocomplete
 
 ```ts
-import { searchCities, getCountryByCode } from "arev";
+import { searchCities, getCountryByCode } from "arevdata";
 
 function cityAutocomplete(input: string) {
   return searchCities(input).map((city) => {
@@ -134,8 +134,8 @@ cityAutocomplete("par");
 ### Calculate distance from capital to capital
 
 ```ts
-import { getCapitalCity } from "arev";
-import { haversineDistance } from "arev";
+import { getCapitalCity } from "arevdata";
+import { haversineDistance } from "arevdata";
 
 const amsterdam = getCapitalCity("NL")!;
 const berlin = getCapitalCity("DE")!;

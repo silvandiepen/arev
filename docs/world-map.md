@@ -116,7 +116,7 @@ function getWorldMapSvg(options?: WorldMapOptions): string;
 **Example:**
 
 ```ts
-import { getWorldMapSvg } from "arev";
+import { getWorldMapSvg } from "arevdata";
 
 // Inject into the DOM
 document.getElementById("map")!.innerHTML = getWorldMapSvg({
@@ -146,7 +146,7 @@ function highlightCountries(
 **Example – highlight election winners:**
 
 ```ts
-import { highlightCountries } from "arev";
+import { highlightCountries } from "arevdata";
 
 const svg = highlightCountries(
   [
@@ -178,7 +178,7 @@ function colorizeWorldMap(
 **Example – colour by continent:**
 
 ```ts
-import { colorizeWorldMap } from "arev";
+import { colorizeWorldMap } from "arevdata";
 
 const svg = colorizeWorldMap(
   {
@@ -206,7 +206,7 @@ function getCountryMapData(code: string): WorldMapCountry | undefined;
 ```
 
 ```ts
-import { getCountryMapData } from "arev";
+import { getCountryMapData } from "arevdata";
 
 const japan = getCountryMapData("JP");
 // { code: "JP", name: "Japan", paths: ["M...", "M..."] }
@@ -223,7 +223,7 @@ function searchWorldMapCountries(name: string): WorldMapCountry[];
 ```
 
 ```ts
-import { searchWorldMapCountries } from "arev";
+import { searchWorldMapCountries } from "arevdata";
 
 searchWorldMapCountries("land");
 // → [Greenland, Iceland, Finland, New Zealand, …]
@@ -249,7 +249,7 @@ Because each country path has a predictable `id` attribute, you can style countr
 
 <div id="map"></div>
 <script type="module">
-  import { getWorldMapSvg } from "arev";
+  import { getWorldMapSvg } from "arevdata";
   document.getElementById("map").innerHTML = getWorldMapSvg();
 </script>
 ```
@@ -257,7 +257,7 @@ Because each country path has a predictable `id` attribute, you can style countr
 You can also listen for click events on individual countries:
 
 ```js
-import { getWorldMapSvg } from "arev";
+import { getWorldMapSvg } from "arevdata";
 
 document.getElementById("map").innerHTML = getWorldMapSvg();
 

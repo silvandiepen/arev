@@ -10,7 +10,7 @@
     <!-- getFlagSvgUrl / getFlagPngUrl -->
     <div class="card col">
       <div class="section-title">getFlagSvgUrl(alpha2) &amp; getFlagPngUrl(alpha2, width)</div>
-      <div class="code">import { getFlagSvgUrl, getFlagPngUrl } from "arev";
+      <div class="code">import { getFlagSvgUrl, getFlagPngUrl } from "arevdata";
 
 getFlagSvgUrl("{{ flagCode }}")
 // → "{{ getFlagSvgUrl(flagCode) }}"
@@ -121,8 +121,8 @@ getFlagPngUrl("{{ flagCode }}", {{ pngWidth }})
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { flagData, getFlagSvgUrl, getFlagPngUrl, getFlagData, getFlagsByColor, getSimilarFlags } from "arev";
-import type { FlagColor } from "arev";
+import { flagData, getFlagSvgUrl, getFlagPngUrl, getFlagData, getFlagsByColor, getSimilarFlags } from "arevdata";
+import type { FlagColor } from "arevdata";
 
 const flagCode = ref("NL");
 const pngWidth = ref(320);

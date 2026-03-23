@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "arev": "file:../../",
+    "arevdata": "file:../../",
     "vue": "^3.4.0"
   },
   "devDependencies": {

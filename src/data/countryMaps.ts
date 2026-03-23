@@ -14,7 +14,7 @@
  *
  * @example
  * ```ts
- * import { getCountrySvg } from "arev";
+ * import { getCountrySvg } from "arevdata";
  *
  * // Render Germany with city markers
  * document.getElementById("map").innerHTML = getCountrySvg("DE", {

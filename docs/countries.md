@@ -25,8 +25,8 @@ import {
   getCountryByCode,
   getCountriesByContinent,
   getCountryFlag,
-} from "arev";
-import type { Country, ContinentName } from "arev";
+} from "arevdata";
+import type { Country, ContinentName } from "arevdata";
 ```
 
 ## Data shape
@@ -53,7 +53,7 @@ interface Country {
 ### All countries
 
 ```ts
-import { countries } from "arev";
+import { countries } from "arevdata";
 
 console.log(countries.length); // ~195
 console.log(countries[0]);
@@ -70,7 +70,7 @@ console.log(countries[0]);
 ### Look up a country by alpha-2 code
 
 ```ts
-import { getCountryByCode } from "arev";
+import { getCountryByCode } from "arevdata";
 
 const de = getCountryByCode("DE");
 // { name: "Germany", alpha2: "DE", flag: "🇩🇪", capital: "Berlin", ... }
@@ -85,7 +85,7 @@ getCountryByCode("ZZ"); // undefined
 ### Get all countries in a continent
 
 ```ts
-import { getCountriesByContinent } from "arev";
+import { getCountriesByContinent } from "arevdata";
 
 const europeanCountries = getCountriesByContinent("Europe");
 console.log(europeanCountries.length); // 44+
@@ -97,7 +97,7 @@ const africanCodes = getCountriesByContinent("Africa").map(c => c.alpha2);
 ### Get the flag emoji for a country code
 
 ```ts
-import { getCountryFlag } from "arev";
+import { getCountryFlag } from "arevdata";
 
 getCountryFlag("NL"); // "🇳🇱"
 getCountryFlag("JP"); // "🇯🇵"
@@ -107,7 +107,7 @@ getCountryFlag("us"); // "🇺🇸" — case-insensitive
 ### Build a country selector
 
 ```ts
-import { countries } from "arev";
+import { countries } from "arevdata";
 
 const options = countries.map((c) => ({
   value: c.alpha2,
@@ -119,7 +119,7 @@ const options = countries.map((c) => ({
 ### Get all European countries sorted alphabetically
 
 ```ts
-import { getCountriesByContinent } from "arev";
+import { getCountriesByContinent } from "arevdata";
 
 const sorted = getCountriesByContinent("Europe")
   .sort((a, b) => a.name.localeCompare(b.name));
@@ -128,7 +128,7 @@ const sorted = getCountriesByContinent("Europe")
 ### Find the currency for a given country
 
 ```ts
-import { getCountryByCode } from "arev";
+import { getCountryByCode } from "arevdata";
 
 const country = getCountryByCode("FR");
 console.log(country?.currency); // "EUR"

@@ -31,13 +31,13 @@ import {
   getLanguagesBySpeakerCount,
   getOfficialLanguagesByCountry,
   getOfficialLanguageCountries,
-} from "arev";
+} from "arevdata";
 import type {
   Language,
   LanguageNameLocale,
   LanguageOfficialCountry,
   LanguageOfficialStatus,
-} from "arev";
+} from "arevdata";
 ```
 
 ## Data shape
@@ -86,7 +86,7 @@ interface Language {
 ### Build a language selector
 
 ```ts
-import { languages } from "arev";
+import { languages } from "arevdata";
 
 const options = languages
   .filter((language) => language.estimatedSpeakers >= 1_000_000)
@@ -99,7 +99,7 @@ const options = languages
 ### Render labels in the user’s UI language
 
 ```ts
-import { getLanguageName } from "arev";
+import { getLanguageName } from "arevdata";
 
 getLanguageName("en", "de");    // "Englisch"
 getLanguageName("en-GB", "fr"); // "anglais britannique"
@@ -109,7 +109,7 @@ getLanguageName("sr-Latn", "ja"); // "セルビア語 (ラテン文字)"
 ### Resolve aliases and normalize stored values
 
 ```ts
-import { canonicalizeLanguageCode } from "arev";
+import { canonicalizeLanguageCode } from "arevdata";
 
 canonicalizeLanguageCode("iw");     // "he"
 canonicalizeLanguageCode("EN_gb");  // "en-GB"
@@ -119,7 +119,7 @@ canonicalizeLanguageCode("sh");     // "sr-Latn"
 ### Show all locale variants of a base language
 
 ```ts
-import { getLanguageVariants } from "arev";
+import { getLanguageVariants } from "arevdata";
 
 const englishVariants = getLanguageVariants("en");
 englishVariants.slice(0, 5).map((language) => language.code);
@@ -129,7 +129,7 @@ englishVariants.slice(0, 5).map((language) => language.code);
 ### Filter out obscure languages
 
 ```ts
-import { getLanguagesBySpeakerCount } from "arev";
+import { getLanguagesBySpeakerCount } from "arevdata";
 
 const majorLanguages = getLanguagesBySpeakerCount(10_000_000);
 ```
@@ -137,7 +137,7 @@ const majorLanguages = getLanguagesBySpeakerCount(10_000_000);
 ### Search by translated label or code
 
 ```ts
-import { searchLanguages } from "arev";
+import { searchLanguages } from "arevdata";
 
 searchLanguages("anglais", { locale: "fr" });
 searchLanguages("british english", { includeVariants: true });
@@ -147,7 +147,7 @@ searchLanguages("spanish", { minSpeakers: 50_000_000 });
 ### Map countries to official languages
 
 ```ts
-import { getOfficialLanguagesByCountry } from "arev";
+import { getOfficialLanguagesByCountry } from "arevdata";
 
 getOfficialLanguagesByCountry("BE").map((language) => language.name);
 // ["Dutch", "French", "German"]
@@ -156,7 +156,7 @@ getOfficialLanguagesByCountry("BE").map((language) => language.name);
 ### Map a language back to countries where it is official
 
 ```ts
-import { getOfficialLanguageCountries } from "arev";
+import { getOfficialLanguageCountries } from "arevdata";
 
 getOfficialLanguageCountries("ca");
 // [

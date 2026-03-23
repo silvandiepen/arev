@@ -40,7 +40,7 @@ API: `https://api.arevdata.com`
 ## Installation
 
 ```bash
-npm install arev
+npm install arevdata
 ```
 
 ## Deployment
@@ -70,7 +70,7 @@ import {
   getGeoHints,
   getDistanceBetweenCountries,
   getDirectionBetweenCountries,
-} from "arev";
+} from "arevdata";
 
 // All ~195 countries
 console.log(countries.length); // 195
@@ -365,7 +365,7 @@ import type {
   CardinalDirection,
   Hemisphere,
   GeoHint,
-} from "arev";
+} from "arevdata";
 ```
 
 ### `Country`
@@ -487,8 +487,8 @@ States/provinces coverage: United States (50 + DC + territories), Canada (10 pro
 
 | Format | Size | Gzip |
 |--------|------|------|
-| ESM (`dist/arev.js`) | ~210 kB | ~42 kB |
-| CJS (`dist/arev.cjs`) | ~211 kB | ~42 kB |
+| ESM (`dist/arevdata.js`) | ~210 kB | ~42 kB |
+| CJS (`dist/arevdata.cjs`) | ~211 kB | ~42 kB |
 
 Flag SVG/PNG images are **not bundled in the npm package**. They are generated from repo-owned SVG sources and hosted on `arevdata.com`, keeping the package lean while avoiding third-party flag CDNs.
 

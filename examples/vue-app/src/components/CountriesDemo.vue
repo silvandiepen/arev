@@ -10,7 +10,7 @@
     <!-- search + filters -->
     <div class="card col">
       <div class="section-title">Search &amp; Filter</div>
-      <div class="code">import { countries, getCountryByCode, getCountriesByContinent, getCountryFlag, getRecognizedCountries } from "arev";</div>
+      <div class="code">import { countries, getCountryByCode, getCountriesByContinent, getCountryFlag, getRecognizedCountries } from "arevdata";</div>
       <div class="row">
         <input v-model="search" placeholder="Search by name, code or capital…" style="max-width:320px" />
         <select v-model="continentFilter" style="max-width:200px">
@@ -128,7 +128,7 @@
     <!-- phoneCountryCodes + lookup -->
     <div class="card col">
       <div class="section-title">phoneCountryCodes · getPhoneCodeByCountry · getCountriesByPhoneCode</div>
-      <div class="code">import { phoneCountryCodes, getPhoneCodeByCountry, getCountriesByPhoneCode } from "arev";
+      <div class="code">import { phoneCountryCodes, getPhoneCodeByCountry, getCountriesByPhoneCode } from "arevdata";
 
 // {{ phoneCountryCodes.length }} entries (including territories)
 getPhoneCodeByCountry("{{ phoneCountry }}")
@@ -174,7 +174,7 @@ getCountriesByPhoneCode("{{ sharedPhoneCode }}")
     <!-- continents -->
     <div class="card col">
       <div class="section-title">continents · getContinentByCode(code)</div>
-      <div class="code">import { continents, getContinentByCode } from "arev";
+      <div class="code">import { continents, getContinentByCode } from "arevdata";
 
 continents.length // → {{ continents.length }}
 getContinentByCode("{{ contCode }}")</div>
@@ -214,8 +214,8 @@ import {
   getCountriesByPhoneCode,
   continents,
   getContinentByCode,
-} from "arev";
-import type { ContinentName } from "arev";
+} from "arevdata";
+import type { ContinentName } from "arevdata";
 
 const search = ref("");
 const continentFilter = ref<ContinentName | "">("");

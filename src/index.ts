@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import { phoneCountryCodes, countries, cities } from "arev";
+ * import { phoneCountryCodes, countries, cities } from "arevdata";
  *
  * // Use phone country codes in a select input
  * const options = phoneCountryCodes.map(p => ({

@@ -16,8 +16,8 @@ tags: continents, currencies, reference
 ### Import
 
 ```ts
-import { continents, getContinentByCode } from "arev";
-import type { Continent, ContinentName } from "arev";
+import { continents, getContinentByCode } from "arevdata";
+import type { Continent, ContinentName } from "arevdata";
 ```
 
 ### Data shape
@@ -56,7 +56,7 @@ type ContinentName =
 ### Examples
 
 ```ts
-import { continents, getContinentByCode } from "arev";
+import { continents, getContinentByCode } from "arevdata";
 
 // All 7 continents
 console.log(continents.length); // 7
@@ -77,7 +77,7 @@ byArea.map(c => c.name);
 ### Use with countries
 
 ```ts
-import { continents, getCountriesByContinent } from "arev";
+import { continents, getCountriesByContinent } from "arevdata";
 
 // Add country list to each continent
 const enriched = continents.map(continent => ({
@@ -97,8 +97,8 @@ import {
   currencies,
   getCurrencyByCode,
   getCurrencyByCountry,
-} from "arev";
-import type { Currency } from "arev";
+} from "arevdata";
+import type { Currency } from "arevdata";
 ```
 
 ### Data shape
@@ -115,7 +115,7 @@ interface Currency {
 ### Examples
 
 ```ts
-import { currencies, getCurrencyByCode, getCurrencyByCountry } from "arev";
+import { currencies, getCurrencyByCode, getCurrencyByCountry } from "arevdata";
 
 // All ~150 currencies
 console.log(currencies.length); // ~150
@@ -141,7 +141,7 @@ getCurrencyByCountry("DE");
 ### List all countries using the Euro
 
 ```ts
-import { getCurrencyByCode, getCountryByCode } from "arev";
+import { getCurrencyByCode, getCountryByCode } from "arevdata";
 
 const euro = getCurrencyByCode("EUR");
 const eurozone = euro?.countries.map(code => getCountryByCode(code)?.name);
@@ -151,7 +151,7 @@ const eurozone = euro?.countries.map(code => getCountryByCode(code)?.name);
 ### Build a currency selector
 
 ```ts
-import { currencies } from "arev";
+import { currencies } from "arevdata";
 
 const currencyOptions = currencies.map(c => ({
   value: c.code,
@@ -163,7 +163,7 @@ const currencyOptions = currencies.map(c => ({
 ### Format a price with the right symbol
 
 ```ts
-import { getCurrencyByCountry } from "arev";
+import { getCurrencyByCountry } from "arevdata";
 
 function formatPrice(amount: number, countryCode: string): string {
   const currency = getCurrencyByCountry(countryCode);

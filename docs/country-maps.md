@@ -48,7 +48,7 @@ function getCountrySvg(
 **Example:**
 
 ```ts
-import { getCountrySvg } from "arev";
+import { getCountrySvg } from "arevdata";
 
 // Render Germany with default styling
 document.getElementById("map")!.innerHTML = getCountrySvg("DE") ?? "";
@@ -88,7 +88,7 @@ function getCountrySubdivisionMapUrl(alpha3: string): string;
 **Example:**
 
 ```ts
-import { getCountrySubdivisionMapUrl } from "arev";
+import { getCountrySubdivisionMapUrl } from "arevdata";
 
 const url = getCountrySubdivisionMapUrl("DEU");
 // → "https://upload.wikimedia.org/wikipedia/commons/thumb/maps/DEU.svg/800px-DEU.svg.png"
@@ -119,7 +119,7 @@ function latLonToMapPoint(
 **Example:**
 
 ```ts
-import { latLonToMapPoint, getCountrySvg } from "arev";
+import { latLonToMapPoint, getCountrySvg } from "arevdata";
 
 const berlin = latLonToMapPoint(52.52, 13.41);
 // → { x: 1074.5, y: 207.9 }
@@ -200,7 +200,7 @@ Because each country path has a predictable `id` attribute, you can style or int
 ```
 
 ```js
-import { getCountrySvg } from "arev";
+import { getCountrySvg } from "arevdata";
 
 document.getElementById("map")!.innerHTML = getCountrySvg("BR") ?? "";
 

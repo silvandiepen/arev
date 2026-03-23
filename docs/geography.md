@@ -32,7 +32,7 @@ import {
   compareSize,
   getHemisphere,
   getGeoHints,
-} from "arev";
+} from "arevdata";
 
 import type {
   CountryGeography,
@@ -40,7 +40,7 @@ import type {
   ClimateZone,
   CardinalDirection,
   GeoHint,
-} from "arev";
+} from "arevdata";
 ```
 
 ---
@@ -81,7 +81,7 @@ type ClimateZone =
 ### Accessing geography data
 
 ```ts
-import { getCountryGeography, countryGeography } from "arev";
+import { getCountryGeography, countryGeography } from "arevdata";
 
 // Look up by alpha-2
 const de = getCountryGeography("DE");
@@ -103,7 +103,7 @@ console.log(countryGeography.length); // ~195
 ### Landlocked countries
 
 ```ts
-import { getLandlockedCountries } from "arev";
+import { getLandlockedCountries } from "arevdata";
 
 const landlocked = getLandlockedCountries();
 const codes = landlocked.map(g => g.alpha2);
@@ -117,7 +117,7 @@ const codes = landlocked.map(g => g.alpha2);
 ### Countries by climate zone
 
 ```ts
-import { getCountriesByClimate } from "arev";
+import { getCountriesByClimate } from "arevdata";
 
 // Tropical countries
 getCountriesByClimate("tropical").map(g => g.alpha2);
@@ -131,7 +131,7 @@ getCountriesByClimate("arctic");
 ### Neighbouring countries
 
 ```ts
-import { getNeighbors } from "arev";
+import { getNeighbors } from "arevdata";
 
 const franceNeighbors = getNeighbors("FR");
 // Returns CountryGeography[] for: ES, AD, MC, IT, CH, DE, LU, BE
@@ -148,7 +148,7 @@ getNeighbors("AU"); // []
 ### Distance between countries
 
 ```ts
-import { getDistanceBetweenCountries, haversineDistance } from "arev";
+import { getDistanceBetweenCountries, haversineDistance } from "arevdata";
 
 // By alpha-2 code (uses country centroids)
 getDistanceBetweenCountries("NL", "DE"); // ~393 km
@@ -167,7 +167,7 @@ import {
   getDirectionBetweenCountries,
   bearing,
   bearingToCardinal,
-} from "arev";
+} from "arevdata";
 
 // By alpha-2 code
 getDirectionBetweenCountries("FR", "DE"); // "NE"
@@ -186,7 +186,7 @@ type CardinalDirection = "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW";
 ### Temperature comparison
 
 ```ts
-import { compareTemperature } from "arev";
+import { compareTemperature } from "arevdata";
 
 compareTemperature("CA", "BR"); // "hotter"  — Brazil (24°C) vs Canada (-5°C)
 compareTemperature("BR", "CA"); // "colder"
@@ -199,7 +199,7 @@ Threshold: differences ≤ 3 °C return `"similar"`.
 ### Size comparison
 
 ```ts
-import { compareSize } from "arev";
+import { compareSize } from "arevdata";
 
 compareSize("NL", "RU"); // "larger"   — Russia (17M km²) vs Netherlands (42k km²)
 compareSize("RU", "NL"); // "smaller"
@@ -212,7 +212,7 @@ Threshold: area ratio within 0.8–1.2 returns `"similar"`.
 ### Hemisphere
 
 ```ts
-import { getHemisphere } from "arev";
+import { getHemisphere } from "arevdata";
 
 getHemisphere("DE");
 // { ns: "Northern", ew: "Eastern" }
@@ -230,8 +230,8 @@ getHemisphere("XX"); // null
 `getGeoHints()` is the primary function for building Wordle-style geography games. Given a player's guess and the secret target country, it returns all relevant hints in one object.
 
 ```ts
-import { getGeoHints } from "arev";
-import type { GeoHint } from "arev";
+import { getGeoHints } from "arevdata";
+import type { GeoHint } from "arevdata";
 
 interface GeoHint {
   distanceKm: number;                              // km between centroids
@@ -262,7 +262,7 @@ const hints = getGeoHints("NL", "DE");
 ### Example: geography guessing game loop
 
 ```ts
-import { countries, getGeoHints } from "arev";
+import { countries, getGeoHints } from "arevdata";
 
 // Pick a random target country
 const target = countries[Math.floor(Math.random() * countries.length)];
@@ -310,7 +310,7 @@ processGuess("FR");
 ### Example: build hints sentence in natural language
 
 ```ts
-import { getGeoHints, getCountryByCode } from "arev";
+import { getGeoHints, getCountryByCode } from "arevdata";
 
 function buildHintSentence(guess: string, target: string): string {
   const hints = getGeoHints(guess, target);

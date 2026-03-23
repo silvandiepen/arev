@@ -27,8 +27,8 @@ import {
   getFlagPngUrl,
   getCountryMapSvgUrl,
   getCountryFlag,  // emoji flag — from countries module
-} from "arev";
-import type { FlagInfo, FlagColor } from "arev";
+} from "arevdata";
+import type { FlagInfo, FlagColor } from "arevdata";
 ```
 
 ## Data shape
@@ -55,7 +55,7 @@ Flag images are served from `arevdata.com`. SVG files are the source of truth in
 ### SVG flags
 
 ```ts
-import { getFlagSvgUrl } from "arev";
+import { getFlagSvgUrl } from "arevdata";
 
 getFlagSvgUrl("NL"); // "https://arevdata.com/flags/svg/nl.svg"
 getFlagSvgUrl("US"); // "https://arevdata.com/flags/svg/us.svg"
@@ -68,7 +68,7 @@ Use in HTML:
 
 Use in React:
 ```tsx
-import { getFlagSvgUrl } from "arev";
+import { getFlagSvgUrl } from "arevdata";
 
 function Flag({ countryCode }: { countryCode: string }) {
   return <img src={getFlagSvgUrl(countryCode)} width={40} alt={`${countryCode} flag`} />;
@@ -78,7 +78,7 @@ function Flag({ countryCode }: { countryCode: string }) {
 ### PNG flags (multiple sizes)
 
 ```ts
-import { getFlagPngUrl } from "arev";
+import { getFlagPngUrl } from "arevdata";
 
 getFlagPngUrl("NL");        // "https://arevdata.com/flags/png/w320/nl.png"  (default 320px wide)
 getFlagPngUrl("NL", 40);    // "https://arevdata.com/flags/png/w40/nl.png"
@@ -91,7 +91,7 @@ Available widths: `40 | 80 | 160 | 320 | 640 | 1280 | 2560`
 ### Country outline SVG (map shape)
 
 ```ts
-import { getCountryMapSvgUrl } from "arev";
+import { getCountryMapSvgUrl } from "arevdata";
 
 getCountryMapSvgUrl("NLD"); // Wikimedia Commons outline map URL
 ```
@@ -103,7 +103,7 @@ getCountryMapSvgUrl("NLD"); // Wikimedia Commons outline map URL
 The `similar` field on each `FlagInfo` entry lists alpha-2 codes of countries whose flags would be visually confusing. This is designed for **"guess the flag" games** where you need to generate plausible wrong answers.
 
 ```ts
-import { getSimilarFlags, getFlagData } from "arev";
+import { getSimilarFlags, getFlagData } from "arevdata";
 
 // Get similar flags for the Netherlands
 const similar = getSimilarFlags("NL");
@@ -132,7 +132,7 @@ nl?.similar; // ["LU", "FR", "RU", ...]
 Use flag colours to group or filter countries:
 
 ```ts
-import { getFlagsByColor, flagData } from "arev";
+import { getFlagsByColor, flagData } from "arevdata";
 
 // All flags with green
 const greenFlags = getFlagsByColor("green");
@@ -149,7 +149,7 @@ const redWhiteOnly = flagData.filter(
 ## Building a "Guess the Flag" game
 
 ```ts
-import { flagData, getSimilarFlags, getFlagSvgUrl, getCountryByCode } from "arev";
+import { flagData, getSimilarFlags, getFlagSvgUrl, getCountryByCode } from "arevdata";
 
 function getQuizQuestion(targetAlpha2: string) {
   const target = getCountryByCode(targetAlpha2);
@@ -167,7 +167,7 @@ function getQuizQuestion(targetAlpha2: string) {
 ## Full flag data array
 
 ```ts
-import { flagData } from "arev";
+import { flagData } from "arevdata";
 
 console.log(flagData.length); // ~195
 
