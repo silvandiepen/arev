@@ -25,7 +25,7 @@
     "flags:build": "npm run flags:sync && node scripts/build-flag-assets.mjs",
     "docs:dev": "cd docs && ../node_modules/.bin/girk",
     "docs:build": "cd docs && ../node_modules/.bin/girk",
-    "docs:deploy": "npm run docs:build && wrangler pages deploy docs/public --project-name arevdata-docs",
+    "docs:deploy": "npm run docs:build && wrangler pages deploy --config docs/wrangler.jsonc",
     "prepack": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
