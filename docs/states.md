@@ -1,6 +1,13 @@
+---
+title: States, Provinces & Administrative Divisions
+description: Subnational administrative datasets and lookup helpers by country, code, and type.
+order: 40
+tags: states, provinces, reference
+---
+
 # States, Provinces & Administrative Divisions
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 The `states` array contains 600+ administrative divisions across 20+ countries: US states, Canadian provinces, Australian states, Swiss cantons, Brazilian states, German Länder, French regions, Spanish autonomous communities, Italian regions, Mexican states, Japanese prefectures, Indian states, Chinese provinces, and more.
 

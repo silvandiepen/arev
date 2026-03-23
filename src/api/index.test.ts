@@ -10,6 +10,7 @@ describe("api worker", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(response.headers.get("access-control-allow-origin")).toBe("*");
     expect(body).toEqual({
       data: {
         status: "ok",
@@ -79,6 +80,61 @@ describe("api worker", () => {
 
     expect(response.status).toBe(400);
     expect(body.error.code).toBe("invalid_query");
+  });
+
+  it("returns phone code records for a country", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/phone-codes?country=mt"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.meta.count).toBe(1);
+    expect(body.data[0].code).toBe("MT");
+    expect(body.data[0].phoneCode).toBe("+356");
+  });
+
+  it("returns all records that share a dialling code", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/phone-codes?phoneCode=1&limit=8")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.meta.count).toBeLessThanOrEqual(8);
+    expect(body.data.length).toBeGreaterThan(1);
+    expect(body.data.every((entry: { phoneCode: string }) => entry.phoneCode === "+1")).toBe(true);
+  });
+
+  it("returns a world map SVG payload", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/maps/world?highlight=MT:%23d97706,JP:%230f766e")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.data.highlightCount).toBe(2);
+    expect(body.data.svg).toContain("<svg");
+    expect(body.data.svg).toContain('id="MT"');
+    expect(body.data.svg).toContain('id="JP"');
+  });
+
+  it("rejects invalid world map highlight query values", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/maps/world?highlight=MT:not-a-color")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("invalid_query");
+  });
+
+  it("handles CORS preflight requests", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/countries", { method: "OPTIONS" })
+    );
+
+    expect(response.status).toBe(204);
+    expect(response.headers.get("access-control-allow-origin")).toBe("*");
+    expect(response.headers.get("access-control-allow-methods")).toContain("OPTIONS");
   });
 
   it("rejects unsupported methods", async () => {

@@ -1,8 +1,21 @@
+---
+title: Countries
+description: ISO country records, continent grouping, and core country lookups.
+order: 10
+tags: countries, iso, reference
+---
+
 # Countries
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 The `countries` array is the central dataset of `arev`. It contains ~195 sovereign states following the ISO 3166-1 standard, covering every continent.
+
+## Live country lookup
+
+<div>
+  <arev-country-lookup></arev-country-lookup>
+</div>
 
 ## Import
 

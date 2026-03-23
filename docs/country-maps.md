@@ -1,4 +1,13 @@
+---
+title: Country Maps
+description: Standalone country SVG rendering and helpers for subdivision-map and point conversion.
+order: 100
+tags: maps, countries, svg
+---
+
 # Country Maps
+
+[← Back to docs](README.md)
 
 `arev` provides functions to render a standalone SVG for any individual country, using the bundled world-map vector data and the bundled cities dataset.
 

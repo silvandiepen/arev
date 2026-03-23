@@ -10,11 +10,23 @@ export interface JsonErrorBody {
   };
 }
 
+const DEFAULT_CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, OPTIONS",
+  "access-control-allow-headers": "content-type",
+};
+
 function withDefaultHeaders(init?: ResponseInit): Headers {
   const headers = new Headers(init?.headers);
 
   if (!headers.has("content-type")) {
     headers.set("content-type", "application/json; charset=utf-8");
+  }
+
+  for (const [key, value] of Object.entries(DEFAULT_CORS_HEADERS)) {
+    if (!headers.has(key)) {
+      headers.set(key, value);
+    }
   }
 
   return headers;
@@ -62,4 +74,12 @@ export function methodNotAllowed(allow = "GET"): Response {
 
 export function notFound(message = "Route not found"): Response {
   return error(404, "not_found", message);
+}
+
+export function noContent(init?: ResponseInit): Response {
+  return new Response(null, {
+    status: 204,
+    ...init,
+    headers: withDefaultHeaders(init),
+  });
 }

@@ -37,6 +37,8 @@ export function handleMetaRoute(): Response {
         "/countries/:alpha2",
         "/cities",
         "/cities/capital/:alpha2",
+        "/phone-codes",
+        "/maps/world",
       ],
     },
     undefined,

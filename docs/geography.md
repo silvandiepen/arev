@@ -1,6 +1,13 @@
+---
+title: Geography Data & Geo Utilities
+description: Country geography records, climate metadata, neighbours, and gameplay-oriented helpers.
+order: 70
+tags: geography, maps, reference
+---
+
 # Geography Data & Geo Utilities
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 `arev` includes a complete geographic dataset for every country and a set of utility functions designed for **geography games** (Wordle-style country guessing, atlas quizzes, educational tools) and **location-aware UIs**.
 

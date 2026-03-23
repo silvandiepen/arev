@@ -1,6 +1,13 @@
+---
+title: Continents & Currencies
+description: Continent metadata and ISO 4217 currency lookups for country-driven UIs.
+order: 50
+tags: continents, currencies, reference
+---
+
 # Continents & Currencies
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 ---
 

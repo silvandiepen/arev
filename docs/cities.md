@@ -1,8 +1,21 @@
+---
+title: Cities
+description: Capital-city and major-city datasets with search and population helpers.
+order: 30
+tags: cities, capitals, reference
+---
+
 # Cities
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 The `cities` array contains ~270 major world cities, including every national capital. Each city has coordinates (lat/lon), country code, and population where available.
+
+## Live capital finder
+
+<div>
+  <arev-capital-finder></arev-capital-finder>
+</div>
 
 ## Import
 

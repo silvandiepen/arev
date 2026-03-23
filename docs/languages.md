@@ -1,6 +1,13 @@
+---
+title: Languages
+description: Base languages, locale variants, translations, and official-language mappings.
+order: 60
+tags: languages, locales, reference
+---
+
 # Languages
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 The language dataset adds three things that were missing from the core country data:
 

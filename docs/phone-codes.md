@@ -1,8 +1,21 @@
+---
+title: Phone Country Codes
+description: Dialling-code records and helpers for building international phone inputs.
+order: 20
+tags: phone, countries, reference
+---
+
 # Phone Country Codes
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 The `phoneCountryCodes` array is ready-to-use data for international phone number inputs (like WhatsApp, Stripe, or any contact form). It combines all sovereign countries with additional territories and special regions that have their own dialling codes.
+
+## Live phone code picker
+
+<div>
+  <arev-phone-code-demo></arev-phone-code-demo>
+</div>
 
 ## Import
 

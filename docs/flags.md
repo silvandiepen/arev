@@ -1,6 +1,13 @@
+---
+title: Flags
+description: Self-hosted flag assets, colour data, and similar-flag groupings.
+order: 80
+tags: flags, assets, reference
+---
+
 # Flags
 
-[← Back to README](../README.md)
+[← Back to docs](README.md)
 
 `arev` provides complete flag metadata for ~195 countries:
 

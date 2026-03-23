@@ -1,7 +1,22 @@
+---
+title: World Map
+description: Inline SVG world map data with helpers for highlighting and colorizing countries.
+order: 90
+tags: maps, world, svg
+---
+
 # World Map
+
+[← Back to docs](README.md)
 
 `arev` ships a full vector world map as inline SVG path data, together with helper functions to render, style, and highlight countries.  
 Countries are identified by their **ISO 3166-1 alpha-2** codes (e.g. `"US"`, `"DE"`, `"JP"`), which match the `alpha2` field used throughout the rest of the library.
+
+## Live world map highlighter
+
+<div>
+  <arev-world-map-demo></arev-world-map-demo>
+</div>
 
 ---
 
