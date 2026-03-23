@@ -1,6 +1,6 @@
 {
   "name": "arevdata",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "A comprehensive collection of reusable world data: countries, phone codes, flags, cities, states, provinces and more",
   "type": "module",
   "main": "./dist/arevdata.cjs",
