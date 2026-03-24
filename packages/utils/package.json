@@ -1,6 +1,6 @@
 {
   "name": "@arevs/utils",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "Shared utility helpers for the @arevs data packages",
   "type": "module",
   "main": "./dist/index.cjs",
