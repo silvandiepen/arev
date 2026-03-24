@@ -21,6 +21,17 @@ The hosted API is intentionally rate-limited. For unlimited access to the datase
 npm install @arevs/data
 ```
 
+Focused packages are also available when you do not need the full aggregate install:
+
+- `@arevs/geo`
+- `@arevs/flags`
+- `@arevs/places`
+- `@arevs/maps`
+- `@arevs/astronomy`
+- `@arevs/space`
+- `@arevs/core`
+- `@arevs/utils`
+
 ## Quick start
 
 ```ts
@@ -72,3 +83,4 @@ const pickerOptions = phoneCountryCodes.map((entry) => ({
 - Repository: <https://github.com/silvandiepen/arev>
 - Docs site output: generated from this `apps/docs/` folder with `girk`
 - API base: <https://api.arevdata.com>
+- npm scope: <https://www.npmjs.com/org/arevs>

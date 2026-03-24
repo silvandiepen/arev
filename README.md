@@ -71,6 +71,8 @@ npm install @arevs/places
 npm install @arevs/maps
 ```
 
+See the package-level READMEs in `packages/*/README.md` for focused installs and examples.
+
 ## Deployment
 
 Pushes to `main` can deploy both Cloudflare targets through GitHub Actions:
@@ -602,12 +604,13 @@ States/provinces coverage: 5,000+ administrative divisions across every country 
 
 ## Bundle size
 
-| Format | Size | Gzip |
-|--------|------|------|
-| ESM (`dist/arevdata.js`) | ~210 kB | ~42 kB |
-| CJS (`dist/arevdata.cjs`) | ~211 kB | ~42 kB |
+Bundle size now depends on which package you install:
 
-Flag SVG/PNG images are **not bundled in the npm package**. They are generated from repo-owned SVG sources and hosted on `arevdata.com`, keeping the package lean while avoiding third-party flag CDNs.
+- `@arevs/data` is the full aggregate package
+- `@arevs/geo`, `@arevs/flags`, `@arevs/places`, `@arevs/maps`, `@arevs/astronomy`, and `@arevs/space` keep installs more focused
+- `@arevs/places` is country-sharded so consumers do not have to load worldwide place data up front
+
+Flag SVG/PNG images are **not bundled in the npm packages**. They are generated from repo-owned SVG sources and hosted on `arevdata.com`, keeping package installs lean while avoiding third-party flag CDNs.
 
 ---
 

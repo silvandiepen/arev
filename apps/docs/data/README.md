@@ -10,9 +10,16 @@ tags: documentation, data, reference
 
 # Data & Assets
 
-The foundational reference layer for `arevdata`.
+The foundational reference layer for the `@arevs/*` data packages.
 
-This section groups the package's country, city, language, phone-code, and currency datasets together with the flag asset helpers they depend on.
+This section groups the country, city, language, phone-code, and currency datasets together with the flag and place-selector helpers they depend on.
+
+## Relevant packages
+
+- `@arevs/data` for the full aggregate surface
+- `@arevs/geo` for countries, cities, states, languages, timezones, and currencies
+- `@arevs/flags` for flag metadata and asset URLs
+- `@arevs/places` for country-sharded place selector data
 
 ## Included pages
 
