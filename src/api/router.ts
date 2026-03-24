@@ -1,3 +1,9 @@
+import type { ApiEnv } from "./env.js";
+import {
+  handleAccessSignup,
+  handleAccessUpgradeRequest,
+  handleAccessVerify,
+} from "./routes/access.js";
 import {
   handleAddressFormatDetails,
   handleAddressFormatsCollection,
@@ -20,53 +26,81 @@ function normalizePathname(pathname: string): string {
   return pathname;
 }
 
-export async function routeRequest(request: Request): Promise<Response> {
+export async function routeRequest(
+  request: Request,
+  env?: ApiEnv
+): Promise<Response> {
   if (request.method === "OPTIONS") {
     return noContent();
-  }
-
-  if (request.method !== "GET") {
-    return methodNotAllowed();
   }
 
   const url = new URL(request.url);
   const pathname = normalizePathname(url.pathname);
   const segments = pathname.split("/").filter(Boolean);
 
-  switch (pathname) {
-    case "/health":
-      return handleHealthRoute();
-    case "/meta":
-      return handleMetaRoute();
-    case "/address-formats":
-      return handleAddressFormatsCollection();
-    case "/countries":
-      return handleCountriesCollection(request);
-    case "/cities":
-      return handleCitiesCollection(request);
-    case "/astronomy":
-      return handleAstronomyRoute(request);
-    case "/phone-codes":
-      return handlePhoneCodesCollection(request);
-    case "/timezones":
-      return handleTimezonesCollection(request);
-    case "/maps/world":
-      return handleWorldMapRoute(request);
-    default:
-      break;
+  if (request.method === "GET") {
+    switch (pathname) {
+      case "/health":
+        return handleHealthRoute();
+      case "/meta":
+        return handleMetaRoute();
+      case "/address-formats":
+        return handleAddressFormatsCollection();
+      case "/countries":
+        return handleCountriesCollection(request);
+      case "/cities":
+        return handleCitiesCollection(request);
+      case "/astronomy":
+        return handleAstronomyRoute(request);
+      case "/phone-codes":
+        return handlePhoneCodesCollection(request);
+      case "/timezones":
+        return handleTimezonesCollection(request);
+      case "/maps/world":
+        return handleWorldMapRoute(request);
+      case "/access/verify":
+        return handleAccessVerify(request, env);
+      case "/access/signup":
+      case "/access/request-upgrade":
+        return methodNotAllowed("POST");
+      default:
+        break;
+    }
+
+    if (segments[0] === "countries" && segments.length === 2) {
+      return handleCountryDetails(request, segments[1]);
+    }
+
+    if (segments[0] === "address-formats" && segments.length === 2) {
+      return handleAddressFormatDetails(segments[1]);
+    }
+
+    if (segments[0] === "cities" && segments[1] === "capital" && segments.length === 3) {
+      return handleCapitalCity(request, segments[2]);
+    }
+
+    return notFound();
   }
 
-  if (segments[0] === "countries" && segments.length === 2) {
-    return handleCountryDetails(request, segments[1]);
+  if (request.method === "POST") {
+    if (pathname === "/access/signup") {
+      return handleAccessSignup(request, env);
+    }
+
+    if (pathname === "/access/request-upgrade") {
+      return handleAccessUpgradeRequest(request, env);
+    }
+
+    if (pathname === "/access/verify") {
+      return methodNotAllowed("GET");
+    }
+
+    return methodNotAllowed();
   }
 
-  if (segments[0] === "address-formats" && segments.length === 2) {
-    return handleAddressFormatDetails(segments[1]);
+  if (pathname.startsWith("/access/")) {
+    return methodNotAllowed("GET, POST");
   }
 
-  if (segments[0] === "cities" && segments[1] === "capital" && segments.length === 3) {
-    return handleCapitalCity(request, segments[2]);
-  }
-
-  return notFound();
+  return methodNotAllowed();
 }

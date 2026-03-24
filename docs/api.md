@@ -45,12 +45,24 @@ Errors use an `error` object:
   <arev-api-playground></arev-api-playground>
 </div>
 
+## Access policy
+
+The hosted API is intentionally capped.
+
+- Anonymous access is heavily rate-limited and capped per day.
+- Free API keys are available through email verification and have higher limits than anonymous access.
+- Higher tiers are manual and must be requested separately.
+- Installing the `arevdata` package remains the unlimited path for full dataset access. The npm package is not rate-limited because it does not depend on the hosted API.
+
 ## Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/health` | Healthcheck for uptime and worker diagnostics. |
 | `GET` | `/meta` | Dataset counts, supported languages, and route inventory. |
+| `POST` | `/access/signup` | Request a free API key by email. |
+| `GET` | `/access/verify?token=...` | Verify the emailed signup token and receive a free API key. |
+| `POST` | `/access/request-upgrade` | Request a higher API tier for an existing use case. |
 | `GET` | `/address-formats` | All address-format records keyed by country. |
 | `GET` | `/address-formats/:alpha2` | A single address-format record by alpha-2 country code. |
 | `GET` | `/countries` | Country collection with filtering. |
@@ -107,6 +119,9 @@ Response fields:
     "routes": [
       "/health",
       "/meta",
+      "/access/signup",
+      "/access/verify",
+      "/access/request-upgrade",
       "/address-formats",
       "/address-formats/:alpha2",
       "/countries",
@@ -120,6 +135,80 @@ Response fields:
     ]
   }
 }
+```
+
+### `POST /access/signup`
+
+Creates a free-tier signup request and sends a verification email.
+
+Notes:
+
+- Email addresses with `+` aliases are rejected.
+- This endpoint is rate-limited aggressively.
+- The API key is not emailed directly. The email contains a verification link, and the key is revealed once on verification.
+
+Request body:
+
+```json
+{
+  "email": "you@example.com"
+}
+```
+
+Example:
+
+```bash
+curl "https://api.arevdata.com/access/signup" \
+  -X POST \
+  -H "content-type: application/json" \
+  -d '{"email":"you@example.com"}'
+```
+
+### `GET /access/verify?token=...`
+
+Verifies a signup token and returns a new free-tier API key.
+
+Example:
+
+```bash
+curl "https://api.arevdata.com/access/verify?token=TOKEN_FROM_EMAIL"
+```
+
+Response shape:
+
+```json
+{
+  "data": {
+    "status": "verified",
+    "tier": "free",
+    "email": "you@example.com",
+    "apiKey": "arev_live_...",
+    "dailyLimit": 2500
+  }
+}
+```
+
+### `POST /access/request-upgrade`
+
+Submits a manual review request for a higher API tier.
+
+Request body:
+
+```json
+{
+  "email": "you@example.com",
+  "tier": "higher",
+  "reason": "Public app, commercial use, or other justification."
+}
+```
+
+Example:
+
+```bash
+curl "https://api.arevdata.com/access/request-upgrade" \
+  -X POST \
+  -H "content-type: application/json" \
+  -d '{"email":"you@example.com","tier":"higher","reason":"Public production app serving many users."}'
 ```
 
 ### `GET /address-formats`
@@ -402,5 +491,7 @@ Response shape:
 
 - The currently available endpoints are exactly the routes listed in the table above and in `GET /meta`.
 - All endpoints support `GET` and `OPTIONS`.
+- `POST` is additionally supported for `/access/signup` and `/access/request-upgrade`.
 - JSON endpoints include CORS headers for browser-based demos.
 - Collection endpoints that return arrays may include `meta.count`.
+- Requests that exceed burst or daily limits return `429` with `Retry-After`.

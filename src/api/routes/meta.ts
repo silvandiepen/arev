@@ -39,6 +39,9 @@ export function handleMetaRoute(): Response {
       routes: [
         "/health",
         "/meta",
+        "/access/signup",
+        "/access/verify",
+        "/access/request-upgrade",
         "/address-formats",
         "/address-formats/:alpha2",
         "/countries",

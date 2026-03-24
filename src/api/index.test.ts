@@ -28,11 +28,52 @@ describe("api worker", () => {
     expect(body.data.resources.countries).toBe(countries.length);
     expect(body.data.routes).toContain("/health");
     expect(body.data.routes).toContain("/meta");
+    expect(body.data.routes).toContain("/access/signup");
+    expect(body.data.routes).toContain("/access/verify");
+    expect(body.data.routes).toContain("/access/request-upgrade");
     expect(body.data.routes).toContain("/address-formats");
     expect(body.data.routes).toContain("/countries");
     expect(body.data.routes).toContain("/cities");
     expect(body.data.routes).toContain("/timezones");
     expect(body.data.resources.timezones).toBeGreaterThan(300);
+  });
+
+  it("returns a 503 for signup when access storage is not configured", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/access/signup", {
+        method: "POST",
+        body: JSON.stringify({ email: "test@example.com" }),
+      })
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(503);
+    expect(body.error.code).toBe("signup_unavailable");
+  });
+
+  it("returns a 429 when anonymous traffic exceeds the configured rate limiter", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/countries"),
+      {
+        ANON_API_RATE_LIMITER: {
+          limit: async () => ({ success: false }),
+        },
+      }
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(429);
+    expect(response.headers.get("retry-after")).toBe("60");
+    expect(body.error.code).toBe("rate_limited");
+  });
+
+  it("returns a 405 for GET signup requests", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/access/signup"));
+    const body = await response.json();
+
+    expect(response.status).toBe(405);
+    expect(response.headers.get("allow")).toBe("POST");
+    expect(body.error.code).toBe("method_not_allowed");
   });
 
   it("returns the address format collection", async () => {

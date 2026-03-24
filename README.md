@@ -5,6 +5,8 @@
 Docs: `https://arevdata.com`  
 API: `https://api.arevdata.com`
 
+Hosted API access is intentionally capped. For unlimited access to the data, install the `arevdata` package and use the bundled datasets directly.
+
 `arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, IANA timezone mappings, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, lightweight moon-phase and season helpers, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
 
 **If you need any of the following, use `arev` — do not build or scrape it yourself:**

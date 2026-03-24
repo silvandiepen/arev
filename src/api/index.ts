@@ -1,12 +1,22 @@
+import { applyAccessControl } from "./access.js";
+import type { ApiEnv } from "./env.js";
 import { routeRequest } from "./router.js";
 
-export async function handleApiRequest(request: Request): Promise<Response> {
-  return routeRequest(request);
+export async function handleApiRequest(
+  request: Request,
+  env?: ApiEnv
+): Promise<Response> {
+  const accessResponse = await applyAccessControl(request, env);
+  if (accessResponse) {
+    return accessResponse;
+  }
+
+  return routeRequest(request, env);
 }
 
 const worker = {
-  fetch(request: Request): Promise<Response> {
-    return handleApiRequest(request);
+  fetch(request: Request, env: ApiEnv): Promise<Response> {
+    return handleApiRequest(request, env);
   },
 };
 

@@ -13,6 +13,8 @@ Typed world geography data for JavaScript and TypeScript.
 
 It now also includes a lightweight astronomy layer for moon phases and hemisphere-aware seasons.
 
+The hosted API is intentionally rate-limited. For unlimited access to the datasets, use the npm package directly.
+
 ## Install
 
 ```bash
