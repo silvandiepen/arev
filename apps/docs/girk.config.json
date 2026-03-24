@@ -1,0 +1,18 @@
+{
+  "project": {
+    "title": "Arevs",
+    "description": "Typed world geography datasets, map helpers, and lookup utilities.",
+    "style": "/assets/site.css",
+    "scriptModule": "/assets/site.js"
+  },
+  "colors": {
+    "primary": "red",
+    "secondary": "blue",
+    "background": "light",
+    "foreground": "dark"
+  },
+  "socials": [
+    "https://github.com/silvandiepen/arev",
+    "https://api.arevdata.com"
+  ]
+}

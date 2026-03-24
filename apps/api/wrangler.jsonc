@@ -1,0 +1,72 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "arev-api",
+  "account_id": "8cef251b5fdcf6c6f63db98b7aa49f9a",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-03-20",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "api.arevdata.com",
+      "custom_domain": true
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "ANON_API_RATE_LIMITER",
+      "namespace_id": "4101",
+      "simple": {
+        "limit": 15,
+        "period": 60
+      }
+    },
+    {
+      "name": "ANON_MAPS_RATE_LIMITER",
+      "namespace_id": "4102",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    },
+    {
+      "name": "API_KEY_API_RATE_LIMITER",
+      "namespace_id": "4103",
+      "simple": {
+        "limit": 120,
+        "period": 60
+      }
+    },
+    {
+      "name": "API_KEY_MAPS_RATE_LIMITER",
+      "namespace_id": "4104",
+      "simple": {
+        "limit": 30,
+        "period": 60
+      }
+    },
+    {
+      "name": "SIGNUP_RATE_LIMITER",
+      "namespace_id": "4105",
+      "simple": {
+        "limit": 2,
+        "period": 60
+      }
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "API_ACCESS_DB",
+      "database_name": "arev-api-access",
+      "database_id": "e1fa9f38-3c4b-4ea6-996a-cff934cb66a9"
+    }
+  ],
+  "vars": {
+    "PUBLIC_API_ORIGIN": "https://api.arevdata.com",
+    "ACCESS_EMAIL_FROM": "onboarding@arevdata.com",
+    "ACCESS_EMAIL_REPLY_TO": "me@sil.mt",
+    "ACCESS_EMAIL_ADMIN_TO": "me@sil.mt"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

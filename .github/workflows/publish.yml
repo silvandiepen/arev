@@ -1,9 +1,10 @@
 name: Publish to npm
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
@@ -14,24 +15,26 @@ concurrency:
 
 jobs:
   publish:
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '25'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "25"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Verify synced workspace versions
+        run: |
+          npm run workspace:sync-versions
+          git diff --exit-code -- package.json packages/*/package.json
 
       - name: Type check
         run: npm run typecheck
@@ -42,16 +45,30 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Bump version
+      - name: Publish workspaces
+        shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version patch --no-git-tag-version
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          git add package.json package-lock.json
-          git commit -m "chore: bump version to ${NEW_VERSION} [skip ci]"
-          git pull --rebase
-          git push
+          set -euo pipefail
 
-      - name: Publish to npm
-        run: npm publish --provenance --access public
+          version="$(node -p "require('./package.json').version")"
+          packages=(
+            "@arevs/core"
+            "@arevs/utils"
+            "@arevs/geo"
+            "@arevs/flags"
+            "@arevs/places"
+            "@arevs/maps"
+            "@arevs/astronomy"
+            "@arevs/space"
+            "@arevs/data"
+          )
+
+          for pkg in "${packages[@]}"; do
+            if npm view "${pkg}@${version}" version >/dev/null 2>&1; then
+              echo "Skipping ${pkg}@${version}; already published."
+              continue
+            fi
+
+            echo "Publishing ${pkg}@${version}"
+            npm publish --workspace "${pkg}" --access public --provenance
+          done

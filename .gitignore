@@ -1,9 +1,10 @@
 node_modules/
 dist/
+packages/*/dist/
 coverage/
 public/
-docs/public/
+apps/docs/public/
 *.local
 .DS_Store
 *.log
-examples/vue-app/public/flags/
+apps/example/public/flags/

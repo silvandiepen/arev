@@ -1,38 +1,39 @@
 {
-  "name": "arevdata",
+  "name": "@arevs/workspace",
   "version": "0.1.20",
-  "description": "A comprehensive collection of reusable world data: countries, phone codes, flags, cities, states, provinces and more",
+  "description": "Workspace for the @arevs data packages",
+  "private": true,
   "type": "module",
-  "main": "./dist/arevdata.cjs",
-  "module": "./dist/arevdata.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/arevdata.js",
-      "require": "./dist/arevdata.cjs",
-      "types": "./dist/types/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
+  "workspaces": [
+    "packages/core",
+    "packages/utils",
+    "packages/geo",
+    "packages/flags",
+    "packages/places",
+    "packages/maps",
+    "packages/astronomy",
+    "packages/space",
+    "packages/data"
   ],
   "scripts": {
-    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist/types",
-    "dev": "vite build --watch",
-    "api:dev": "wrangler dev --config wrangler.jsonc",
-    "api:deploy": "wrangler deploy --config wrangler.jsonc",
+    "build": "npm run build --workspaces --if-present",
+    "build:packages": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspace @arevs/data",
+    "dev:example": "npm run dev --prefix apps/example",
+    "api:dev": "wrangler dev --config apps/api/wrangler.jsonc",
+    "api:deploy": "wrangler deploy --config apps/api/wrangler.jsonc",
     "flags:sync": "node scripts/sync-flag-svgs.mjs",
     "flags:build": "npm run flags:sync && node scripts/build-flag-assets.mjs",
-    "docs:clean": "node -e \"require('fs').rmSync('docs/public', { recursive: true, force: true })\"",
-    "docs:dev": "npm run docs:clean && cd docs && ../node_modules/.bin/girk",
-    "docs:build": "npm run docs:clean && cd docs && ../node_modules/.bin/girk",
-    "docs:deploy": "npm run docs:clean && cd docs && ../node_modules/.bin/girk && ../node_modules/.bin/wrangler pages deploy",
-    "prepack": "npm run build",
+    "docs:clean": "node -e \"require('fs').rmSync('apps/docs/public', { recursive: true, force: true })\"",
+    "docs:dev": "npm run docs:clean && cd apps/docs && ../../node_modules/.bin/girk",
+    "docs:build": "npm run docs:clean && cd apps/docs && ../../node_modules/.bin/girk",
+    "docs:deploy": "npm run docs:clean && cd apps/docs && ../../node_modules/.bin/girk && ../../node_modules/.bin/wrangler pages deploy",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "workspace:sync-versions": "node scripts/sync-workspace-versions.mjs",
+    "prepublishOnly": "npm run workspace:sync-versions && npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "countries",
@@ -50,9 +51,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/silvandiepen/arev.git"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",

@@ -1,0 +1,15 @@
+export {
+  planets,
+  moons,
+  stars,
+  galaxies,
+  milkyWay,
+  getPlanetByName,
+  getPlanetByOrder,
+  getPlanetsByType,
+  getMoonByName,
+  getMoonsByPlanet,
+  getStarByName,
+  searchStars,
+  getGalaxyByName,
+} from "./data/space.js";

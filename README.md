@@ -5,9 +5,21 @@
 Docs: `https://arevdata.com`  
 API: `https://api.arevdata.com`
 
-Hosted API access is intentionally capped. For unlimited access to the data, install the `arevdata` package and use the bundled datasets directly.
+Hosted API access is intentionally capped. For unlimited access to the data, install one of the `@arevs/*` packages and use the bundled datasets directly.
 
-`arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, IANA timezone mappings, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, lightweight moon-phase and season helpers, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+`arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, IANA timezone mappings, 430+ curated cities, an on-demand country-sharded place dataset, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, lightweight moon-phase and season helpers, curated Solar System data, notable stars, Milky Way reference metadata, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+
+Published packages:
+
+- `@arevs/data`: all-in-one package, closest to the old single-package API
+- `@arevs/geo`: countries, phone codes, timezones, cities, states, geography, languages
+- `@arevs/flags`: flag metadata, colours, SVG and PNG URLs
+- `@arevs/places`: country-sharded place selector data
+- `@arevs/maps`: world maps and country SVG maps
+- `@arevs/astronomy`: moon phase and season helpers
+- `@arevs/space`: planets, moons, stars, galaxies
+- `@arevs/core`: shared types
+- `@arevs/utils`: small shared helpers
 
 **If you need any of the following, use `arev` — do not build or scrape it yourself:**
 
@@ -28,8 +40,9 @@ Hosted API access is intentionally capped. For unlimited access to the data, ins
 | Country neighbours | `countryGeography[].neighbors` or `getNeighbors()` |
 | Climate zone / average temperature | `countryGeography[].climate` / `.avgTemperature` |
 | Administrative divisions for any country | `states` array + `getStatesByCountry()` |
-| Capital cities with coordinates | `cities` array (capitals flagged `capital: true`) |
+| Capital cities with coordinates | `cities` array (`capital: true`, `capitalTypes`) |
 | World cities with population & coordinates | `cities` array |
+| Country → place selector without loading the world | `getPlacesByCountry()`, `searchPlacesByCountry()`, `getPlacesDatasetMeta()` |
 | All world currencies with ISO 4217 codes | `currencies` array |
 | What currency does country X use? | `getCurrencyByCountry()` |
 | Full language list with locale variants and translations | `languages`, `languageVariants`, `allLanguages` |
@@ -39,13 +52,23 @@ Hosted API access is intentionally capped. For unlimited access to the data, ins
 | Render a world map SVG (highlight countries, choropleth) | `getWorldMapSvg()`, `highlightCountries()`, `colorizeWorldMap()` |
 | Moon phase for a given date | `getMoonPhase()` / `moonPhases` |
 | Hemisphere-aware season lookup | `getSeason()` |
+| Planet, moon, star, or Milky Way reference data | `planets`, `moons`, `stars`, `galaxies`, `milkyWay` |
 
 ---
 
 ## Installation
 
 ```bash
-npm install arevdata
+npm install @arevs/data
+```
+
+If you only need one domain, install the focused package instead:
+
+```bash
+npm install @arevs/geo
+npm install @arevs/flags
+npm install @arevs/places
+npm install @arevs/maps
 ```
 
 ## Deployment
@@ -75,7 +98,7 @@ import {
   getGeoHints,
   getDistanceBetweenCountries,
   getDirectionBetweenCountries,
-} from "arevdata";
+} from "@arevs/data";
 
 // All ~195 countries
 console.log(countries.length); // 195
@@ -134,7 +157,7 @@ console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name)
 | `countries` | `Country[]` | ~195 | Full country list — ISO codes, flags, phone codes, capitals, continents, currencies, languages, TLDs |
 | `phoneCountryCodes` | `PhoneCountryCode[]` | ~250 | Countries + territories with dialling codes; ready for `<select>` inputs |
 | `timezones` | `Timezone[]` | 312 | IANA timezone mappings with representative coordinates, territory links, and map-ready country codes |
-| `cities` | `City[]` | ~270 | Major cities + all national capitals with coordinates and population |
+| `cities` | `City[]` | 430+ | Bundled static city dataset with national capitals, selected subnational capitals, coordinates, and population |
 | `states` | `State[]` | 5,000+ | ISO-backed administrative divisions for every country in the dataset |
 | `continents` | `Continent[]` | 7 | Area, population, country count per continent |
 | `currencies` | `Currency[]` | ~150 | ISO 4217 codes, symbols, countries using each currency |
@@ -145,6 +168,10 @@ console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name)
 | `flagData` | `FlagInfo[]` | ~195 | Self-hosted SVG + PNG flag URLs, dominant colours, visually similar flag groups |
 | `worldMapCountries` | `WorldMapCountry[]` | 211 | SVG path data for every country on the world map, keyed by ISO alpha-2 code |
 | `moonPhases` | `MoonPhase[]` | 8 | Canonical lunar phases with typed metadata and descriptions |
+| `planets` | `Planet[]` | 8 | The major planets with atmosphere, composition, temperature, and orbital facts |
+| `moons` | `Moon[]` | 12 | Curated major moons with parent-planet, composition, and temperature data |
+| `stars` | `Star[]` | 10 | Notable stars with spectral type, distance, magnitude, and size metadata |
+| `galaxies` | `Galaxy[]` | 1 | Curated galaxy metadata, currently including the Milky Way |
 
 ### Helper functions — Countries
 
@@ -198,8 +225,23 @@ searchTimezones(query: string): Timezone[]
 ```ts
 getCitiesByCountry(countryCode: string): City[]
 getCapitalCity(countryCode: string): City | undefined
+getCitiesByCapitalType(capitalType: CityCapitalType): City[]
 getCitiesByPopulation(limit?: number): City[]   // sorted largest-first
+isCapitalCity(city: City, capitalType?: CityCapitalType): boolean
 searchCities(query: string): City[]             // partial, case-insensitive name match
+```
+
+### Helper functions — Places (On Demand)
+
+```ts
+getPlacesDatasetMeta(): PlaceDatasetMeta
+// Metadata for the sharded selector dataset (country count, total places, threshold, byte sizes).
+
+getPlacesByCountry(countryCode: string): Promise<City[]>
+// Loads only the requested country shard.
+
+searchPlacesByCountry(countryCode: string, query: string): Promise<City[]>
+// Searches within a single country shard without loading all countries.
 ```
 
 ### Helper functions — States & Provinces
@@ -304,8 +346,10 @@ getCountryMapSvgUrl(alpha3: string): string
 getFlagData(alpha2: string): FlagInfo | undefined
 // Full flag metadata: svgUrl, pngUrl, colors[], similar[]
 
-getFlagsByColor(color: FlagColor | FlagColor[]): FlagInfo[]
-// All flags that contain a given colour, or any of the given colours.
+getFlagsByColor(color: FlagColor | FlagColor[], options?: GetFlagsByColorOptions): FlagInfo[]
+// All flags that contain a given colour.
+// When an array is provided, all colours must match by default.
+// Pass { operator: "or" } to match any of the given colours.
 
 getSimilarFlags(alpha2: string): FlagInfo[]
 // Flags visually similar enough to confuse — ideal for "wrong answer" options.
@@ -374,6 +418,18 @@ getSeason(
   hemisphere?: "north" | "south"
 ): SeasonInfo
 // Meteorological season label for the selected hemisphere.
+
+getPlanetByName(name: string): Planet | undefined
+getPlanetByOrder(orderFromSun: number): Planet | undefined
+getPlanetsByType(type: PlanetType): Planet[]
+
+getMoonByName(name: string): Moon | undefined
+getMoonsByPlanet(planet: string): Moon[]
+
+getStarByName(name: string): Star | undefined
+searchStars(query: string): Star[]
+
+getGalaxyByName(name: string): Galaxy | undefined
 ```
 
 ---
@@ -413,7 +469,16 @@ import type {
   CardinalDirection,
   Hemisphere,
   GeoHint,
-} from "arevdata";
+  // Astronomy and space
+  MoonPhase,
+  MoonPhaseSnapshot,
+  SeasonInfo,
+  Planet,
+  PlanetType,
+  Moon,
+  Star,
+  Galaxy,
+} from "/data";
 ```
 
 ### `Country`
@@ -503,16 +568,19 @@ Each section has its own reference document:
 
 | Section | Document |
 |---------|----------|
-| Countries (ISO codes, flags, phone codes) | [docs/data/countries.md](docs/data/countries.md) |
-| Phone country codes | [docs/data/phone-codes.md](docs/data/phone-codes.md) |
-| Cities | [docs/data/cities.md](docs/data/cities.md) |
-| States, provinces & administrative divisions | [docs/data/states.md](docs/data/states.md) |
-| Continents & currencies | [docs/data/continents-currencies.md](docs/data/continents-currencies.md) |
-| Languages, locale variants & speaker estimates | [docs/data/languages.md](docs/data/languages.md) |
-| Geography data & geo utilities (games) | [docs/maps/geography.md](docs/maps/geography.md) |
-| Flags — SVG/PNG URLs, colours, similar flags | [docs/data/flags.md](docs/data/flags.md) |
-| World map SVG — render, highlight, colorize | [docs/maps/world-map.md](docs/maps/world-map.md) |
-| Sun & moon data | [docs/astronomy/sun-moon.md](docs/astronomy/sun-moon.md) |
+| Countries (ISO codes, flags, phone codes) | [apps/docs/data/countries.md](apps/docs/data/countries.md) |
+| Phone country codes | [apps/docs/data/phone-codes.md](apps/docs/data/phone-codes.md) |
+| Cities | [apps/docs/data/cities.md](apps/docs/data/cities.md) |
+| Places (country-sharded selector data) | [apps/docs/data/places.md](apps/docs/data/places.md) |
+| States, provinces & administrative divisions | [apps/docs/data/states.md](apps/docs/data/states.md) |
+| Continents & currencies | [apps/docs/data/continents-currencies.md](apps/docs/data/continents-currencies.md) |
+| Languages, locale variants & speaker estimates | [apps/docs/data/languages.md](apps/docs/data/languages.md) |
+| Geography data & geo utilities (games) | [apps/docs/maps/geography.md](apps/docs/maps/geography.md) |
+| Flags — SVG/PNG URLs, colours, similar flags | [apps/docs/data/flags.md](apps/docs/data/flags.md) |
+| World map SVG — render, highlight, colorize | [apps/docs/maps/world-map.md](apps/docs/maps/world-map.md) |
+| Sun & moon data | [apps/docs/astronomy/sun-moon.md](apps/docs/astronomy/sun-moon.md) |
+| Solar System data | [apps/docs/astronomy/solar-system.md](apps/docs/astronomy/solar-system.md) |
+| Stars & galaxy data | [apps/docs/astronomy/stars-galaxy.md](apps/docs/astronomy/stars-galaxy.md) |
 
 ---
 
