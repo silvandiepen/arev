@@ -13,7 +13,20 @@ const API_PRESETS = [
   { label: "Recognized countries in Europe", value: "/countries?continent=Europe&recognized=true" },
   { label: "Top Japanese cities", value: "/cities?country=JP&sort=population&limit=5" },
   { label: "Shared +1 dialling code", value: "/phone-codes?phoneCode=+1&limit=10" },
+  { label: "Malta timezones", value: "/timezones?country=MT" },
+  { label: "Astronomy snapshot", value: "/astronomy?date=2026-03-23T00:00:00.000Z&hemisphere=north" },
 ];
+
+const MOON_PHASE_SYMBOLS = {
+  "new-moon": "N",
+  "waxing-crescent": "WC",
+  "first-quarter": "FQ",
+  "waxing-gibbous": "WG",
+  "full-moon": "FM",
+  "waning-gibbous": "Wg",
+  "last-quarter": "LQ",
+  "waning-crescent": "Wc",
+};
 
 function escapeHtml(value) {
   return String(value)
@@ -30,6 +43,14 @@ function formatNumber(value) {
 
 function formatMaybeNumber(value) {
   return typeof value === "number" ? formatNumber(value) : "Unknown";
+}
+
+function formatPercent(value) {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
+function todayInputValue() {
+  return new Date().toISOString().slice(0, 10);
 }
 
 function normalizePath(path) {
@@ -134,10 +155,12 @@ class ArevDatasetStats extends HTMLElement {
         ["Cities", resources.cities],
         ["States", resources.states],
         ["Phone codes", resources.phoneCodes],
+        ["Timezones", resources.timezones],
         ["Flags", resources.flags],
         ["Languages", resources.allLanguages],
         ["Currencies", resources.currencies],
         ["World map paths", resources.worldMapCountries],
+        ["Moon phases", resources.moonPhases],
       ];
 
       metrics.innerHTML = metricEntries
@@ -705,9 +728,365 @@ ZA #be123c</textarea>
   }
 }
 
+class ArevTimezoneDemo extends HTMLElement {
+  connectedCallback() {
+    if (this.dataset.ready === "true") {
+      return;
+    }
+
+    this.dataset.ready = "true";
+    this.render();
+    this.bind();
+    this.lookupCountry();
+  }
+
+  render() {
+    this.innerHTML = `
+      <section class="arev-demo">
+        <div class="arev-demo__eyebrow">Interactive timezone mapping</div>
+        <div class="arev-demo__header">
+          <div>
+            <h3>Timezone explorer</h3>
+            <p>Look up the zones used by a country, then highlight the selected timezone footprint on the bundled world map.</p>
+          </div>
+          <div class="arev-demo__meta">${escapeHtml(resolveApiBase(this))}</div>
+        </div>
+        <form class="arev-demo__surface">
+          <div class="arev-demo__controls">
+            <label class="arev-demo__field">
+              <span class="arev-demo__label">Country / territory code</span>
+              <input name="country" type="text" value="MT" maxlength="2" spellcheck="false" />
+            </label>
+            <label class="arev-demo__field">
+              <span class="arev-demo__label">Timezone name</span>
+              <input name="timezone" type="text" value="Europe/Malta" spellcheck="false" />
+            </label>
+          </div>
+          <div class="arev-demo__actions">
+            <button type="button" data-action="country">Load country timezones</button>
+            <button type="button" data-action="timezone">Load timezone</button>
+            <p class="arev-demo__status" data-role="status">Ready.</p>
+          </div>
+        </form>
+        <div class="arev-demo__split">
+          <div class="arev-demo__card" data-role="summary"></div>
+          <div class="arev-demo__card" data-role="list"></div>
+        </div>
+        <div class="arev-demo__map-frame">
+          <div data-role="map"></div>
+        </div>
+      </section>
+    `;
+  }
+
+  bind() {
+    this.country = this.querySelector('input[name="country"]');
+    this.timezone = this.querySelector('input[name="timezone"]');
+    this.status = this.querySelector('[data-role="status"]');
+    this.summary = this.querySelector('[data-role="summary"]');
+    this.list = this.querySelector('[data-role="list"]');
+    this.map = this.querySelector('[data-role="map"]');
+    this.countryButton = this.querySelector('[data-action="country"]');
+    this.timezoneButton = this.querySelector('[data-action="timezone"]');
+
+    this.countryButton.addEventListener("click", () => {
+      this.lookupCountry();
+    });
+
+    this.timezoneButton.addEventListener("click", () => {
+      this.loadTimezone(this.timezone.value.trim());
+    });
+
+    this.list.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-zone]");
+      if (!(button instanceof HTMLElement)) {
+        return;
+      }
+
+      this.loadTimezone(button.dataset.zone ?? "");
+    });
+  }
+
+  renderTimezoneList(countryCode, zones, selectedName) {
+    this.list.innerHTML = `
+      <div class="arev-demo__country">
+        <div class="arev-demo__country-header">
+          <div>
+            <h3>${escapeHtml(countryCode)}</h3>
+            <p class="arev-demo__meta">${escapeHtml(`${zones.length} timezone${zones.length === 1 ? "" : "s"} from the IANA zone1970 dataset`)}</p>
+          </div>
+        </div>
+        <div class="arev-demo__list">
+          ${zones
+            .map(
+              (zone) => `
+                <button type="button" data-zone="${escapeHtml(zone.name)}"${zone.name === selectedName ? ' disabled="true"' : ""}>
+                  ${escapeHtml(zone.name)}
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  renderSummary(zone) {
+    const territoryMarkup = zone.territories
+      .map((territory) => `<span class="arev-demo__pill">${escapeHtml(`${territory.flag} ${territory.name}`)}</span>`)
+      .join("");
+
+    this.summary.innerHTML = `
+      <div class="arev-demo__country">
+        <div class="arev-demo__country-header">
+          <div>
+            <h3>${escapeHtml(zone.name)}</h3>
+            <p class="arev-demo__meta">${escapeHtml(zone.displayName)} · principal location ${escapeHtml(`${zone.latitude.toFixed(4)}, ${zone.longitude.toFixed(4)}`)}</p>
+          </div>
+        </div>
+        <div class="arev-demo__key-values">
+          <div><strong>Region</strong>${escapeHtml(zone.region)}</div>
+          <div><strong>Territories</strong>${escapeHtml(String(zone.territories.length))}</div>
+          <div><strong>Mappable codes</strong>${escapeHtml(zone.mappableCountryCodes.join(", ") || "None")}</div>
+          <div><strong>Comment</strong>${escapeHtml(zone.comment ?? "None")}</div>
+        </div>
+        <div class="arev-demo__pill-list">${territoryMarkup}</div>
+      </div>
+    `;
+  }
+
+  async renderMap(zone) {
+    if (!zone.mappableCountryCodes.length) {
+      this.map.innerHTML = `<p class="arev-demo__empty">No bundled world-map shapes are available for this timezone footprint.</p>`;
+      return;
+    }
+
+    const params = new URLSearchParams();
+    params.set(
+      "highlight",
+      zone.mappableCountryCodes.map((code) => `${code}:#e97132`).join(",")
+    );
+    params.set("fill", "#efe9dd");
+    params.set("stroke", "#ffffff");
+    params.set("hoverFill", "#f59e0b");
+
+    const { payload } = await requestJson(this, `/maps/world?${params.toString()}`);
+    this.map.innerHTML = payload.data.svg;
+  }
+
+  async lookupCountry() {
+    const code = this.country.value.trim().toUpperCase();
+    this.country.value = code;
+    this.status.dataset.tone = "";
+    this.status.textContent = "Loading country timezones...";
+
+    try {
+      const { durationMs, payload } = await requestJson(
+        this,
+        `/timezones?country=${encodeURIComponent(code)}`
+      );
+      const zones = payload.data;
+
+      if (!zones.length) {
+        throw new Error("No timezone records matched that country or territory code.");
+      }
+
+      this.timezone.value = zones[0].name;
+      this.renderTimezoneList(code, zones, zones[0].name);
+      this.renderSummary(zones[0]);
+      await this.renderMap(zones[0]);
+      this.status.dataset.tone = "success";
+      this.status.textContent = `Loaded ${zones.length} timezone${zones.length === 1 ? "" : "s"} in ${durationMs} ms.`;
+    } catch (error) {
+      this.status.dataset.tone = "error";
+      this.status.textContent = error.message;
+      this.summary.innerHTML = "";
+      this.list.innerHTML = "";
+      this.map.innerHTML = "";
+    }
+  }
+
+  async loadTimezone(name) {
+    const zoneName = name.trim();
+    this.timezone.value = zoneName;
+    this.status.dataset.tone = "";
+    this.status.textContent = "Loading timezone...";
+
+    try {
+      const { durationMs, payload } = await requestJson(
+        this,
+        `/timezones?zone=${encodeURIComponent(zoneName)}`
+      );
+      const zone = payload.data[0];
+
+      if (!zone) {
+        throw new Error("No timezone matched that IANA identifier.");
+      }
+
+      this.renderSummary(zone);
+      await this.renderMap(zone);
+
+      const countryCode = this.country.value.trim().toUpperCase();
+      if (countryCode) {
+        const { payload: countryPayload } = await requestJson(
+          this,
+          `/timezones?country=${encodeURIComponent(countryCode)}`
+        );
+        const countryZones = countryPayload.data;
+        this.renderTimezoneList(countryCode, countryZones, zone.name);
+      }
+
+      this.status.dataset.tone = "success";
+      this.status.textContent = `Loaded ${zone.name} in ${durationMs} ms.`;
+    } catch (error) {
+      this.status.dataset.tone = "error";
+      this.status.textContent = error.message;
+      this.summary.innerHTML = "";
+      this.map.innerHTML = "";
+    }
+  }
+}
+
+class ArevSunMoonDemo extends HTMLElement {
+  connectedCallback() {
+    if (this.dataset.ready === "true") {
+      return;
+    }
+
+    this.dataset.ready = "true";
+    this.render();
+    this.bind();
+    this.load();
+  }
+
+  render() {
+    this.innerHTML = `
+      <section class="arev-demo">
+        <div class="arev-demo__eyebrow">Interactive astronomy data</div>
+        <div class="arev-demo__header">
+          <div>
+            <h3>Sun and moon lookup</h3>
+            <p>Resolve a date to its approximate moon phase and the current meteorological season for either hemisphere.</p>
+          </div>
+          <div class="arev-demo__meta">${escapeHtml(resolveApiBase(this))}</div>
+        </div>
+        <form class="arev-demo__surface">
+          <div class="arev-demo__controls">
+            <label class="arev-demo__field">
+              <span class="arev-demo__label">Date</span>
+              <input name="date" type="date" value="${todayInputValue()}" />
+            </label>
+            <label class="arev-demo__field">
+              <span class="arev-demo__label">Hemisphere</span>
+              <select name="hemisphere">
+                <option value="north">Northern Hemisphere</option>
+                <option value="south">Southern Hemisphere</option>
+              </select>
+            </label>
+          </div>
+          <div class="arev-demo__actions">
+            <button type="submit">Load astronomy data</button>
+            <p class="arev-demo__status" data-role="status">Ready.</p>
+          </div>
+        </form>
+        <div class="arev-demo__split">
+          <div class="arev-demo__card" data-role="moon"></div>
+          <div class="arev-demo__card" data-role="sun"></div>
+        </div>
+        <div class="arev-demo__pill-list" data-role="phase-list"></div>
+      </section>
+    `;
+  }
+
+  bind() {
+    this.form = this.querySelector("form");
+    this.date = this.querySelector('input[name="date"]');
+    this.hemisphere = this.querySelector('select[name="hemisphere"]');
+    this.status = this.querySelector('[data-role="status"]');
+    this.moon = this.querySelector('[data-role="moon"]');
+    this.sun = this.querySelector('[data-role="sun"]');
+    this.phaseList = this.querySelector('[data-role="phase-list"]');
+
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      this.load();
+    });
+  }
+
+  async load() {
+    this.status.dataset.tone = "";
+    this.status.textContent = "Loading astronomy snapshot...";
+
+    try {
+      const params = new URLSearchParams({
+        date: this.date.value,
+        hemisphere: this.hemisphere.value,
+      });
+      const { durationMs, payload } = await requestJson(this, `/astronomy?${params.toString()}`);
+      const { moon, sun, references } = payload.data;
+      const phaseSymbol = MOON_PHASE_SYMBOLS[moon.key] ?? moon.name.slice(0, 2).toUpperCase();
+
+      this.moon.innerHTML = `
+        <div class="arev-demo__country">
+          <div class="arev-demo__country-header">
+            <div class="arev-demo__flag arev-demo__flag--mono">${escapeHtml(phaseSymbol)}</div>
+            <div>
+              <h3>${escapeHtml(moon.name)}</h3>
+              <p class="arev-demo__meta">${escapeHtml(moon.description)}</p>
+            </div>
+          </div>
+          <div class="arev-demo__key-values">
+            <div><strong>Illumination</strong>${escapeHtml(formatPercent(moon.illumination))}</div>
+            <div><strong>Age</strong>${escapeHtml(`${moon.ageDays.toFixed(2)} days`)}</div>
+            <div><strong>Cycle position</strong>${escapeHtml(formatPercent(moon.fraction))}</div>
+          </div>
+        </div>
+      `;
+
+      this.sun.innerHTML = `
+        <div class="arev-demo__country">
+          <div class="arev-demo__country-header">
+            <div>
+              <h3>${escapeHtml(sun.season.label)}</h3>
+              <p class="arev-demo__meta">Meteorological season calculated from the selected date and hemisphere.</p>
+            </div>
+          </div>
+          <div class="arev-demo__key-values">
+            <div><strong>Season</strong>${escapeHtml(sun.season.name)}</div>
+            <div><strong>Hemisphere</strong>${escapeHtml(sun.season.hemisphere)}</div>
+            <div><strong>Data source</strong>arevdata astronomy helpers</div>
+          </div>
+        </div>
+      `;
+
+      this.phaseList.innerHTML = references.moonPhases
+        .map(
+          (phase) => `
+            <span class="arev-demo__pill">
+              <strong>${escapeHtml(MOON_PHASE_SYMBOLS[phase.key] ?? phase.name.slice(0, 2).toUpperCase())}</strong>
+              ${escapeHtml(phase.name)}
+            </span>
+          `
+        )
+        .join("");
+
+      this.status.dataset.tone = "success";
+      this.status.textContent = `Loaded in ${durationMs} ms.`;
+    } catch (error) {
+      this.status.dataset.tone = "error";
+      this.status.textContent = error.message;
+      this.moon.innerHTML = "";
+      this.sun.innerHTML = "";
+      this.phaseList.innerHTML = "";
+    }
+  }
+}
+
 customElements.define("arev-dataset-stats", ArevDatasetStats);
 customElements.define("arev-api-playground", ArevApiPlayground);
 customElements.define("arev-country-lookup", ArevCountryLookup);
 customElements.define("arev-phone-code-demo", ArevPhoneCodeDemo);
 customElements.define("arev-capital-finder", ArevCapitalFinder);
 customElements.define("arev-world-map-demo", ArevWorldMapDemo);
+customElements.define("arev-timezone-demo", ArevTimezoneDemo);
+customElements.define("arev-sun-moon-demo", ArevSunMoonDemo);

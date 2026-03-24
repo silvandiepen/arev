@@ -7,8 +7,6 @@ tags: languages, locales, reference
 
 # Languages
 
-[← Back to docs](README.md)
-
 The language dataset adds three things that were missing from the core country data:
 
 1. A full base-language catalog with canonical codes such as `en`, `fr`, `zh`, `gsw`, and `zza`
@@ -194,6 +192,6 @@ The language feature lives in [`srcarev/languages`](../srcarev/languages):
 
 ## Related
 
-- [Countries](countries.md) — country alpha-2 codes used by the official-language mappings
-- [Cities](cities.md) — useful when building locale-aware selectors with capital-city defaults
-- [Continents & currencies](continents-currencies.md) — often paired with country and language selectors
+- [Countries](/data/countries/) — country alpha-2 codes used by the official-language mappings
+- [Cities](/data/cities/) — useful when building locale-aware selectors with capital-city defaults
+- [Continents & currencies](/data/continents-currencies/) — often paired with country and language selectors

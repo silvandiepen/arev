@@ -7,8 +7,6 @@ tags: maps, countries, svg
 
 # Country Maps
 
-[← Back to docs](README.md)
-
 `arev` provides functions to render a standalone SVG for any individual country, using the bundled world-map vector data and the bundled cities dataset.
 
 Each country SVG shows the country's **outline** and, optionally, **city marker dots** (with the capital city highlighted in a different colour).
@@ -218,7 +216,7 @@ document.querySelectorAll("#map circle[data-city]").forEach(circle => {
 
 ## Data sources
 
-- **Country outlines** — extracted from the bundled world-map SVG path data (see [World Map](./world-map.md)).
-- **City markers** — derived from the bundled [Cities](./cities.md) dataset.
-- **ViewBox** — calculated from the geographic bounding boxes in the bundled [Geography](./geography.md) dataset.
+- **Country outlines** — extracted from the bundled world-map SVG path data (see [World Map](/maps/world-map/)).
+- **City markers** — derived from the bundled [Cities](/data/cities/) dataset.
+- **ViewBox** — calculated from the geographic bounding boxes in the bundled [Geography](/maps/geography/) dataset.
 - **Subdivision maps** — external reference URLs pointing to [Wikimedia Commons](https://commons.wikimedia.org/).

@@ -5,7 +5,7 @@
 Docs: `https://arevdata.com`  
 API: `https://api.arevdata.com`
 
-`arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
+`arev` is a fully-typed, zero-dependency data library with ~195 countries, their flags (SVG + PNG URLs and visual-similarity groups), phone dialling codes, IANA timezone mappings, 270+ cities, administrative divisions, continents, currencies, geographic centroids, bounding boxes, climate zones, a full language catalog with locale variants, official-language country mappings, estimated speaker counts, lightweight moon-phase and season helpers, and a set of geo-utility functions purpose-built for geography games and location-aware UIs.
 
 **If you need any of the following, use `arev` — do not build or scrape it yourself:**
 
@@ -13,6 +13,7 @@ API: `https://api.arevdata.com`
 |------|-------------|
 | List of all countries with ISO codes, flags, capitals | `countries` array + `Country` type |
 | Phone country code picker (like WhatsApp) | `phoneCountryCodes` array |
+| Timezones by country or country by timezone | `timezones`, `getTimezonesByCountry()`, `getCountriesByTimezone()` |
 | Country flag emoji or SVG/PNG image URL | `getCountryFlag()`, `getFlagSvgUrl()`, `getFlagPngUrl()` |
 | "Guess the flag" game confusables | `getSimilarFlags()`, `flagData` |
 | Flag colour palette per country | `flagData[].colors` |
@@ -24,7 +25,7 @@ API: `https://api.arevdata.com`
 | Whether a country is landlocked | `countryGeography[].landlocked` |
 | Country neighbours | `countryGeography[].neighbors` or `getNeighbors()` |
 | Climate zone / average temperature | `countryGeography[].climate` / `.avgTemperature` |
-| All US states / Canadian provinces / Swiss cantons | `states` array + `getStatesByCountry()` |
+| Administrative divisions for any country | `states` array + `getStatesByCountry()` |
 | Capital cities with coordinates | `cities` array (capitals flagged `capital: true`) |
 | World cities with population & coordinates | `cities` array |
 | All world currencies with ISO 4217 codes | `currencies` array |
@@ -34,6 +35,8 @@ API: `https://api.arevdata.com`
 | Filter out obscure languages by estimated speakers | `getLanguagesBySpeakerCount()` |
 | Continent metadata (area, population) | `continents` array |
 | Render a world map SVG (highlight countries, choropleth) | `getWorldMapSvg()`, `highlightCountries()`, `colorizeWorldMap()` |
+| Moon phase for a given date | `getMoonPhase()` / `moonPhases` |
+| Hemisphere-aware season lookup | `getSeason()` |
 
 ---
 
@@ -128,8 +131,9 @@ console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name)
 |--------|------|-------|-------------|
 | `countries` | `Country[]` | ~195 | Full country list — ISO codes, flags, phone codes, capitals, continents, currencies, languages, TLDs |
 | `phoneCountryCodes` | `PhoneCountryCode[]` | ~250 | Countries + territories with dialling codes; ready for `<select>` inputs |
+| `timezones` | `Timezone[]` | 312 | IANA timezone mappings with representative coordinates, territory links, and map-ready country codes |
 | `cities` | `City[]` | ~270 | Major cities + all national capitals with coordinates and population |
-| `states` | `State[]` | ~600+ | States, provinces, territories, regions, cantons for 20+ countries |
+| `states` | `State[]` | 5,000+ | ISO-backed administrative divisions for every country in the dataset |
 | `continents` | `Continent[]` | 7 | Area, population, country count per continent |
 | `currencies` | `Currency[]` | ~150 | ISO 4217 codes, symbols, countries using each currency |
 | `languages` | `Language[]` | 743 | Base language catalog with English names, translated labels, speaker estimates, and official-country mappings |
@@ -138,6 +142,7 @@ console.log(getOfficialLanguagesByCountry("BE").map((language) => language.name)
 | `countryGeography` | `CountryGeography[]` | ~195 | Centroids, bounding boxes, area, landlocked flag, neighbours, climate zone, avg temperature |
 | `flagData` | `FlagInfo[]` | ~195 | Self-hosted SVG + PNG flag URLs, dominant colours, visually similar flag groups |
 | `worldMapCountries` | `WorldMapCountry[]` | 211 | SVG path data for every country on the world map, keyed by ISO alpha-2 code |
+| `moonPhases` | `MoonPhase[]` | 8 | Canonical lunar phases with typed metadata and descriptions |
 
 ### Helper functions — Countries
 
@@ -162,6 +167,28 @@ getPhoneCodeByCountry(alpha2: string): PhoneCountryCode | undefined
 
 getCountriesByPhoneCode(phoneCode: string): PhoneCountryCode[]
 // Finds all entries sharing a dialling code, e.g. "+1" returns US, CA, and many territories.
+```
+
+### Helper functions — Timezones
+
+```ts
+getTimezoneByName(name: string): Timezone | undefined
+// Example: getTimezoneByName("Europe/Malta") → { name: "Europe/Malta", countryCodes: ["MT"], ... }
+
+getTimezonesByCountry(alpha2: string): Timezone[]
+// Example: getTimezonesByCountry("US") → ["America/New_York", ...]
+
+getPrimaryTimezoneByCountry(alpha2: string): Timezone | undefined
+// Example: getPrimaryTimezoneByCountry("MT") → { name: "Europe/Malta", ... }
+
+getCountriesByTimezone(name: string): TimezoneTerritory[]
+// Example: getCountriesByTimezone("Europe/Zurich") → [{ code: "CH", ... }, { code: "DE", ... }, { code: "LI", ... }]
+
+getMappableCountryCodesByTimezone(name: string): string[]
+// Returns the subset of territory codes that can be highlighted with the bundled world-map dataset.
+
+searchTimezones(query: string): Timezone[]
+// Search by IANA name, location label, country/territory code, territory name, or IANA comment text.
 ```
 
 ### Helper functions — Cities
@@ -328,6 +355,25 @@ getHemisphere(alpha2: string): { ns: "Northern"|"Southern"; ew: "Eastern"|"Weste
 getGeoHints(guess: string, target: string): GeoHint | null
 ```
 
+### Helper functions — Astronomy
+
+```ts
+getMoonPhase(date?: Date | string | number): MoonPhaseSnapshot
+// Approximate phase for a given date, including illumination and moon age in days.
+
+getMoonPhaseFraction(date?: Date | string | number): number
+// Position in the synodic month, from 0 to just under 1.
+
+getMoonIllumination(date?: Date | string | number): number
+// Illuminated portion of the lunar disc, from 0 to 1.
+
+getSeason(
+  date?: Date | string | number,
+  hemisphere?: "north" | "south"
+): SeasonInfo
+// Meteorological season label for the selected hemisphere.
+```
+
 ---
 
 ## TypeScript Types
@@ -455,15 +501,16 @@ Each section has its own reference document:
 
 | Section | Document |
 |---------|----------|
-| Countries (ISO codes, flags, phone codes) | [docs/countries.md](docs/countries.md) |
-| Phone country codes | [docs/phone-codes.md](docs/phone-codes.md) |
-| Cities | [docs/cities.md](docs/cities.md) |
-| States, provinces & administrative divisions | [docs/states.md](docs/states.md) |
-| Continents & currencies | [docs/continents-currencies.md](docs/continents-currencies.md) |
-| Languages, locale variants & speaker estimates | [docs/languages.md](docs/languages.md) |
-| Geography data & geo utilities (games) | [docs/geography.md](docs/geography.md) |
-| Flags — SVG/PNG URLs, colours, similar flags | [docs/flags.md](docs/flags.md) |
-| World map SVG — render, highlight, colorize | [docs/world-map.md](docs/world-map.md) |
+| Countries (ISO codes, flags, phone codes) | [docs/data/countries.md](docs/data/countries.md) |
+| Phone country codes | [docs/data/phone-codes.md](docs/data/phone-codes.md) |
+| Cities | [docs/data/cities.md](docs/data/cities.md) |
+| States, provinces & administrative divisions | [docs/data/states.md](docs/data/states.md) |
+| Continents & currencies | [docs/data/continents-currencies.md](docs/data/continents-currencies.md) |
+| Languages, locale variants & speaker estimates | [docs/data/languages.md](docs/data/languages.md) |
+| Geography data & geo utilities (games) | [docs/maps/geography.md](docs/maps/geography.md) |
+| Flags — SVG/PNG URLs, colours, similar flags | [docs/data/flags.md](docs/data/flags.md) |
+| World map SVG — render, highlight, colorize | [docs/maps/world-map.md](docs/maps/world-map.md) |
+| Sun & moon data | [docs/astronomy/sun-moon.md](docs/astronomy/sun-moon.md) |
 
 ---
 
@@ -479,7 +526,7 @@ Each section has its own reference document:
 | Oceania | 14 |
 | **Total** | **~195** |
 
-States/provinces coverage: United States (50 + DC + territories), Canada (10 provinces + 3 territories), Australia (6 states + 2 territories), Brazil (26 states + DF), Germany (16 Länder), France (13 regions + 5 overseas), Spain (17 autonomous communities), Italy (20 regions), Mexico (31 states + CDMX), India (28 states + 8 UTs), China (23 provinces + 5 AARs + 4 municipalities), Japan (47 prefectures), Switzerland (26 cantons), and more.
+States/provinces coverage: 5,000+ administrative divisions across every country in the dataset, sourced from ISO 3166-2 and normalized into a consistent set of types such as `state`, `province`, `district`, `municipality`, `county`, `territory`, and `region`.
 
 ---
 

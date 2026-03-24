@@ -7,8 +7,6 @@ tags: continents, currencies, reference
 
 # Continents & Currencies
 
-[← Back to docs](README.md)
-
 ---
 
 ## Continents
@@ -178,5 +176,5 @@ formatPrice(42.5, "DE"); // "€42.50"
 
 ## Related
 
-- [Countries](countries.md) — `country.continent` is a `ContinentName`; `country.currency` is an ISO 4217 code
-- [Geography](geography.md) — `countryGeography` is keyed by the same alpha-2 codes used in `currency.countries[]`
+- [Countries](/data/countries/) — `country.continent` is a `ContinentName`; `country.currency` is an ISO 4217 code
+- [Geography](/maps/geography/) — `countryGeography` is keyed by the same alpha-2 codes used in `currency.countries[]`

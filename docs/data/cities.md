@@ -7,8 +7,6 @@ tags: cities, capitals, reference
 
 # Cities
 
-[← Back to docs](README.md)
-
 The `cities` array contains ~270 major world cities, including every national capital. Each city has coordinates (lat/lon), country code, and population where available.
 
 ## Live capital finder
@@ -155,6 +153,6 @@ Cities from every continent are represented including remote capitals like Nuku'
 
 ## Related
 
-- [Countries](countries.md) — `country` field uses alpha-2 codes from `countries`
-- [Geography](geography.md) — `haversineDistance()` works with the `lat`/`lon` fields
-- [States](states.md) — `state` field aligns with entries in `states`
+- [Countries](/data/countries/) — `country` field uses alpha-2 codes from `countries`
+- [Geography](/maps/geography/) — `haversineDistance()` works with the `lat`/`lon` fields
+- [States](/data/states/) — `state` field aligns with entries in `states`

@@ -3,7 +3,9 @@
 .content arev-country-lookup,
 .content arev-phone-code-demo,
 .content arev-capital-finder,
-.content arev-world-map-demo {
+.content arev-world-map-demo,
+.content arev-timezone-demo,
+.content arev-sun-moon-demo {
   display: block;
   margin-top: var(--space-l);
 }
@@ -290,6 +292,20 @@
 .content .arev-demo__flag {
   font-size: clamp(2rem, 7vw, 3rem);
   line-height: 1;
+}
+
+.content .arev-demo__flag--mono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.25rem;
+  min-height: 3.25rem;
+  border-radius: 999px;
+  border: var(--border-width-s) solid color-mix(in srgb, var(--color-foreground) 12%, transparent);
+  background: color-mix(in srgb, var(--color-background) 84%, var(--color-foreground) 16%);
+  font-size: var(--font-size-s);
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .content .arev-demo__key-values {

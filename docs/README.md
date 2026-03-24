@@ -11,6 +11,8 @@ Typed world geography data for JavaScript and TypeScript.
 
 `arev` packages countries, phone codes, cities, states, currencies, languages, geography data, flags, and SVG map helpers into one reusable library with typed exports and lookup utilities.
 
+It now also includes a lightweight astronomy layer for moon phases and hemisphere-aware seasons.
+
 ## Install
 
 ```bash
@@ -51,16 +53,10 @@ const pickerOptions = phoneCountryCodes.map((entry) => ({
 
 ## Reference
 
-- [Countries](countries.md) for ISO codes, capitals, continents, currencies, and flag emoji
-- [Phone country codes](phone-codes.md) for international dialling selectors and shared prefixes
-- [Cities](cities.md) for capitals, coordinates, population, and search helpers
-- [States, provinces, and divisions](states.md) for subnational administrative data
-- [Continents and currencies](continents-currencies.md) for continent metadata and ISO 4217 currency lookups
-- [Languages](languages.md) for language catalogs, locale variants, and official-language mappings
-- [Geography](geography.md) for centroids, bounds, neighbours, climate data, and geo-game utilities
-- [Flags](flags.md) for SVG and PNG URLs, colour palettes, and similar-flag groups
-- [World map](world-map.md) for SVG rendering and country highlighting
-- [Country maps](country-maps.md) for standalone country SVG output and map-point helpers
+- [API Reference](/api/) for the hosted HTTP endpoints, query parameters, and response examples
+- [Data & Assets](/data/) for countries, cities, states, languages, currencies, phone codes, and flags
+- [Geography & Maps](/maps/) for geography records, geo utilities, world maps, and country maps
+- [Astronomy & Time](/astronomy/) for moon phases and hemisphere-aware season data
 
 ## What this library is good at
 

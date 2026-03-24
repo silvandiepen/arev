@@ -7,8 +7,6 @@ tags: flags, assets, reference
 
 # Flags
 
-[← Back to docs](README.md)
-
 `arev` provides complete flag metadata for ~195 countries:
 
 - **Self-hosted SVG and PNG image URLs** served from `arevdata.com`
@@ -177,5 +175,5 @@ const goldFlags = flagData.filter(f => f.colors.includes("gold"));
 
 ## Related
 
-- [Countries](countries.md) — `getCountryFlag()` returns the emoji flag
-- [Geography](geography.md) — combine with country geography for location-aware flag games
+- [Countries](/data/countries/) — `getCountryFlag()` returns the emoji flag
+- [Geography](/maps/geography/) — combine with country geography for location-aware flag games

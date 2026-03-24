@@ -7,8 +7,6 @@ tags: geography, maps, reference
 
 # Geography Data & Geo Utilities
 
-[← Back to docs](README.md)
-
 `arev` includes a complete geographic dataset for every country and a set of utility functions designed for **geography games** (Wordle-style country guessing, atlas quizzes, educational tools) and **location-aware UIs**.
 
 ## Import
@@ -350,6 +348,6 @@ buildHintSentence("NL", "MN");
 
 ## Related
 
-- [Countries](countries.md) — the base `countries` array (name, code, emoji flag)
-- [Flags](flags.md) — `getSimilarFlags()` to add flag-guessing to geography games
-- [Cities](cities.md) — capital cities with precise coordinates
+- [Countries](/data/countries/) — the base `countries` array (name, code, emoji flag)
+- [Flags](/data/flags/) — `getSimilarFlags()` to add flag-guessing to geography games
+- [Cities](/data/cities/) — capital cities with precise coordinates

@@ -7,8 +7,6 @@ tags: phone, countries, reference
 
 # Phone Country Codes
 
-[← Back to docs](README.md)
-
 The `phoneCountryCodes` array is ready-to-use data for international phone number inputs (like WhatsApp, Stripe, or any contact form). It combines all sovereign countries with additional territories and special regions that have their own dialling codes.
 
 ## Live phone code picker
@@ -109,4 +107,4 @@ Total: **~250 entries**.
 
 ## Related
 
-- [Countries](countries.md) — the base `countries` array that `phoneCountryCodes` extends
+- [Countries](/data/countries/) — the base `countries` array that `phoneCountryCodes` extends

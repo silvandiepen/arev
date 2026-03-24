@@ -7,8 +7,6 @@ tags: countries, iso, reference
 
 # Countries
 
-[← Back to docs](README.md)
-
 The `countries` array is the central dataset of `arev`. It contains ~195 sovereign states following the ISO 3166-1 standard, covering every continent.
 
 ## Live country lookup
@@ -163,9 +161,9 @@ All 195 UN-recognised sovereign states are included, plus Kosovo. Antarctica has
 
 ## Related
 
-- [Phone codes](phone-codes.md) — `phoneCountryCodes` extends country data with territory entries
-- [Geography](geography.md) — `countryGeography` adds centroids, bounds, and climate data per country
-- [Flags](flags.md) — `flagData` adds SVG/PNG URLs, colours, and similar-flag groups per country
-- [Cities](cities.md) — `cities` has capital and major city coordinates
-- [Currencies](continents-currencies.md) — `getCurrencyByCountry()` looks up currency from country code
-- [Languages](languages.md) — official-language mappings and language selectors keyed by country code
+- [Phone codes](/data/phone-codes/) — `phoneCountryCodes` extends country data with territory entries
+- [Geography](/maps/geography/) — `countryGeography` adds centroids, bounds, and climate data per country
+- [Flags](/data/flags/) — `flagData` adds SVG/PNG URLs, colours, and similar-flag groups per country
+- [Cities](/data/cities/) — `cities` has capital and major city coordinates
+- [Currencies](/data/continents-currencies/) — `getCurrencyByCountry()` looks up currency from country code
+- [Languages](/data/languages/) — official-language mappings and language selectors keyed by country code
