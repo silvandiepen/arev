@@ -1,19 +1,25 @@
 import { describe, it, expect } from "vitest";
 import {
+  addressFormats,
   countries,
   languages,
   phoneCountryCodes,
+  timezones,
   cities,
   states,
   continents,
+  moonPhases,
 } from "../index.js";
 import type {
+  CountryAddressFormat,
   Country,
   Language,
   PhoneCountryCode,
+  Timezone,
   City,
   State,
   Continent,
+  MoonPhase,
 } from "../index.js";
 
 describe("index exports", () => {
@@ -22,9 +28,19 @@ describe("index exports", () => {
     expect(countries.length).toBeGreaterThan(0);
   });
 
+  it("should export address formats", () => {
+    expect(Array.isArray(addressFormats)).toBe(true);
+    expect(addressFormats.length).toBeGreaterThan(0);
+  });
+
   it("should export phoneCountryCodes array", () => {
     expect(Array.isArray(phoneCountryCodes)).toBe(true);
     expect(phoneCountryCodes.length).toBeGreaterThan(0);
+  });
+
+  it("should export timezones array", () => {
+    expect(Array.isArray(timezones)).toBe(true);
+    expect(timezones.length).toBeGreaterThan(300);
   });
 
   it("should export languages array", () => {
@@ -47,6 +63,11 @@ describe("index exports", () => {
     expect(continents.length).toBeGreaterThan(0);
   });
 
+  it("should export moon phases", () => {
+    expect(Array.isArray(moonPhases)).toBe(true);
+    expect(moonPhases).toHaveLength(8);
+  });
+
   it("should have correct TypeScript types for Country", () => {
     const country: Country = countries[0];
     expect(typeof country.alpha2).toBe("string");
@@ -60,12 +81,30 @@ describe("index exports", () => {
     expect(Array.isArray(country.languages)).toBe(true);
   });
 
+  it("should have correct TypeScript types for CountryAddressFormat", () => {
+    const addressFormat: CountryAddressFormat = addressFormats[0];
+    expect(typeof addressFormat.alpha2).toBe("string");
+    expect(typeof addressFormat.format).toBe("string");
+    expect(Array.isArray(addressFormat.requiredFields)).toBe(true);
+    expect(Array.isArray(addressFormat.usedFields)).toBe(true);
+  });
+
   it("should have correct TypeScript types for PhoneCountryCode", () => {
     const pcc: PhoneCountryCode = phoneCountryCodes[0];
     expect(typeof pcc.country).toBe("string");
     expect(typeof pcc.code).toBe("string");
     expect(typeof pcc.phoneCode).toBe("string");
     expect(typeof pcc.flag).toBe("string");
+  });
+
+  it("should have correct TypeScript types for Timezone", () => {
+    const timezone: Timezone = timezones[0];
+    expect(typeof timezone.name).toBe("string");
+    expect(typeof timezone.region).toBe("string");
+    expect(Array.isArray(timezone.countryCodes)).toBe(true);
+    expect(Array.isArray(timezone.territories)).toBe(true);
+    expect(typeof timezone.latitude).toBe("number");
+    expect(typeof timezone.longitude).toBe("number");
   });
 
   it("should have correct TypeScript types for Language", () => {
@@ -97,6 +136,14 @@ describe("index exports", () => {
     const continent: Continent = continents[0];
     expect(typeof continent.name).toBe("string");
     expect(typeof continent.code).toBe("string");
+  });
+
+  it("should have correct TypeScript types for MoonPhase", () => {
+    const phase: MoonPhase = moonPhases[0];
+    expect(typeof phase.key).toBe("string");
+    expect(typeof phase.name).toBe("string");
+    expect(typeof phase.description).toBe("string");
+    expect(typeof phase.index).toBe("number");
   });
 
   it("should allow filtering countries by continent", () => {

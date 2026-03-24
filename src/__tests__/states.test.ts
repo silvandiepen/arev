@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { countries } from "../data/countries.js";
 import { states } from "../data/states.js";
 import type { State, StateType } from "../types/index.js";
 
@@ -8,7 +9,7 @@ describe("states", () => {
   });
 
   it("should contain a significant number of entries", () => {
-    expect(states.length).toBeGreaterThan(100);
+    expect(states.length).toBeGreaterThan(5000);
   });
 
   it("should have all required fields", () => {
@@ -29,7 +30,7 @@ describe("states", () => {
     }
   });
 
-  it("should have valid type values", () => {
+  it("should use supported normalized type values", () => {
     const validTypes: StateType[] = [
       "state",
       "province",
@@ -41,13 +42,18 @@ describe("states", () => {
       "county",
       "emirate",
       "canton",
+      "municipality",
+      "prefecture",
+      "governorate",
+      "parish",
+      "city",
+      "division",
+      "atoll",
+      "island",
     ];
 
     for (const state of states) {
-      expect(
-        validTypes.includes(state.type),
-        `State "${state.name}" has invalid type: "${state.type}"`
-      ).toBe(true);
+      expect(validTypes).toContain(state.type);
     }
   });
 
@@ -79,6 +85,13 @@ describe("states", () => {
   it("should include all German federal states", () => {
     const deStates = states.filter((s) => s.country === "DE");
     expect(deStates.length).toBe(16);
+  });
+
+  it("should include at least one administrative division for every country", () => {
+    const countryCodes = new Set(countries.map((country) => country.alpha2));
+    const stateCountryCodes = new Set(states.map((state) => state.country));
+
+    expect(stateCountryCodes).toEqual(countryCodes);
   });
 
   it("should have correct country codes (ISO alpha-2)", () => {
@@ -125,5 +138,8 @@ describe("states", () => {
     expect(Object.keys(byCountry)).toContain("DE");
     expect(Object.keys(byCountry)).toContain("BR");
     expect(Object.keys(byCountry)).toContain("IN");
+    expect(Object.keys(byCountry)).toContain("MT");
+    expect(Object.keys(byCountry)).toContain("XK");
+    expect(Object.keys(byCountry)).toContain("XN");
   });
 });

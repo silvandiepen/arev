@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getAddressFormatByCountry } from "../data/addressFormats.js";
 import { countries } from "../data/countries.js";
 import { getCountryByCode } from "../data/countries.js";
 import { handleApiRequest } from "./index.js";
@@ -27,8 +28,27 @@ describe("api worker", () => {
     expect(body.data.resources.countries).toBe(countries.length);
     expect(body.data.routes).toContain("/health");
     expect(body.data.routes).toContain("/meta");
+    expect(body.data.routes).toContain("/address-formats");
     expect(body.data.routes).toContain("/countries");
     expect(body.data.routes).toContain("/cities");
+    expect(body.data.routes).toContain("/timezones");
+    expect(body.data.resources.timezones).toBeGreaterThan(300);
+  });
+
+  it("returns the address format collection", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/address-formats"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.meta.count).toBe(countries.length);
+  });
+
+  it("returns an address format by alpha-2 code", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/address-formats/us"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.data).toEqual(getAddressFormatByCountry("US"));
   });
 
   it("returns the countries collection", async () => {
@@ -104,6 +124,35 @@ describe("api worker", () => {
     expect(body.data.every((entry: { phoneCode: string }) => entry.phoneCode === "+1")).toBe(true);
   });
 
+  it("returns timezone records for a country", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/timezones?country=mt"));
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.meta.count).toBe(1);
+    expect(body.data[0].name).toBe("Europe/Malta");
+    expect(body.data[0].mappableCountryCodes).toContain("MT");
+  });
+
+  it("searches timezone records", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/timezones?q=dubai&limit=5")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.meta.count).toBeLessThanOrEqual(5);
+    expect(body.data.some((timezone: { name: string }) => timezone.name === "Asia/Dubai")).toBe(true);
+  });
+
+  it("returns validation errors for invalid timezone query params", async () => {
+    const response = await handleApiRequest(new Request("https://example.com/timezones?country=malta"));
+    const body = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("invalid_query");
+  });
+
   it("returns a world map SVG payload", async () => {
     const response = await handleApiRequest(
       new Request("https://example.com/maps/world?highlight=MT:%23d97706,JP:%230f766e")
@@ -120,6 +169,28 @@ describe("api worker", () => {
   it("rejects invalid world map highlight query values", async () => {
     const response = await handleApiRequest(
       new Request("https://example.com/maps/world?highlight=MT:not-a-color")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe("invalid_query");
+  });
+
+  it("returns astronomy data for a requested date", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/astronomy?date=2000-01-21T04:40:00.000Z&hemisphere=south")
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.data.moon.key).toBe("full-moon");
+    expect(body.data.sun.season.hemisphere).toBe("south");
+    expect(body.data.references.moonPhases).toHaveLength(8);
+  });
+
+  it("rejects invalid astronomy query values", async () => {
+    const response = await handleApiRequest(
+      new Request("https://example.com/astronomy?date=nope&hemisphere=east")
     );
     const body = await response.json();
 

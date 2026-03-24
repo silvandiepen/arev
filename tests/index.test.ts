@@ -381,8 +381,9 @@ describe("getStatesByType", () => {
 
   it("should return cantons for Switzerland", () => {
     const cantons = getStatesByType("canton");
-    expect(cantons.every((s) => s.country === "CH")).toBe(true);
-    expect(cantons.length).toBe(26);
+    const swissCantons = cantons.filter((s) => s.country === "CH");
+    expect(swissCantons).toHaveLength(26);
+    expect(swissCantons.every((s) => s.type === "canton")).toBe(true);
   });
 });
 

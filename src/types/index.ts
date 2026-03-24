@@ -139,6 +139,165 @@ export interface PhoneCountryCode {
 }
 
 /**
+ * Semantic fields used in postal address templates.
+ */
+export type AddressField =
+  | "recipient"
+  | "organization"
+  | "streetAddress"
+  | "dependentLocality"
+  | "locality"
+  | "administrativeArea"
+  | "postalCode"
+  | "sortingCode";
+
+/**
+ * Country-specific label variant for postal codes.
+ */
+export type AddressPostalCodeType = "postal" | "zip" | "pin" | "eircode";
+
+/**
+ * Country-specific label variant for the administrative-area field.
+ */
+export type AddressAdministrativeAreaType =
+  | "province"
+  | "state"
+  | "county"
+  | "department"
+  | "district"
+  | "do_si"
+  | "emirate"
+  | "island"
+  | "oblast"
+  | "parish"
+  | "prefecture"
+  | "region";
+
+/**
+ * Country-specific label variant for the locality field.
+ */
+export type AddressLocalityType = "city" | "district" | "post_town" | "suburb";
+
+/**
+ * Country-specific label variant for the dependent-locality field.
+ */
+export type AddressDependentLocalityType =
+  | "district"
+  | "neighborhood"
+  | "suburb"
+  | "townland";
+
+/**
+ * Normalized address-format metadata for a country.
+ */
+export interface CountryAddressFormat {
+  /** ISO 3166-1 alpha-2 country code */
+  alpha2: string;
+  /** Postal template using % tokens from Google's address metadata */
+  format: string;
+  /** Optional Latin-script variant of the postal template */
+  latinFormat?: string;
+  /** Fields referenced by the template, in appearance order */
+  usedFields: AddressField[];
+  /** Fields marked as required for valid postal addresses in this country */
+  requiredFields: AddressField[];
+  /** Fields that are conventionally uppercased when formatted */
+  uppercaseFields: AddressField[];
+  /** Postal-code regex pattern from the source metadata */
+  postalCodePattern?: string;
+  /** Example postal codes from the source metadata */
+  postalCodeExamples?: string[];
+  /** Optional international prefix used before the postal code */
+  postalCodePrefix?: string;
+  /** User-facing postal-code label variant */
+  postalCodeType: AddressPostalCodeType;
+  /** User-facing administrative-area label variant */
+  administrativeAreaType: AddressAdministrativeAreaType;
+  /** User-facing locality label variant */
+  localityType: AddressLocalityType;
+  /** User-facing dependent-locality label variant */
+  dependentLocalityType: AddressDependentLocalityType;
+}
+
+/**
+ * Address parts accepted by `formatAddress()`.
+ */
+export interface AddressInput {
+  /** Recipient or addressee name */
+  recipient?: string;
+  /** Organization or company name */
+  organization?: string;
+  /** Street-address line(s) */
+  streetAddress?: string | string[];
+  /** Neighborhood, district, townland, or similar dependent locality */
+  dependentLocality?: string;
+  /** City, suburb, district, or post town */
+  locality?: string;
+  /** State, province, county, prefecture, or similar area */
+  administrativeArea?: string;
+  /** Postal / ZIP / PIN / Eircode */
+  postalCode?: string;
+  /** Sorting code where applicable */
+  sortingCode?: string;
+}
+
+/**
+ * Options for `formatAddress()`.
+ */
+export interface FormatAddressOptions {
+  /** Prefer the Latin-script template when one exists */
+  latin?: boolean;
+  /** Apply the source metadata's uppercase rules. Defaults to true. */
+  uppercase?: boolean;
+}
+
+/**
+ * A country or territory associated with an IANA timezone.
+ */
+export interface TimezoneTerritory {
+  /** ISO 3166-1 alpha-2 code */
+  code: string;
+  /** English display name */
+  name: string;
+  /** Unicode emoji flag */
+  flag: string;
+  /** Whether the territory exists in the bundled world-map dataset */
+  mappable: boolean;
+  /** Sovereign-state recognition flag when the territory exists in the core countries dataset */
+  recognized?: boolean;
+  /** Continent when the territory exists in the core countries dataset */
+  continent?: ContinentName;
+}
+
+/**
+ * IANA timezone metadata derived from zone1970.tab.
+ */
+export interface Timezone {
+  /** Canonical IANA timezone identifier */
+  name: string;
+  /** Top-level region segment, e.g. "Europe" */
+  region: string;
+  /** Middle path segments between region and location */
+  subregions: string[];
+  /** Final path segment formatted for display */
+  location: string;
+  /** Human-readable label built from the path segments */
+  displayName: string;
+  /** ISO 3166-1 alpha-2 codes covered by the timezone */
+  countryCodes: string[];
+  /** Fully-enriched territory details for each code */
+  territories: TimezoneTerritory[];
+  /** Country or territory codes that can be highlighted with the bundled map dataset */
+  mappableCountryCodes: string[];
+  /** Latitude of the timezone's principal location */
+  latitude: number;
+  /** Longitude of the timezone's principal location */
+  longitude: number;
+  /** Optional IANA comment for zones where a country has multiple entries */
+  comment?: string;
+}
+
+/**
  * Represents a city with geographic and demographic data.
  */
 export interface City {
@@ -173,7 +332,7 @@ export interface State {
 }
 
 /**
- * Types of administrative divisions
+ * Normalized types of administrative divisions used by this dataset.
  */
 export type StateType =
   | "state"
@@ -185,7 +344,15 @@ export type StateType =
   | "region"
   | "county"
   | "emirate"
-  | "canton";
+  | "canton"
+  | "municipality"
+  | "prefecture"
+  | "governorate"
+  | "parish"
+  | "city"
+  | "division"
+  | "atoll"
+  | "island";
 
 /**
  * Continent with metadata
@@ -427,4 +594,65 @@ export interface CountryMapOptions {
   capitalRadius?: number;
   /** Extra space (in SVG units) added around the country outline. Default: 5 */
   padding?: number;
+}
+
+/**
+ * Named moon phases used by the astronomy helpers.
+ */
+export type MoonPhaseName =
+  | "new-moon"
+  | "waxing-crescent"
+  | "first-quarter"
+  | "waxing-gibbous"
+  | "full-moon"
+  | "waning-gibbous"
+  | "last-quarter"
+  | "waning-crescent";
+
+/**
+ * Static metadata for a moon phase.
+ */
+export interface MoonPhase {
+  /** Zero-based phase index in the canonical 8-phase cycle. */
+  index: number;
+  /** Stable machine-readable moon phase key. */
+  key: MoonPhaseName;
+  /** Human-readable moon phase label. */
+  name: string;
+  /** Short description of the phase. */
+  description: string;
+}
+
+/**
+ * A moon phase resolved for a specific date.
+ */
+export interface MoonPhaseSnapshot extends MoonPhase {
+  /** Fraction through the synodic month, from 0 to just under 1. */
+  fraction: number;
+  /** Illuminated portion of the lunar disc, from 0 to 1. */
+  illumination: number;
+  /** Approximate age of the moon in days since new moon. */
+  ageDays: number;
+}
+
+/**
+ * Meteorological season names used for the sun helpers.
+ */
+export type SeasonName = "spring" | "summer" | "autumn" | "winter";
+
+/**
+ * Hemisphere selector for season lookups.
+ */
+export type SeasonHemisphere = "north" | "south";
+
+/**
+ * Describes the current season for a hemisphere.
+ */
+export interface SeasonInfo {
+  /** Season name. */
+  name: SeasonName;
+  /** Hemisphere used for the lookup. */
+  hemisphere: SeasonHemisphere;
+  /** Human-readable label suitable for UI output. */
+  label: string;
 }

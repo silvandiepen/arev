@@ -18,6 +18,14 @@
 
 // Types
 export type {
+  AddressField,
+  AddressPostalCodeType,
+  AddressAdministrativeAreaType,
+  AddressLocalityType,
+  AddressDependentLocalityType,
+  CountryAddressFormat,
+  AddressInput,
+  FormatAddressOptions,
   Country,
   Language,
   LanguageNameLocale,
@@ -25,6 +33,8 @@ export type {
   LanguageOfficialStatus,
   LanguageType,
   PhoneCountryCode,
+  Timezone,
+  TimezoneTerritory,
   City,
   State,
   StateType,
@@ -44,6 +54,12 @@ export type {
   EthnicGroup,
   CountryDemographics,
   CountryMapOptions,
+  MoonPhase,
+  MoonPhaseName,
+  MoonPhaseSnapshot,
+  SeasonHemisphere,
+  SeasonInfo,
+  SeasonName,
 } from "./types/index.js";
 
 // Translations
@@ -81,6 +97,13 @@ export {
   searchLanguages,
 } from "./data/languages/index.js";
 
+// Address formats
+export {
+  addressFormats,
+  getAddressFormatByCountry,
+  formatAddress,
+} from "./data/addressFormats.js";
+
 // Countries
 export {
   countries,
@@ -96,6 +119,18 @@ export {
   getPhoneCodeByCountry,
   getCountriesByPhoneCode,
 } from "./data/phoneCodes.js";
+
+// Timezones
+export {
+  timezones,
+  getTimezoneByName,
+  getTimezonesByCountry,
+  getPrimaryTimezoneByCountry,
+  getTerritoriesByTimezone,
+  getCountriesByTimezone,
+  getMappableCountryCodesByTimezone,
+  searchTimezones,
+} from "./data/timezones.js";
 
 // Cities
 export {
@@ -179,3 +214,12 @@ export {
   getCountrySvg,
   getCountrySubdivisionMapUrl,
 } from "./data/countryMaps.js";
+
+// Astronomy helpers for sun and moon lookups
+export {
+  moonPhases,
+  getMoonPhase,
+  getMoonPhaseFraction,
+  getMoonIllumination,
+  getSeason,
+} from "./data/astronomy.js";
