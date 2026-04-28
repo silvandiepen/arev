@@ -5,12 +5,37 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/data/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/data/src/index.d.ts"
+    },
+    "./geo/languages": {
+      "import": "./dist/geo/src/data/languages/index.js",
+      "require": "./dist/geo/src/data/languages/index.cjs",
+      "types": "./dist/types/geo/src/data/languages/index.d.ts"
+    },
+    "./geo/languages/data": {
+      "import": "./dist/geo/src/data/languages/languageData.js",
+      "require": "./dist/geo/src/data/languages/languageData.cjs",
+      "types": "./dist/types/geo/src/data/languages/languageData.d.ts"
+    },
+    "./geo/countries": {
+      "import": "./dist/geo/src/data/countries.js",
+      "require": "./dist/geo/src/data/countries.cjs",
+      "types": "./dist/types/geo/src/data/countries.d.ts"
+    },
+    "./maps/country-maps": {
+      "import": "./dist/maps/src/data/countryMaps.js",
+      "require": "./dist/maps/src/data/countryMaps.cjs",
+      "types": "./dist/types/maps/src/data/countryMaps.d.ts"
+    },
+    "./maps/world-map": {
+      "import": "./dist/maps/src/data/worldMap.js",
+      "require": "./dist/maps/src/data/worldMap.cjs",
+      "types": "./dist/types/maps/src/data/worldMap.d.ts"
     }
   },
   "files": [

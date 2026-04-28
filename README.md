@@ -73,6 +73,23 @@ npm install @arevs/maps
 
 See the package-level READMEs in `packages/*/README.md` for focused installs and examples.
 
+### Focused imports
+
+For large datasets, prefer subpath imports so bundlers can include only the module you use:
+
+```ts
+import { allLanguages } from "@arevs/geo/languages/data";
+import { countries } from "@arevs/geo/countries";
+import { worldMapCountries } from "@arevs/maps/world-map";
+```
+
+The aggregate package also exposes compatibility subpaths:
+
+```ts
+import { allLanguages } from "@arevs/data/geo/languages/data";
+import { countries } from "@arevs/data/geo/countries";
+```
+
 ## Deployment
 
 Pushes to `main` can deploy both Cloudflare targets through GitHub Actions:

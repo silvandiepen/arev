@@ -40,6 +40,16 @@ const usTimezones = getTimezonesByCountry("US");
 const hints = getGeoHints("MT", "IT");
 ```
 
+## Focused imports
+
+Use subpath imports when you only need one dataset. This lets bundlers avoid pulling in the full geography surface.
+
+```ts
+import { allLanguages } from "@arevs/geo/languages/data";
+import { countries } from "@arevs/geo/countries";
+import { timezones } from "@arevs/geo/timezones";
+```
+
 ## When to use this package
 
 Use `@arevs/geo` when you need structured geography data without pulling in maps, astronomy, space, or the larger all-in-one `@arevs/data` surface.
