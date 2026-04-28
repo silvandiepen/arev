@@ -14,6 +14,8 @@ export function createPackageConfig({
   packageDir,
   globalName,
 }: CreatePackageConfigOptions): UserConfig {
+  const sourceDir = resolve(packageDir, "src");
+
   return defineConfig({
     root: packageDir,
     publicDir: false,
@@ -25,7 +27,7 @@ export function createPackageConfig({
           resolve(workspaceRoot, "packages/*/src/**/*"),
         ],
         outDir: resolve(packageDir, "dist/types"),
-        rollupTypes: true,
+        rollupTypes: false,
         tsconfigPath: resolve(workspaceRoot, "tsconfig.package.json"),
       }),
     ],
@@ -33,13 +35,27 @@ export function createPackageConfig({
       outDir: resolve(packageDir, "dist"),
       emptyOutDir: true,
       lib: {
-        entry: resolve(packageDir, "src/index.ts"),
+        entry: resolve(sourceDir, "index.ts"),
         name: globalName,
         fileName: "index",
-        formats: ["es", "cjs"],
       },
       rollupOptions: {
         external: [],
+        output: [
+          {
+            entryFileNames: "[name].js",
+            format: "es",
+            preserveModules: true,
+            preserveModulesRoot: sourceDir,
+          },
+          {
+            entryFileNames: "[name].cjs",
+            exports: "named",
+            format: "cjs",
+            preserveModules: true,
+            preserveModulesRoot: sourceDir,
+          },
+        ],
       },
       sourcemap: true,
       minify: false,

@@ -5,12 +5,22 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/maps/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/maps/src/index.d.ts"
+    },
+    "./country-maps": {
+      "import": "./dist/data/countryMaps.js",
+      "require": "./dist/data/countryMaps.cjs",
+      "types": "./dist/types/maps/src/data/countryMaps.d.ts"
+    },
+    "./world-map": {
+      "import": "./dist/data/worldMap.js",
+      "require": "./dist/data/worldMap.cjs",
+      "types": "./dist/types/maps/src/data/worldMap.d.ts"
     }
   },
   "files": [

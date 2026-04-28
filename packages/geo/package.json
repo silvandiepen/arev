@@ -5,12 +5,82 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/geo/src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/geo/src/index.d.ts"
+    },
+    "./address-formats": {
+      "import": "./dist/data/addressFormats.js",
+      "require": "./dist/data/addressFormats.cjs",
+      "types": "./dist/types/geo/src/data/addressFormats.d.ts"
+    },
+    "./cities": {
+      "import": "./dist/data/cities.js",
+      "require": "./dist/data/cities.cjs",
+      "types": "./dist/types/geo/src/data/cities.d.ts"
+    },
+    "./continents": {
+      "import": "./dist/data/continents.js",
+      "require": "./dist/data/continents.cjs",
+      "types": "./dist/types/geo/src/data/continents.d.ts"
+    },
+    "./countries": {
+      "import": "./dist/data/countries.js",
+      "require": "./dist/data/countries.cjs",
+      "types": "./dist/types/geo/src/data/countries.d.ts"
+    },
+    "./currencies": {
+      "import": "./dist/data/currencies.js",
+      "require": "./dist/data/currencies.cjs",
+      "types": "./dist/types/geo/src/data/currencies.d.ts"
+    },
+    "./geography": {
+      "import": "./dist/data/geography.js",
+      "require": "./dist/data/geography.cjs",
+      "types": "./dist/types/geo/src/data/geography.d.ts"
+    },
+    "./languages": {
+      "import": "./dist/data/languages/index.js",
+      "require": "./dist/data/languages/index.cjs",
+      "types": "./dist/types/geo/src/data/languages/index.d.ts"
+    },
+    "./languages/data": {
+      "import": "./dist/data/languages/languageData.js",
+      "require": "./dist/data/languages/languageData.cjs",
+      "types": "./dist/types/geo/src/data/languages/languageData.d.ts"
+    },
+    "./languages/functions": {
+      "import": "./dist/data/languages/languageFunctions.js",
+      "require": "./dist/data/languages/languageFunctions.cjs",
+      "types": "./dist/types/geo/src/data/languages/languageFunctions.d.ts"
+    },
+    "./phone-codes": {
+      "import": "./dist/data/phoneCodes.js",
+      "require": "./dist/data/phoneCodes.cjs",
+      "types": "./dist/types/geo/src/data/phoneCodes.d.ts"
+    },
+    "./states": {
+      "import": "./dist/data/states.js",
+      "require": "./dist/data/states.cjs",
+      "types": "./dist/types/geo/src/data/states.d.ts"
+    },
+    "./timezones": {
+      "import": "./dist/data/timezones.js",
+      "require": "./dist/data/timezones.cjs",
+      "types": "./dist/types/geo/src/data/timezones.d.ts"
+    },
+    "./translations": {
+      "import": "./dist/data/translations.js",
+      "require": "./dist/data/translations.cjs",
+      "types": "./dist/types/geo/src/data/translations.d.ts"
+    },
+    "./utils/geo": {
+      "import": "./dist/utils/geo.js",
+      "require": "./dist/utils/geo.cjs",
+      "types": "./dist/types/geo/src/utils/geo.d.ts"
     }
   },
   "files": [

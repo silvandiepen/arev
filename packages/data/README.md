@@ -40,6 +40,16 @@ const worldMap = getWorldMapSvg();
 const moonPhase = getMoonPhase(new Date());
 ```
 
+## Focused imports
+
+`@arevs/data` keeps the aggregate API, but also exposes compatibility subpaths for common large datasets.
+
+```ts
+import { allLanguages } from "@arevs/data/geo/languages/data";
+import { countries } from "@arevs/data/geo/countries";
+import { worldMapCountries } from "@arevs/data/maps/world-map";
+```
+
 ## Focused packages
 
 - `@arevs/geo`

@@ -35,6 +35,15 @@ const maltaSvg = getCountrySvg("MT");
 const usStatesUrl = getCountrySubdivisionMapUrl("US");
 ```
 
+## Focused imports
+
+Use subpath imports when you only need one map dataset or helper group.
+
+```ts
+import { worldMapCountries, getWorldMapSvg } from "@arevs/maps/world-map";
+import { getCountrySvg } from "@arevs/maps/country-maps";
+```
+
 ## When to use this package
 
 Use `@arevs/maps` when you need map rendering helpers without installing the broader geography or all-in-one package.
